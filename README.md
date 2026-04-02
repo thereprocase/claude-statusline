@@ -96,6 +96,14 @@ bash uninstall.sh
 | `~/.claude/statusline-state.json` | Tracks rate limit state between invocations |
 | `~/.claude/rate-limit-log.jsonl` | Persistent log of rate limit threshold crossings |
 
+## Known limitations
+
+**Bash required.** The script uses `<<< here-string` syntax, which is a bashism. It will fail under `/bin/sh` on strict systems. The shebang is `#!/usr/bin/env bash` — as long as bash is on PATH, it works. On Windows, run it via Git Bash or WSL; the Claude Code `settings.json` command should be `bash ~/.claude/statusline-command.sh`, not `sh`.
+
+**Rate limits are all-model aggregates.** The Claude Code statusline hook payload exposes `five_hour` and `seven_day` rate limit percentages, but these are combined across all models. There is no per-model rate limit in the payload. The exceedance counters (`0x/0x`) are tracked per model family from the local log, but the live `%` figures always reflect total usage. The `/usage` dialog in Claude Code shows a per-model breakdown; that data is not available to external hooks.
+
+**Unicode block characters.** The bar uses Unicode block elements (U+2588, U+258x series) and separator (U+2502). These render correctly in most modern terminals. If you see garbled characters, your terminal font doesn't cover the Latin Extended block — switch to a font like JetBrains Mono, Cascadia Code, or any Nerd Font.
+
 ## License
 
 MIT
