@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Claude Code rainbow status line
-# https://github.com/YOUR_USERNAME/claude-statusline
+# https://github.com/thereprocase/claude-statusline
 
 PYTHONIOENCODING=utf-8 python -c "
 import sys, json, os, tempfile
@@ -12,27 +12,20 @@ model      = data.get('model', {}).get('display_name', 'Claude')
 model_id   = data.get('model', {}).get('id', '')
 
 # Model family key used to namespace rate-limit state and log entries.
-# Keeps Sonnet and Opus buckets separate — they have distinct rate limit pools.
 if   'opus'   in model_id: model_family = 'opus'
 elif 'haiku'  in model_id: model_family = 'haiku'
 else:                       model_family = 'sonnet'
 cw         = data.get('context_window', {})
 used_pct   = cw.get('used_percentage')
 cw_size    = cw.get('context_window_size', 0)
-cur_usage  = cw.get('current_usage', {})
-cost_data  = data.get('cost', {})
-cost_usd   = cost_data.get('total_cost_usd')
 
 # ── ANSI codes ───────────────────────────────────────────────────────────────
 R     = '\033[0m'
 DIM   = '\033[2m'
 BOLD  = '\033[1m'
-GREEN = '\033[38;5;114m'
-RED   = '\033[38;5;203m'
-GOLD  = '\033[38;5;220m'
 SEP   = f' {DIM}\u2502{R} '
 
-# Cyan → green → yellow → orange → red (stays red at 80-100%, not magenta)
+# Cyan → green → yellow → orange → red
 GRADIENT = [
     51, 50, 49, 48, 47, 83, 119, 155, 191, 227,
     226, 220, 214, 208, 202, 196, 196, 196, 196, 196,
@@ -45,11 +38,26 @@ def fg(c):
 def gradient_color(pct, total=20):
     return min(int(pct / 100 * (total - 1)), total - 1)
 
+def rainbow_text(text):
+    \"\"\"Apply rainbow gradient across characters of text.\"\"\"
+    if not text:
+        return text
+    # Spread the full gradient across the string length
+    n = len(text)
+    # Use a curated rainbow: red, orange, yellow, green, cyan, blue, violet
+    RAINBOW = [196, 208, 220, 118, 51, 75, 141]
+    out = ''
+    for i, ch in enumerate(text):
+        ci = int(i / max(n - 1, 1) * (len(RAINBOW) - 1))
+        out += f'{fg(RAINBOW[ci])}{ch}'
+    return out + R
+
 # ── Ensure storage dir exists ────────────────────────────────────────────────
 claude_dir = os.path.expanduser('~/.claude')
 os.makedirs(claude_dir, exist_ok=True)
-state_file = os.path.join(claude_dir, 'statusline-state.json')
-log_file   = os.path.join(claude_dir, 'rate-limit-log.jsonl')
+state_file  = os.path.join(claude_dir, 'statusline-state.json')
+log_file    = os.path.join(claude_dir, 'rate-limit-log.jsonl')
+config_file = os.path.join(claude_dir, 'statusline-config.json')
 
 def safe_read_json(path):
     try:
@@ -60,7 +68,6 @@ def safe_read_json(path):
         return {}
 
 def safe_write_json(path, obj):
-    # Close raw fd immediately after mkstemp to prevent fd leak if open() raises.
     try:
         fd, tmp = tempfile.mkstemp(dir=claude_dir, suffix='.tmp', prefix='sl_')
         os.close(fd)
@@ -82,9 +89,7 @@ def safe_append_line(path, line):
         pass
 
 def rebuild_logged_windows(log_path, family=None):
-    \"\"\"Reconstruct crossing history from log when state is lost.
-    Filters entries by model family. Legacy entries (no 'model' key) are
-    attributed to opus only.\"\"\"
+    \"\"\"Reconstruct crossing history from log when state is lost.\"\"\"
     result = {'five_hour': {}, 'seven_day': {}}
     try:
         with open(log_path) as f:
@@ -127,40 +132,6 @@ def fmt_reset(epoch):
         return f'{days[t.weekday()]}{time_s}'
     return time_s
 
-def count_monthly_crossings_from_log(log_path, family=None):
-    \"\"\"Count crossings for the current month. Reads log in reverse and stops
-    as soon as entries fall before the current month — avoids scanning the
-    full log history on state loss or month rollover.\"\"\"
-    prefix = datetime.now().strftime('%Y-%m')
-    five_h, seven_d = 0, 0
-    try:
-        with open(log_path) as f:
-            lines = f.readlines()
-        for raw in reversed(lines):
-            raw = raw.strip()
-            if not raw:
-                continue
-            try:
-                e = json.loads(raw)
-            except Exception:
-                continue
-            ts = e.get('ts', '')
-            if ts and ts < prefix:
-                break  # log is append-only; nothing older can match
-            if not ts.startswith(prefix):
-                continue
-            entry_model = e.get('model')
-            if family is not None and entry_model is not None and entry_model != family:
-                continue
-            if family is not None and entry_model is None and family != 'opus':
-                continue
-            w = e.get('window')
-            if w == 'five_hour':   five_h += 1
-            elif w == 'seven_day': seven_d += 1
-    except FileNotFoundError:
-        pass
-    return five_h, seven_d
-
 # ── Model abbreviation ───────────────────────────────────────────────────────
 SHORT = {
     'claude-opus-4-6': 'Op4.6', 'claude-opus-4-5': 'Op4.5',
@@ -180,6 +151,58 @@ else:
 sz = f'{cw_size // 1_000_000}M' if cw_size >= 1_000_000 else (f'{cw_size // 1_000}k' if cw_size >= 1_000 else '')
 parts = [f'{BOLD}{m} {sz}{R}' if sz else f'{BOLD}{m}{R}']
 
+# ── Working directory ────────────────────────────────────────────────────────
+# Config file: ~/.claude/statusline-config.json
+#   {
+#     "path_aliases": { "D:/ClauDe": "ClauDe" },
+#     "path_depth": 3,
+#     "rainbow_aliases": true
+#   }
+# path_aliases:    map directory prefixes to short nicknames (longest prefix wins)
+# path_depth:      max directory segments to show (default 3)
+# rainbow_aliases: apply rainbow gradient to the alias portion (default true)
+cwd = data.get('cwd', '')
+if cwd:
+    config = safe_read_json(config_file)
+    aliases = config.get('path_aliases', {})
+    path_depth = config.get('path_depth', 3)
+    do_rainbow = config.get('rainbow_aliases', True)
+
+    # Normalize to forward slashes for cross-platform matching
+    norm_cwd = cwd.replace(os.sep, '/')
+
+    # Find longest matching alias prefix
+    best_alias, best_prefix = None, ''
+    for raw_path, nickname in aliases.items():
+        norm_path = raw_path.replace(os.sep, '/').rstrip('/')
+        if norm_cwd == norm_path or norm_cwd.startswith(norm_path + '/'):
+            if len(norm_path) > len(best_prefix):
+                best_alias, best_prefix = nickname, norm_path
+
+    if best_alias is not None:
+        remainder = norm_cwd[len(best_prefix):].lstrip('/')
+        r_segs = remainder.split('/') if remainder else []
+        # Alias counts as one segment toward path_depth
+        max_r = max(path_depth - 1, 0)
+        if len(r_segs) > max_r:
+            r_segs = r_segs[-max_r:]
+        alias_part = rainbow_text(best_alias) if do_rainbow else f'{BOLD}{best_alias}{R}'
+        if r_segs:
+            short_cwd = f'{alias_part}{DIM}/{R}{DIM}{\"/\".join(r_segs)}{R}'
+        else:
+            short_cwd = alias_part
+    else:
+        # Default: ~ substitution, then trim to path_depth segments
+        home = os.path.expanduser('~').replace(os.sep, '/')
+        if norm_cwd.startswith(home):
+            norm_cwd = '~' + norm_cwd[len(home):]
+        segs = norm_cwd.split('/')
+        if len(segs) > path_depth:
+            segs = segs[-path_depth:]
+        short_cwd = f'{DIM}{\"/\".join(segs)}{R}'
+
+    parts.append(short_cwd)
+
 # ── Context bar ──────────────────────────────────────────────────────────────
 if used_pct is not None:
     N = 10
@@ -196,35 +219,13 @@ if used_pct is not None:
     bar += R
 
     pc = fg(GRADIENT[min(int(fill), N - 1)])
-    parts.append(f'{bar} {pc}{used_pct:.0f}%{R}')
-
-# ── Per-turn token counter ────────────────────────────────────────────────────
-tok_in  = cur_usage.get('input_tokens', 0)
-tok_out = cur_usage.get('output_tokens', 0)
-if tok_in or tok_out:
-    parts.append(f'{DIM}\u2191{R}{tok_in} {DIM}\u2193{R}{tok_out}')
+    parts.append(f'{bar} {pc}{int(round(used_pct))}%{R}')
 
 # ── Rate limits and threshold tracking ──────────────────────────────────────
-# Processed independently of context window so rate limits are always tracked
-# even when context_window.used_percentage is absent.
 state = safe_read_json(state_file)
 state_dirty = False
 state_lost = len(state) == 0
 rebuilt = rebuild_logged_windows(log_file, model_family) if state_lost else None
-
-# Monthly count cache — recount from log only on state loss or month rollover,
-# then increment in-place as new crossings are detected this render.
-current_month = datetime.now().strftime('%Y-%m')
-# Per-model monthly cache key keeps Sonnet/Opus/Haiku counts separate.
-monthly_key_name = f'monthly_key_{model_family}'
-monthly_5h_name  = f'monthly_5h_{model_family}'
-monthly_7d_name  = f'monthly_7d_{model_family}'
-if state_lost or state.get(monthly_key_name) != current_month:
-    fh_init, sd_init = count_monthly_crossings_from_log(log_file, model_family)
-    state[monthly_key_name] = current_month
-    state[monthly_5h_name]  = fh_init
-    state[monthly_7d_name]  = sd_init
-    state_dirty = True
 
 for key in ['five_hour', 'seven_day']:
     rl_data = data.get('rate_limits', {}).get(key, {})
@@ -232,26 +233,21 @@ for key in ['five_hour', 'seven_day']:
     if rl is None:
         continue
 
-    label = '5h' if key == 'five_hour' else '7d'
     rc = fg(GRADIENT[gradient_color(rl)])
     resets_at = rl_data.get('resets_at')
     ts = fmt_reset(resets_at) if resets_at is not None else ''
-    parts.append(f'{rc}{round(rl)}%{R}{DIM}{ts}{R}' if ts else f'{rc}{round(rl)}%{R}')
+    rl_i = int(round(rl))
+    parts.append(f'{rc}{rl_i}%{R}{DIM}{ts}{R}' if ts else f'{rc}{rl_i}%{R}')
 
-    # ── Threshold crossing logic ─────────────────────────────────────────────
+    # ── Threshold crossing logging (silent — no display) ─────────────────────
     try:
         rk = str(int(float(resets_at))) if resets_at is not None else 'unknown'
     except Exception:
         rk = 'unknown'
-    # Namespace all per-window state keys by model family so Sonnet and Opus
-    # thresholds don't interfere with each other.
     lk     = f'{model_family}_{key}_logged'
     rk_key = f'{model_family}_{key}_last_rk'
     logged = (rebuilt.get(key, {}) if rebuilt else state.get(lk, {}))
 
-    # Re-arm all thresholds when the reset window rolls over (new resets_at).
-    # Without this, a disarmed flag from the old window suppresses crossings
-    # in the new window until the rate first drops below the threshold.
     if not state_lost and rk != state.get(rk_key):
         for th in THRESHOLDS:
             state[f'{model_family}_{key}_armed_{th}'] = True
@@ -272,13 +268,10 @@ for key in ['five_hour', 'seven_day']:
                 entry = json.dumps({'ts': datetime.now().isoformat(), 'model': model_family, 'window': key, 'pct': rl, 'threshold': th, 'resets_at': rk})
                 safe_append_line(log_file, entry)
                 logged.setdefault(rk, []).append(th)
-                mk = monthly_5h_name if key == 'five_hour' else monthly_7d_name
-                state[mk] = state.get(mk, 0) + 1
             state[ak] = False
         elif rl < th and not armed:
             state[ak] = True
 
-    # Prune old windows from state (keep last 10)
     if len(logged) > 10:
         for k in sorted(logged.keys())[:-10]:
             del logged[k]
@@ -287,17 +280,6 @@ for key in ['five_hour', 'seven_day']:
 
 if state_dirty:
     safe_write_json(state_file, state)
-
-# ── Cost ─────────────────────────────────────────────────────────────────────
-if cost_usd and cost_usd > 0:
-    parts.append(f'{GOLD}\u0024{cost_usd:.2f}{R}')
-
-# ── Monthly crossing counters (per model family) ─────────────────────────────
-fh = state.get(monthly_5h_name, 0)
-sd = state.get(monthly_7d_name, 0)
-dc = fg(GRADIENT[min(int(fh / 30 * 19), 19)])
-wc = fg(GRADIENT[min(int(sd / 4 * 19), 19)])
-parts.append(f'{dc}{fh}x{R}{DIM}/{R}{wc}{sd}x{R}')
 
 print(SEP.join(parts), end='')
 " <<< "$(cat)"
