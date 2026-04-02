@@ -3,27 +3,36 @@
 A colorful, information-dense status line for [Claude Code](https://claude.ai/code).
 
 ```
-Op4.6 1M │ ██████──────────────── 14.0% │ 3% 9pm │ 11% wed 12pm │ $34.40 │ +3646/-448 │ ↑0/↑0
+So4.6 200k │ ██████──── 18.0% │ ↑1 ↓29 │ 3%5p │ 99%mo9a │ $0.61 │ 0x/0x
 ```
 
 ## What it shows
 
 | Section | Description |
 |---------|-------------|
-| `Op4.6 1M` | Model abbreviation + context window size |
+| `So4.6 200k` | Model abbreviation + context window size |
 | `██████────` | Context window usage as a rainbow heat gradient (cyan → red) |
-| `14.0%` | Context window usage percentage |
-| `3% 9pm` | 5-hour rate limit % + next reset time |
-| `11% wed 12pm` | 7-day rate limit % + next reset time |
-| `$34.40` | Session cost (equivalent API pricing, not actual charge on Pro/Max) |
-| `+3646/-448` | Lines added/removed this session |
-| `↑0/↑0` | Monthly rate limit exceedance count (5h / 7d) |
+| `18.0%` | Context window usage percentage |
+| `↑1 ↓29` | Input and output tokens for the last turn |
+| `3%5p` | 5-hour rate limit % + reset time (today) |
+| `99%mo9a` | 7-day rate limit % + reset time (day prefix when not today) |
+| `$0.61` | Session cost (equivalent API pricing, not actual charge on Pro/Max) |
+| `0x/0x` | Monthly rate limit exceedance count (5h / 7d), per active model |
 
 ### Rate limit exceedance tracking
 
-The `↑` counters track how many times per calendar month your rate limits have crossed upward through 30%, 55%, or 75%. Each threshold is independently armed — it counts once per crossing, then waits for the rate to drop back below before counting again.
+The `x` counters track how many times per calendar month your rate limits have crossed upward through 30%, 55%, 75%, or 99%. Each threshold is independently armed — it counts once per crossing, then waits for the rate to drop back below before counting again.
+
+Counts are tracked **per model family** (Opus, Sonnet, Haiku) so switching models doesn't pollute your history.
 
 The color shifts from cool cyan toward red as you approach monthly limits (~30 daily spikes / ~4 weekly spikes).
+
+### Reset time format
+
+| Format | Meaning |
+|--------|---------|
+| `5p` | Resets at 5 PM today |
+| `mo9a` | Resets Monday at 9 AM |
 
 ### Model abbreviations
 
@@ -43,12 +52,12 @@ The color shifts from cool cyan toward red as you approach monthly limits (~30 d
 - Python 3.6+ on PATH
 - Bash
 
-Works on Windows, macOS, and Linux.
+Works on Windows (Git Bash or WSL), macOS, and Linux.
 
 ## Install
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/claude-statusline.git
+git clone https://github.com/thereprocase/claude-statusline.git
 cd claude-statusline
 bash install.sh
 ```
