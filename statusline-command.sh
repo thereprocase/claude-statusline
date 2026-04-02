@@ -115,8 +115,9 @@ def rebuild_logged_windows(log_path, family=None):
         pass
     return result
 
-def fmt_reset(epoch):
-    \"\"\"Format a reset timestamp. Returns '' for invalid or already-past epochs.\"\"\"
+def fmt_reset(epoch, day_only=False):
+    \"\"\"Format a reset timestamp. Returns '' for invalid or already-past epochs.
+    If day_only=True and the reset is not today, returns just the day name.\"\"\"
     try:
         t = datetime.fromtimestamp(float(epoch))
     except Exception:
@@ -124,12 +125,16 @@ def fmt_reset(epoch):
     now = datetime.now()
     if t <= now:
         return ''
+    days = ['mo', 'tu', 'we', 'th', 'fr', 'sa', 'su']
     h = t.hour % 12 or 12
     ap = 'a' if t.hour < 12 else 'p'
     time_s = f'{h}{ap}'
     if t.date() != now.date():
-        days = ['mo', 'tu', 'we', 'th', 'fr', 'sa', 'su']
+        if day_only:
+            return days[t.weekday()]
         return f'{days[t.weekday()]}{time_s}'
+    if day_only:
+        return ''
     return time_s
 
 # ── Model abbreviation ───────────────────────────────────────────────────────
@@ -228,16 +233,36 @@ state_lost = len(state) == 0
 rebuilt = rebuild_logged_windows(log_file, model_family) if state_lost else None
 
 for key in ['five_hour', 'seven_day']:
+    label = '5h' if key == 'five_hour' else '7d'
     rl_data = data.get('rate_limits', {}).get(key, {})
     rl = rl_data.get('used_percentage')
+
     if rl is None:
+        parts.append(f'{DIM}{label} --{R}')
         continue
 
     rc = fg(GRADIENT[gradient_color(rl)])
     resets_at = rl_data.get('resets_at')
-    ts = fmt_reset(resets_at) if resets_at is not None else ''
     rl_i = int(round(rl))
-    parts.append(f'{rc}{rl_i}%{R}{DIM}{ts}{R}' if ts else f'{rc}{rl_i}%{R}')
+
+    # Tiered detail: more info as urgency increases
+    #   5h: <50% = no reset time, 50%+ = full reset time
+    #   7d: <80% = day only, 80%+ = day + hour
+    ts = ''
+    if resets_at is not None:
+        if key == 'five_hour':
+            if rl_i >= 50:
+                ts = fmt_reset(resets_at)
+        else:
+            if rl_i >= 80:
+                ts = fmt_reset(resets_at)
+            else:
+                ts = fmt_reset(resets_at, day_only=True)
+
+    if ts:
+        parts.append(f'{DIM}{label} {R}{rc}{rl_i}%{R}{DIM}@{ts}{R}')
+    else:
+        parts.append(f'{DIM}{label} {R}{rc}{rl_i}%{R}')
 
     # ── Threshold crossing logging (silent — no display) ─────────────────────
     try:
