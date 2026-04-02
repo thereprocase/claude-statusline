@@ -10,13 +10,18 @@ from datetime import datetime
 data = json.load(sys.stdin)
 model      = data.get('model', {}).get('display_name', 'Claude')
 model_id   = data.get('model', {}).get('id', '')
+
+# Model family key used to namespace rate-limit state and log entries.
+# Keeps Sonnet and Opus buckets separate — they have distinct rate limit pools.
+if   'opus'   in model_id: model_family = 'opus'
+elif 'haiku'  in model_id: model_family = 'haiku'
+else:                       model_family = 'sonnet'
 cw         = data.get('context_window', {})
 used_pct   = cw.get('used_percentage')
 cw_size    = cw.get('context_window_size', 0)
+cur_usage  = cw.get('current_usage', {})
 cost_data  = data.get('cost', {})
 cost_usd   = cost_data.get('total_cost_usd')
-lines_add  = cost_data.get('total_lines_added')
-lines_rem  = cost_data.get('total_lines_removed')
 
 # ── ANSI codes ───────────────────────────────────────────────────────────────
 R     = '\033[0m'
@@ -76,8 +81,10 @@ def safe_append_line(path, line):
     except Exception:
         pass
 
-def rebuild_logged_windows(log_path):
-    \"\"\"Reconstruct crossing history from log when state is lost.\"\"\"
+def rebuild_logged_windows(log_path, family=None):
+    \"\"\"Reconstruct crossing history from log when state is lost.
+    Filters entries by model family. Legacy entries (no 'model' key) are
+    attributed to opus only.\"\"\"
     result = {'five_hour': {}, 'seven_day': {}}
     try:
         with open(log_path) as f:
@@ -87,6 +94,11 @@ def rebuild_logged_windows(log_path):
                     continue
                 try:
                     e = json.loads(raw)
+                    entry_model = e.get('model')
+                    if family is not None and entry_model is not None and entry_model != family:
+                        continue
+                    if family is not None and entry_model is None and family != 'opus':
+                        continue
                     w, rk, th = e.get('window', ''), e.get('resets_at', ''), e.get('threshold')
                     if w in result and rk and th is not None:
                         result[w].setdefault(rk, [])
@@ -108,15 +120,17 @@ def fmt_reset(epoch):
     if t <= now:
         return ''
     h = t.hour % 12 or 12
-    ap = 'am' if t.hour < 12 else 'pm'  # avoid strftime('%p') — empty on some Windows locales
+    ap = 'a' if t.hour < 12 else 'p'
     time_s = f'{h}{ap}'
     if t.date() != now.date():
-        days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
-        return f'{days[t.weekday()]} {time_s}'
+        days = ['mo', 'tu', 'we', 'th', 'fr', 'sa', 'su']
+        return f'{days[t.weekday()]}{time_s}'
     return time_s
 
-def count_monthly_crossings_from_log(log_path):
-    \"\"\"Full log scan for monthly counts. Only called on state loss or month rollover.\"\"\"
+def count_monthly_crossings_from_log(log_path, family=None):
+    \"\"\"Full log scan for monthly counts. Only called on state loss or month rollover.
+    Filters by model family when family is provided (entries without a 'model' key
+    are legacy and counted for all families to avoid losing history).\"\"\"
     prefix = datetime.now().strftime('%Y-%m')
     five_h, seven_d = 0, 0
     try:
@@ -130,6 +144,13 @@ def count_monthly_crossings_from_log(log_path):
                 except Exception:
                     continue
                 if not e.get('ts', '').startswith(prefix):
+                    continue
+                entry_model = e.get('model')
+                # Legacy entries (no 'model' key) count only for opus since all
+                # historical usage was Opus-only. New entries are model-tagged.
+                if family is not None and entry_model is not None and entry_model != family:
+                    continue
+                if family is not None and entry_model is None and family != 'opus':
                     continue
                 w = e.get('window')
                 if w == 'five_hour':   five_h += 1
@@ -159,7 +180,7 @@ parts = [f'{BOLD}{m} {sz}{R}' if sz else f'{BOLD}{m}{R}']
 
 # ── Context bar ──────────────────────────────────────────────────────────────
 if used_pct is not None:
-    N = 20
+    N = 10
     fill = used_pct / 100 * N
     full = int(fill)
     frac = fill - full
@@ -177,22 +198,32 @@ if used_pct is not None:
     pc = fg(GRADIENT[min(full, N - 1)])
     parts.append(f'{bar} {pc}{used_pct:.1f}%{R}')
 
+# ── Per-turn token counter ────────────────────────────────────────────────────
+tok_in  = cur_usage.get('input_tokens', 0)
+tok_out = cur_usage.get('output_tokens', 0)
+if tok_in or tok_out:
+    parts.append(f'{DIM}\u2191{R}{tok_in} {DIM}\u2193{R}{tok_out}')
+
 # ── Rate limits and threshold tracking ──────────────────────────────────────
 # Processed independently of context window so rate limits are always tracked
 # even when context_window.used_percentage is absent.
 state = safe_read_json(state_file)
 state_before = json.dumps(state, sort_keys=True)
 state_lost = len(state) == 0
-rebuilt = rebuild_logged_windows(log_file) if state_lost else None
+rebuilt = rebuild_logged_windows(log_file, model_family) if state_lost else None
 
 # Monthly count cache — recount from log only on state loss or month rollover,
 # then increment in-place as new crossings are detected this render.
 current_month = datetime.now().strftime('%Y-%m')
-if state_lost or state.get('monthly_key') != current_month:
-    fh_init, sd_init = count_monthly_crossings_from_log(log_file)
-    state['monthly_key'] = current_month
-    state['monthly_5h']  = fh_init
-    state['monthly_7d']  = sd_init
+# Per-model monthly cache key keeps Sonnet/Opus/Haiku counts separate.
+monthly_key_name = f'monthly_key_{model_family}'
+monthly_5h_name  = f'monthly_5h_{model_family}'
+monthly_7d_name  = f'monthly_7d_{model_family}'
+if state_lost or state.get(monthly_key_name) != current_month:
+    fh_init, sd_init = count_monthly_crossings_from_log(log_file, model_family)
+    state[monthly_key_name] = current_month
+    state[monthly_5h_name]  = fh_init
+    state[monthly_7d_name]  = sd_init
 
 for key in ['five_hour', 'seven_day']:
     rl_data = data.get('rate_limits', {}).get(key, {})
@@ -204,15 +235,17 @@ for key in ['five_hour', 'seven_day']:
     rc = fg(GRADIENT[gradient_color(rl)])
     resets_at = rl_data.get('resets_at')
     ts = fmt_reset(resets_at) if resets_at is not None else ''
-    parts.append(f'{DIM}{label}:{R}{rc}{rl:.0f}%{R} {DIM}{ts}{R}' if ts else f'{DIM}{label}:{R}{rc}{rl:.0f}%{R}')
+    parts.append(f'{rc}{rl}%{R}{DIM}{ts}{R}' if ts else f'{rc}{rl}%{R}')
 
     # ── Threshold crossing logic ─────────────────────────────────────────────
     try:
         rk = str(int(float(resets_at))) if resets_at is not None else 'unknown'
     except Exception:
         rk = 'unknown'
-    lk   = f'{key}_logged'
-    rk_key = f'{key}_last_rk'
+    # Namespace all per-window state keys by model family so Sonnet and Opus
+    # thresholds don't interfere with each other.
+    lk     = f'{model_family}_{key}_logged'
+    rk_key = f'{model_family}_{key}_last_rk'
     logged = (rebuilt.get(key, {}) if rebuilt else state.get(lk, {}))
 
     # Re-arm all thresholds when the reset window rolls over (new resets_at).
@@ -220,11 +253,11 @@ for key in ['five_hour', 'seven_day']:
     # in the new window until the rate first drops below the threshold.
     if not state_lost and rk != state.get(rk_key):
         for th in THRESHOLDS:
-            state[f'{key}_armed_{th}'] = True
+            state[f'{model_family}_{key}_armed_{th}'] = True
     state[rk_key] = rk
 
     for th in THRESHOLDS:
-        ak = f'{key}_armed_{th}'
+        ak = f'{model_family}_{key}_armed_{th}'
         if state_lost:
             already = th in logged.get(rk, [])
             armed = not already if rl >= th else True
@@ -233,10 +266,10 @@ for key in ['five_hour', 'seven_day']:
 
         if rl >= th and armed:
             if th not in logged.get(rk, []):
-                entry = json.dumps({'ts': datetime.now().isoformat(), 'window': key, 'pct': rl, 'threshold': th, 'resets_at': rk})
+                entry = json.dumps({'ts': datetime.now().isoformat(), 'model': model_family, 'window': key, 'pct': rl, 'threshold': th, 'resets_at': rk})
                 safe_append_line(log_file, entry)
                 logged.setdefault(rk, []).append(th)
-                mk = 'monthly_5h' if key == 'five_hour' else 'monthly_7d'
+                mk = monthly_5h_name if key == 'five_hour' else monthly_7d_name
                 state[mk] = state.get(mk, 0) + 1
             state[ak] = False
         elif rl < th and not armed:
@@ -257,16 +290,12 @@ if json.dumps(state, sort_keys=True) != state_before:
 if cost_usd and cost_usd > 0:
     parts.append(f'{GOLD}\u0024{cost_usd:.2f}{R}')
 
-# ── Lines changed ────────────────────────────────────────────────────────────
-if lines_add is not None and lines_rem is not None and (lines_add > 0 or lines_rem > 0):
-    parts.append(f'{GREEN}+{lines_add}{R}{DIM}/{R}{RED}-{lines_rem}{R}')
-
-# ── Monthly crossing counters ────────────────────────────────────────────────
-fh = state.get('monthly_5h', 0)
-sd = state.get('monthly_7d', 0)
+# ── Monthly crossing counters (per model family) ─────────────────────────────
+fh = state.get(monthly_5h_name, 0)
+sd = state.get(monthly_7d_name, 0)
 dc = fg(GRADIENT[min(int(fh / 30 * 19), 19)])
 wc = fg(GRADIENT[min(int(sd / 4 * 19), 19)])
-parts.append(f'{DIM}5h:{R}{dc}{fh}x{R}{DIM}/7d:{R}{wc}{sd}x{R}')
+parts.append(f'{dc}{fh}x{R}{DIM}/{R}{wc}{sd}x{R}')
 
 print(SEP.join(parts), end='')
 " <<< "$(cat)"
