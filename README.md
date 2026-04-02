@@ -3,18 +3,19 @@
 A colorful, information-dense status line for [Claude Code](https://claude.ai/code).
 
 ```
-So4.6 200k │ ███▓────── 38.0% │ 9%5p │ 100%su9a
+Op4.6 1M │ ClauDe │ ██████──── 58% │ 7%8p │ 52%fr11a
 ```
 
 ## What it shows
 
 | Section | Description |
 |---------|-------------|
-| `So4.6 200k` | Model abbreviation + context window size |
-| `███▓──────` | Context window usage bar — shaded fill (░▒▓█) at 25/50/75/100% per bin, cyan → red gradient |
-| `38.0%` | Context window usage percentage |
-| `9%5p` | 5-hour rate limit % + reset time (today) |
-| `100%su9a` | 7-day rate limit % + reset time (day prefix when not today) |
+| `Op4.6 1M` | Model abbreviation + context window size |
+| `ClauDe` | Working directory — rainbow alias (configurable) |
+| `██████────` | Context window usage bar — shaded fill (░▒▓█), cyan → red gradient |
+| `58%` | Context window usage percentage |
+| `7%8p` | 5-hour rate limit % + reset time (today) |
+| `52%fr11a` | 7-day rate limit % + reset time (day prefix when not today) |
 
 ### Reset time format
 
@@ -77,11 +78,52 @@ bash uninstall.sh
 
 4. Restart Claude Code.
 
+## Configuration
+
+Create `~/.claude/statusline-config.json` to customize the working directory display:
+
+```json
+{
+  "path_aliases": {
+    "D:/ClauDe": "ClauDe",
+    "/home/me/work/big-project": "bigproj"
+  },
+  "path_depth": 3,
+  "rainbow_aliases": true
+}
+```
+
+### Options
+
+| Key | Default | Description |
+|-----|---------|-------------|
+| `path_aliases` | `{}` | Map directory prefixes to short nicknames |
+| `path_depth` | `3` | Max directory segments to show |
+| `rainbow_aliases` | `true` | Apply rainbow gradient to the alias nickname |
+
+### Path alias rules
+
+- Paths normalize to forward slashes before matching — `D:\ClauDe` and `D:/ClauDe` both work.
+- Longest matching prefix wins — a specific subdirectory alias beats a parent.
+- Subdirectories append after the alias: running from `D:/ClauDe/orca/clean` shows `ClauDe/orca/clean`.
+- `path_depth` controls total segments shown. The alias counts as one segment, so depth 3 means alias + 2 subdirectories.
+- If no alias matches, the default is `~` substitution + last `path_depth` segments.
+
+### Examples
+
+| Config | CWD | Display |
+|--------|-----|---------|
+| `"D:/ClauDe": "ClauDe"`, depth 3 | `D:/ClauDe` | `ClauDe` |
+| `"D:/ClauDe": "ClauDe"`, depth 3 | `D:/ClauDe/orca/clean` | `ClauDe/orca/clean` |
+| `"D:/ClauDe": "ClauDe"`, depth 3 | `D:/ClauDe/orca/clean/build` | `ClauDe/clean/build` |
+| No alias, depth 3 | `/home/user/dev/myapp/src` | `dev/myapp/src` |
+
 ## Files created
 
 | File | Purpose |
 |------|---------|
 | `~/.claude/statusline-command.sh` | The status line script |
+| `~/.claude/statusline-config.json` | Optional — path aliases and display preferences |
 | `~/.claude/statusline-state.json` | Tracks rate limit state between invocations |
 | `~/.claude/rate-limit-log.jsonl` | Persistent log of rate limit threshold crossings |
 
