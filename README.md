@@ -3,7 +3,7 @@
 A colorful, information-dense status line for [Claude Code](https://claude.ai/code).
 
 ```
-So4.6 200k │ ██████──── 18.0% │ ↑1 ↓29 │ 3%5p │ 99%mo9a │ $0.61 │ 0x/0x
+So4.6 200k │ ██▏─────── 22.0% │ 9%5p │ 100%su9a
 ```
 
 ## What it shows
@@ -11,21 +11,10 @@ So4.6 200k │ ██████──── 18.0% │ ↑1 ↓29 │ 3%5p │ 
 | Section | Description |
 |---------|-------------|
 | `So4.6 200k` | Model abbreviation + context window size |
-| `██████────` | Context window usage as a rainbow heat gradient (cyan → red) |
-| `18.0%` | Context window usage percentage |
-| `↑1 ↓29` | Input and output tokens for the last turn |
-| `3%5p` | 5-hour rate limit % + reset time (today) |
-| `99%mo9a` | 7-day rate limit % + reset time (day prefix when not today) |
-| `$0.61` | Session cost (equivalent API pricing, not actual charge on Pro/Max) |
-| `0x/0x` | Monthly rate limit exceedance count (5h / 7d), per active model |
-
-### Rate limit exceedance tracking
-
-The `x` counters track how many times per calendar month your rate limits have crossed upward through 30%, 55%, 75%, or 99%. Each threshold is independently armed — it counts once per crossing, then waits for the rate to drop back below before counting again.
-
-Counts are tracked **per model family** (Opus, Sonnet, Haiku) so switching models doesn't pollute your history.
-
-The color shifts from cool cyan toward red as you approach monthly limits (~30 daily spikes / ~4 weekly spikes).
+| `██▏───────` | Context window usage bar — fractional sub-block resolution, cyan → red gradient |
+| `22.0%` | Context window usage percentage |
+| `9%5p` | 5-hour rate limit % + reset time (today) |
+| `100%su9a` | 7-day rate limit % + reset time (day prefix when not today) |
 
 ### Reset time format
 
@@ -100,9 +89,9 @@ bash uninstall.sh
 
 **Bash required.** The script uses `<<< here-string` syntax, which is a bashism. It will fail under `/bin/sh` on strict systems. The shebang is `#!/usr/bin/env bash` — as long as bash is on PATH, it works. On Windows, run it via Git Bash or WSL; the Claude Code `settings.json` command should be `bash ~/.claude/statusline-command.sh`, not `sh`.
 
-**Rate limits are all-model aggregates.** The Claude Code statusline hook payload exposes `five_hour` and `seven_day` rate limit percentages, but these are combined across all models. There is no per-model rate limit in the payload. The exceedance counters (`0x/0x`) are tracked per model family from the local log, but the live `%` figures always reflect total usage. The `/usage` dialog in Claude Code shows a per-model breakdown; that data is not available to external hooks.
+**Rate limits are all-model aggregates.** The Claude Code statusline hook payload exposes `five_hour` and `seven_day` rate limit percentages combined across all models. There is no per-model breakdown available to external hooks. The `/usage` dialog in Claude Code shows per-model data; that is not accessible here.
 
-**Unicode block characters.** The bar uses Unicode block elements (U+2588, U+258x series) and separator (U+2502). These render correctly in most modern terminals. If you see garbled characters, your terminal font doesn't cover the Latin Extended block — switch to a font like JetBrains Mono, Cascadia Code, or any Nerd Font.
+**Unicode block characters.** The bar uses Unicode block elements (U+2588, U+258x series) and separator (U+2502). These render correctly in most modern terminals. If you see garbled characters, your terminal font doesn't cover the Block Elements or Box Drawing Unicode blocks — switch to a font like JetBrains Mono, Cascadia Code, or any Nerd Font.
 
 ## License
 
