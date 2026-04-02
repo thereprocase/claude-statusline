@@ -184,20 +184,18 @@ parts = [f'{BOLD}{m} {sz}{R}' if sz else f'{BOLD}{m}{R}']
 if used_pct is not None:
     N = 10
     fill = used_pct / 100 * N
-    full = int(fill)
-    frac = fill - full
-    # Index 0 handled as dim dash below (0% cell = empty, not a space character)
-    blocks = ['', '\u258f', '\u258e', '\u258d', '\u258c', '\u258b', '\u258a', '\u2589']
-
     bar = ''
     for i in range(N):
         c = fg(GRADIENT[i])
-        if   i < full:  bar += f'{c}\u2588'
-        elif i == full: bar += f'{c}{blocks[int(frac * 8)]}' if int(frac * 8) > 0 else f'{DIM}\u2500'
-        else:           bar += f'{DIM}\u2500'
+        cell = fill - i
+        if   cell >= 1.0:  bar += f'{c}\u2588'
+        elif cell >= 0.75: bar += f'{c}\u2593'
+        elif cell >= 0.5:  bar += f'{c}\u2592'
+        elif cell >= 0.25: bar += f'{c}\u2591'
+        else:              bar += f'{DIM}\u2500'
     bar += R
 
-    pc = fg(GRADIENT[min(full, N - 1)])
+    pc = fg(GRADIENT[min(int(fill), N - 1)])
     parts.append(f'{bar} {pc}{used_pct:.0f}%{R}')
 
 # ── Per-turn token counter ────────────────────────────────────────────────────

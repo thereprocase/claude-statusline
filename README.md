@@ -3,7 +3,7 @@
 A colorful, information-dense status line for [Claude Code](https://claude.ai/code).
 
 ```
-So4.6 200k │ ██▏─────── 22.0% │ 9%5p │ 100%su9a
+So4.6 200k │ ███▓────── 38.0% │ 9%5p │ 100%su9a
 ```
 
 ## What it shows
@@ -11,8 +11,8 @@ So4.6 200k │ ██▏─────── 22.0% │ 9%5p │ 100%su9a
 | Section | Description |
 |---------|-------------|
 | `So4.6 200k` | Model abbreviation + context window size |
-| `██▏───────` | Context window usage bar — fractional sub-block resolution, cyan → red gradient |
-| `22.0%` | Context window usage percentage |
+| `███▓──────` | Context window usage bar — shaded fill (░▒▓█) at 25/50/75/100% per bin, cyan → red gradient |
+| `38.0%` | Context window usage percentage |
 | `9%5p` | 5-hour rate limit % + reset time (today) |
 | `100%su9a` | 7-day rate limit % + reset time (day prefix when not today) |
 
