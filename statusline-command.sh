@@ -128,33 +128,35 @@ def fmt_reset(epoch):
     return time_s
 
 def count_monthly_crossings_from_log(log_path, family=None):
-    \"\"\"Full log scan for monthly counts. Only called on state loss or month rollover.
-    Filters by model family when family is provided (entries without a 'model' key
-    are legacy and counted for all families to avoid losing history).\"\"\"
+    \"\"\"Count crossings for the current month. Reads log in reverse and stops
+    as soon as entries fall before the current month — avoids scanning the
+    full log history on state loss or month rollover.\"\"\"
     prefix = datetime.now().strftime('%Y-%m')
     five_h, seven_d = 0, 0
     try:
         with open(log_path) as f:
-            for raw in f:
-                raw = raw.strip()
-                if not raw:
-                    continue
-                try:
-                    e = json.loads(raw)
-                except Exception:
-                    continue
-                if not e.get('ts', '').startswith(prefix):
-                    continue
-                entry_model = e.get('model')
-                # Legacy entries (no 'model' key) count only for opus since all
-                # historical usage was Opus-only. New entries are model-tagged.
-                if family is not None and entry_model is not None and entry_model != family:
-                    continue
-                if family is not None and entry_model is None and family != 'opus':
-                    continue
-                w = e.get('window')
-                if w == 'five_hour':   five_h += 1
-                elif w == 'seven_day': seven_d += 1
+            lines = f.readlines()
+        for raw in reversed(lines):
+            raw = raw.strip()
+            if not raw:
+                continue
+            try:
+                e = json.loads(raw)
+            except Exception:
+                continue
+            ts = e.get('ts', '')
+            if ts and ts < prefix:
+                break  # log is append-only; nothing older can match
+            if not ts.startswith(prefix):
+                continue
+            entry_model = e.get('model')
+            if family is not None and entry_model is not None and entry_model != family:
+                continue
+            if family is not None and entry_model is None and family != 'opus':
+                continue
+            w = e.get('window')
+            if w == 'five_hour':   five_h += 1
+            elif w == 'seven_day': seven_d += 1
     except FileNotFoundError:
         pass
     return five_h, seven_d
@@ -196,7 +198,7 @@ if used_pct is not None:
     bar += R
 
     pc = fg(GRADIENT[min(full, N - 1)])
-    parts.append(f'{bar} {pc}{used_pct:.1f}%{R}')
+    parts.append(f'{bar} {pc}{used_pct:.0f}%{R}')
 
 # ── Per-turn token counter ────────────────────────────────────────────────────
 tok_in  = cur_usage.get('input_tokens', 0)
@@ -208,7 +210,7 @@ if tok_in or tok_out:
 # Processed independently of context window so rate limits are always tracked
 # even when context_window.used_percentage is absent.
 state = safe_read_json(state_file)
-state_before = json.dumps(state, sort_keys=True)
+state_dirty = False
 state_lost = len(state) == 0
 rebuilt = rebuild_logged_windows(log_file, model_family) if state_lost else None
 
@@ -224,6 +226,7 @@ if state_lost or state.get(monthly_key_name) != current_month:
     state[monthly_key_name] = current_month
     state[monthly_5h_name]  = fh_init
     state[monthly_7d_name]  = sd_init
+    state_dirty = True
 
 for key in ['five_hour', 'seven_day']:
     rl_data = data.get('rate_limits', {}).get(key, {})
@@ -235,7 +238,7 @@ for key in ['five_hour', 'seven_day']:
     rc = fg(GRADIENT[gradient_color(rl)])
     resets_at = rl_data.get('resets_at')
     ts = fmt_reset(resets_at) if resets_at is not None else ''
-    parts.append(f'{rc}{rl}%{R}{DIM}{ts}{R}' if ts else f'{rc}{rl}%{R}')
+    parts.append(f'{rc}{round(rl)}%{R}{DIM}{ts}{R}' if ts else f'{rc}{round(rl)}%{R}')
 
     # ── Threshold crossing logic ─────────────────────────────────────────────
     try:
@@ -254,7 +257,9 @@ for key in ['five_hour', 'seven_day']:
     if not state_lost and rk != state.get(rk_key):
         for th in THRESHOLDS:
             state[f'{model_family}_{key}_armed_{th}'] = True
+        state_dirty = True
     state[rk_key] = rk
+    state_dirty = True
 
     for th in THRESHOLDS:
         ak = f'{model_family}_{key}_armed_{th}'
@@ -282,8 +287,7 @@ for key in ['five_hour', 'seven_day']:
     state[lk] = logged
     state[key] = rl
 
-# Only write state if something actually changed this render
-if json.dumps(state, sort_keys=True) != state_before:
+if state_dirty:
     safe_write_json(state_file, state)
 
 # ── Cost ─────────────────────────────────────────────────────────────────────
