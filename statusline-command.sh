@@ -245,16 +245,21 @@ for key in ['five_hour', 'seven_day']:
     resets_at = rl_data.get('resets_at')
     rl_i = int(round(rl))
 
-    # Tiered detail: more info as urgency increases
-    #   5h: <50% = no reset time, 50%+ = full reset time
-    #   7d: <80% = day only, 80%+ = day + hour
+    # Tiered detail: show reset time when usage is high OR reset is near
+    #   5h: show when >=50% OR within 30 min of reset
+    #   7d: show full time when >=80% OR within 12h; day-only otherwise
     ts = ''
     if resets_at is not None:
+        try:
+            reset_dt = datetime.fromtimestamp(float(resets_at))
+            secs_left = (reset_dt - datetime.now()).total_seconds()
+        except Exception:
+            secs_left = float('inf')
         if key == 'five_hour':
-            if rl_i >= 50:
+            if rl_i >= 50 or secs_left <= 1800:
                 ts = fmt_reset(resets_at)
         else:
-            if rl_i >= 80:
+            if rl_i >= 80 or secs_left <= 43200:
                 ts = fmt_reset(resets_at)
             else:
                 ts = fmt_reset(resets_at, day_only=True)
