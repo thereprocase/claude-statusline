@@ -127,6 +127,16 @@ Create `~/.claude/statusline-config.json` to customize the working directory dis
 | `~/.claude/statusline-state.json` | Tracks rate limit state between invocations |
 | `~/.claude/rate-limit-log.jsonl` | Persistent log of rate limit threshold crossings |
 
+## Rate limit logging
+
+The status line logs a threshold crossing event to `~/.claude/rate-limit-log.jsonl` when either the 5-hour or 7-day rate limit window reaches **≥95%**. Each entry includes the window type (`five_hour` or `seven_day`), the percentage, and the reset timestamp.
+
+This log file is consumed by [claude-usage](https://github.com/thereprocase/claude-usage) to render rate limit markers on its 90-day heatmap:
+- **▲** (red) on days with a 5-hour spike
+- **▼** (magenta) on weeks with a weekly limit breach
+
+If you don't use claude-usage, the log file is harmless — it grows slowly (one entry per threshold crossing) and can be safely deleted.
+
 ## Known limitations
 
 **Bash required.** The script uses `<<< here-string` syntax, which is a bashism. It will fail under `/bin/sh` on strict systems. The shebang is `#!/usr/bin/env bash` — as long as bash is on PATH, it works. On Windows, run it via Git Bash or WSL; the Claude Code `settings.json` command should be `bash ~/.claude/statusline-command.sh`, not `sh`.
