@@ -135,74 +135,52 @@ def test_02_unknown_model_id():
     report("02_unknown_model_id", ok, detail)
 
 
-def test_03_rate_limit_boundary_30():
-    """Rate limit at exactly 30% should trigger the 30 threshold crossing."""
+def test_03_rate_limit_below_95_no_log():
+    """Rate limit at 90% should NOT trigger any crossing (threshold is 95)."""
     reset_state()
     inp = {
         "model": {"id": "claude-sonnet-4-5", "display_name": "Claude Sonnet 4.5"},
         "context_window": {"used_percentage": 10, "context_window_size": 200000},
         "rate_limits": {
-            "five_hour": {"used_percentage": 30, "resets_at": 9999999999},
+            "five_hour": {"used_percentage": 90, "resets_at": 9999999999},
         },
     }
     stdout, stderr, rc = run_script(inp)
     entries = read_log_entries()
-    logged_30 = [e for e in entries if e.get('threshold') == 30 and e.get('window') == 'five_hour']
-    ok = rc == 0 and len(logged_30) == 1
+    five_h = [e for e in entries if e.get('window') == 'five_hour']
+    ok = rc == 0 and len(five_h) == 0
     detail = ""
     if rc != 0:
         detail = f"rc={rc}, stderr={stderr[:200]}"
-    elif len(logged_30) != 1:
-        detail = f"Expected exactly 1 log entry for threshold 30, got {len(logged_30)}. Entries: {entries}"
-    report("03_rate_limit_boundary_30", ok, detail)
+    elif len(five_h) != 0:
+        detail = f"Expected no log entries below 95%, got {five_h}"
+    report("03_rate_limit_below_95_no_log", ok, detail)
 
 
-def test_04_rate_limit_boundary_55():
-    """Rate limit at exactly 55% should trigger 30 and 55 threshold crossings."""
+def test_04_rate_limit_boundary_95():
+    """Rate limit at exactly 95% should trigger the 95 threshold crossing."""
     reset_state()
     inp = {
         "model": {"id": "claude-sonnet-4-5", "display_name": "Claude Sonnet 4.5"},
         "context_window": {"used_percentage": 10, "context_window_size": 200000},
         "rate_limits": {
-            "five_hour": {"used_percentage": 55, "resets_at": 9999999999},
-        },
-    }
-    stdout, stderr, rc = run_script(inp)
-    entries = read_log_entries()
-    thresholds_logged = sorted([e['threshold'] for e in entries if e.get('window') == 'five_hour'])
-    ok = rc == 0 and thresholds_logged == [30, 55]
-    detail = ""
-    if rc != 0:
-        detail = f"rc={rc}, stderr={stderr[:200]}"
-    elif thresholds_logged != [30, 55]:
-        detail = f"Expected thresholds [30, 55], got {thresholds_logged}"
-    report("04_rate_limit_boundary_55", ok, detail)
-
-
-def test_05_rate_limit_boundary_75():
-    """Rate limit at exactly 75% should trigger 30, 55, and 75 threshold crossings."""
-    reset_state()
-    inp = {
-        "model": {"id": "claude-sonnet-4-5", "display_name": "Claude Sonnet 4.5"},
-        "context_window": {"used_percentage": 10, "context_window_size": 200000},
-        "rate_limits": {
-            "five_hour": {"used_percentage": 75, "resets_at": 9999999999},
+            "five_hour": {"used_percentage": 95, "resets_at": 9999999999},
         },
     }
     stdout, stderr, rc = run_script(inp)
     entries = read_log_entries()
     thresholds_logged = sorted([e['threshold'] for e in entries if e.get('window') == 'five_hour'])
-    ok = rc == 0 and thresholds_logged == [30, 55, 75]
+    ok = rc == 0 and thresholds_logged == [95]
     detail = ""
     if rc != 0:
         detail = f"rc={rc}, stderr={stderr[:200]}"
-    elif thresholds_logged != [30, 55, 75]:
-        detail = f"Expected thresholds [30, 55, 75], got {thresholds_logged}"
-    report("05_rate_limit_boundary_75", ok, detail)
+    elif thresholds_logged != [95]:
+        detail = f"Expected thresholds [95], got {thresholds_logged}"
+    report("04_rate_limit_boundary_95", ok, detail)
 
 
-def test_06_rate_limit_boundary_99():
-    """Rate limit at exactly 99% should trigger all four threshold crossings."""
+def test_05_rate_limit_99_still_just_95():
+    """Rate limit at 99% should still only trigger the single 95 threshold."""
     reset_state()
     inp = {
         "model": {"id": "claude-sonnet-4-5", "display_name": "Claude Sonnet 4.5"},
@@ -214,23 +192,45 @@ def test_06_rate_limit_boundary_99():
     stdout, stderr, rc = run_script(inp)
     entries = read_log_entries()
     thresholds_logged = sorted([e['threshold'] for e in entries if e.get('window') == 'five_hour'])
-    ok = rc == 0 and thresholds_logged == [30, 55, 75, 99]
+    ok = rc == 0 and thresholds_logged == [95]
     detail = ""
     if rc != 0:
         detail = f"rc={rc}, stderr={stderr[:200]}"
-    elif thresholds_logged != [30, 55, 75, 99]:
-        detail = f"Expected thresholds [30, 55, 75, 99], got {thresholds_logged}"
-    report("06_rate_limit_boundary_99", ok, detail)
+    elif thresholds_logged != [95]:
+        detail = f"Expected thresholds [95], got {thresholds_logged}"
+    report("05_rate_limit_99_still_just_95", ok, detail)
 
 
-def test_07_rate_limit_29_9_no_crossing():
-    """Rate limit at 29.9% should NOT trigger the 30% crossing."""
+def test_06_seven_day_95():
+    """Seven-day rate limit at 96% should trigger the 95 threshold."""
     reset_state()
     inp = {
         "model": {"id": "claude-sonnet-4-5", "display_name": "Claude Sonnet 4.5"},
         "context_window": {"used_percentage": 10, "context_window_size": 200000},
         "rate_limits": {
-            "five_hour": {"used_percentage": 29.9, "resets_at": 9999999999},
+            "seven_day": {"used_percentage": 96, "resets_at": 9999999999},
+        },
+    }
+    stdout, stderr, rc = run_script(inp)
+    entries = read_log_entries()
+    thresholds_logged = sorted([e['threshold'] for e in entries if e.get('window') == 'seven_day'])
+    ok = rc == 0 and thresholds_logged == [95]
+    detail = ""
+    if rc != 0:
+        detail = f"rc={rc}, stderr={stderr[:200]}"
+    elif thresholds_logged != [95]:
+        detail = f"Expected thresholds [95], got {thresholds_logged}"
+    report("06_seven_day_95", ok, detail)
+
+
+def test_07_rate_limit_94_9_no_crossing():
+    """Rate limit at 94.9% should NOT trigger the 95% crossing."""
+    reset_state()
+    inp = {
+        "model": {"id": "claude-sonnet-4-5", "display_name": "Claude Sonnet 4.5"},
+        "context_window": {"used_percentage": 10, "context_window_size": 200000},
+        "rate_limits": {
+            "five_hour": {"used_percentage": 94.9, "resets_at": 9999999999},
         },
     }
     stdout, stderr, rc = run_script(inp)
@@ -241,7 +241,7 @@ def test_07_rate_limit_29_9_no_crossing():
         detail = f"rc={rc}, stderr={stderr[:200]}"
     elif len(entries) != 0:
         detail = f"Expected 0 log entries, got {len(entries)}: {entries}"
-    report("07_rate_limit_29.9_no_crossing", ok, detail)
+    report("07_rate_limit_94.9_no_crossing", ok, detail)
 
 
 def test_08_rate_limit_100():
@@ -263,14 +263,14 @@ def test_08_rate_limit_100():
         detail = f"rc={rc}, stderr={stderr[:200]}"
     elif len(plain) == 0:
         detail = "Empty output"
-    # Check all 4 thresholds fired for both windows
+    # Check threshold 95 fired for both windows
     entries = read_log_entries()
     five_h = sorted([e['threshold'] for e in entries if e.get('window') == 'five_hour'])
     seven_d = sorted([e['threshold'] for e in entries if e.get('window') == 'seven_day'])
-    if five_h != [30, 55, 75, 99]:
+    if five_h != [95]:
         ok = False
         detail += f" five_hour thresholds: {five_h}"
-    if seven_d != [30, 55, 75, 99]:
+    if seven_d != [95]:
         ok = False
         detail += f" seven_day thresholds: {seven_d}"
     report("08_rate_limit_100", ok, detail.strip())
@@ -331,8 +331,8 @@ def test_11_corrupt_log_file():
     valid_entry = json.dumps({
         "ts": datetime.now().isoformat(),
         "window": "five_hour",
-        "pct": 35,
-        "threshold": 30,
+        "pct": 96,
+        "threshold": 95,
         "resets_at": "8888888888",
     })
     with open(LOG_FILE, 'w') as f:
@@ -384,7 +384,7 @@ def test_13_concurrent_simulation():
         "model": {"id": "claude-sonnet-4-5", "display_name": "Claude Sonnet 4.5"},
         "context_window": {"used_percentage": 10, "context_window_size": 200000},
         "rate_limits": {
-            "five_hour": {"used_percentage": 60, "resets_at": 9999999999},
+            "five_hour": {"used_percentage": 96, "resets_at": 9999999999},
         },
     }
     input_str = json.dumps(inp)
@@ -415,30 +415,20 @@ def test_13_concurrent_simulation():
 
     entries = read_log_entries()
     five_h = [e for e in entries if e.get('window') == 'five_hour']
-    # For threshold 30: should have exactly 1 entry (both runs see it, but second should see it already logged)
-    thresh_30 = [e for e in five_h if e.get('threshold') == 30]
-    thresh_55 = [e for e in five_h if e.get('threshold') == 55]
+    # For threshold 95: should have exactly 1 entry (both runs see it, but second should see it already logged)
+    thresh_95 = [e for e in five_h if e.get('threshold') == 95]
 
-    # Due to race conditions, we may get 2 entries for each threshold.
-    # The ideal is 1 each, but 2 is acceptable given true concurrency.
+    # Due to race conditions, we may get 2 entries. The ideal is 1, but 2 is acceptable.
     # What we DON'T want is 0 or >2.
-    if len(thresh_30) == 0:
+    if len(thresh_95) == 0:
         ok = False
-        detail += f" thresh_30 count=0 (expected 1-2)"
-    elif len(thresh_30) > 2:
+        detail += f" thresh_95 count=0 (expected 1-2)"
+    elif len(thresh_95) > 2:
         ok = False
-        detail += f" thresh_30 count={len(thresh_30)} (expected 1-2)"
+        detail += f" thresh_95 count={len(thresh_95)} (expected 1-2)"
 
-    if len(thresh_55) == 0:
-        ok = False
-        detail += f" thresh_55 count=0 (expected 1-2)"
-    elif len(thresh_55) > 2:
-        ok = False
-        detail += f" thresh_55 count={len(thresh_55)} (expected 1-2)"
-
-    # Report whether we got exactly 1 (ideal) or 2 (race)
-    note = f"thresh_30={len(thresh_30)}, thresh_55={len(thresh_55)}"
-    if len(thresh_30) == 1 and len(thresh_55) == 1:
+    note = f"thresh_95={len(thresh_95)}"
+    if len(thresh_95) == 1:
         note += " (ideal: no duplicates)"
     else:
         note += " (race condition duplicates, acceptable)"
@@ -459,11 +449,11 @@ if __name__ == '__main__':
     tests = [
         test_01_empty_json,
         test_02_unknown_model_id,
-        test_03_rate_limit_boundary_30,
-        test_04_rate_limit_boundary_55,
-        test_05_rate_limit_boundary_75,
-        test_06_rate_limit_boundary_99,
-        test_07_rate_limit_29_9_no_crossing,
+        test_03_rate_limit_below_95_no_log,
+        test_04_rate_limit_boundary_95,
+        test_05_rate_limit_99_still_just_95,
+        test_06_seven_day_95,
+        test_07_rate_limit_94_9_no_crossing,
         test_08_rate_limit_100,
         test_09_very_large_context_window,
         test_10_corrupt_state_file,
