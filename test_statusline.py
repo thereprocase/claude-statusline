@@ -303,45 +303,33 @@ class TestThresholdCrossings(unittest.TestCase):
     def _resets_at(self):
         return (datetime.now() + timedelta(hours=3)).timestamp()
 
-    def test_cross_30(self):
-        run_statusline(make_input(five_hour_pct=31.0, five_hour_resets_at=self._resets_at()))
+    def test_below_95_no_log(self):
+        run_statusline(make_input(five_hour_pct=90.0, five_hour_resets_at=self._resets_at()))
         entries = read_log_entries()
         thresholds = [e["threshold"] for e in entries if e["window"] == "five_hour"]
-        self.assertIn(30, thresholds)
-        self.assertEqual(thresholds.count(30), 1)
+        self.assertEqual(thresholds, [])
 
-    def test_cross_55(self):
+    def test_cross_95(self):
         ra = self._resets_at()
-        run_statusline(make_input(five_hour_pct=56.0, five_hour_resets_at=ra))
+        run_statusline(make_input(five_hour_pct=96.0, five_hour_resets_at=ra))
         entries = read_log_entries()
         thresholds = [e["threshold"] for e in entries if e["window"] == "five_hour"]
-        self.assertIn(30, thresholds)
-        self.assertIn(55, thresholds)
+        self.assertIn(95, thresholds)
+        self.assertEqual(thresholds.count(95), 1)
 
-    def test_cross_75(self):
+    def test_seven_day_cross_95(self):
         ra = self._resets_at()
-        run_statusline(make_input(five_hour_pct=80.0, five_hour_resets_at=ra))
+        run_statusline(make_input(seven_day_pct=96.0, seven_day_resets_at=ra))
         entries = read_log_entries()
-        thresholds = [e["threshold"] for e in entries if e["window"] == "five_hour"]
-        self.assertIn(30, thresholds)
-        self.assertIn(55, thresholds)
-        self.assertIn(75, thresholds)
+        thresholds = [e["threshold"] for e in entries if e["window"] == "seven_day"]
+        self.assertIn(95, thresholds)
 
-    def test_cross_99(self):
-        ra = self._resets_at()
-        run_statusline(make_input(five_hour_pct=99.5, five_hour_resets_at=ra))
-        entries = read_log_entries()
-        thresholds = [e["threshold"] for e in entries if e["window"] == "five_hour"]
-        self.assertEqual(sorted(thresholds), [30, 55, 75, 99])
-
-    def test_seven_day_thresholds(self):
+    def test_seven_day_below_95_no_log(self):
         ra = self._resets_at()
         run_statusline(make_input(seven_day_pct=80.0, seven_day_resets_at=ra))
         entries = read_log_entries()
         thresholds = [e["threshold"] for e in entries if e["window"] == "seven_day"]
-        self.assertIn(30, thresholds)
-        self.assertIn(55, thresholds)
-        self.assertIn(75, thresholds)
+        self.assertEqual(thresholds, [])
 
 
 class TestNoDoubleCount(unittest.TestCase):
@@ -352,24 +340,24 @@ class TestNoDoubleCount(unittest.TestCase):
 
     def test_no_duplicate_on_second_run(self):
         ra = (datetime.now() + timedelta(hours=3)).timestamp()
-        inp = make_input(five_hour_pct=60.0, five_hour_resets_at=ra)
+        inp = make_input(five_hour_pct=96.0, five_hour_resets_at=ra)
         run_statusline(inp)
         run_statusline(inp)
         entries = read_log_entries()
         five_h = [e for e in entries if e["window"] == "five_hour"]
-        # Should have exactly 2 entries: threshold 30 and 55, each once
+        # Should have exactly 1 entry: threshold 95, once
         thresholds = [e["threshold"] for e in five_h]
-        self.assertEqual(sorted(thresholds), [30, 55])
+        self.assertEqual(sorted(thresholds), [95])
 
     def test_no_duplicate_on_many_runs(self):
         ra = (datetime.now() + timedelta(hours=3)).timestamp()
-        inp = make_input(five_hour_pct=99.5, five_hour_resets_at=ra)
+        inp = make_input(five_hour_pct=96.0, five_hour_resets_at=ra)
         for _ in range(5):
             run_statusline(inp)
         entries = read_log_entries()
         five_h = [e for e in entries if e["window"] == "five_hour"]
         thresholds = [e["threshold"] for e in five_h]
-        self.assertEqual(sorted(thresholds), [30, 55, 75, 99])
+        self.assertEqual(sorted(thresholds), [95])
 
 
 class TestStateRecovery(unittest.TestCase):
