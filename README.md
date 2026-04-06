@@ -10,8 +10,8 @@ Op4.6 1M │ ClauDe │ ██████──── 58% │ 7%8p │ 52%fr11a
 
 | Section | Description |
 |---------|-------------|
-| `Op4.6 1M` | Model abbreviation + context window size |
-| `ClauDe` | Working directory — rainbow alias (configurable) |
+| `Op4.6 1M` | Model abbreviation + context window size (dimmed) |
+| `ClauDe` | Working directory — rainbow alias (configurable, normal weight) |
 | `██████────` | Context window usage bar — shaded fill (░▒▓█), cyan → red gradient |
 | `58%` | Context window usage percentage |
 | `7%8p` | 5-hour rate limit % + reset time (today) |
@@ -107,7 +107,8 @@ Create `~/.claude/statusline-config.json` to customize the working directory dis
 - Longest matching prefix wins — a specific subdirectory alias beats a parent.
 - Subdirectories append after the alias: running from `D:/ClauDe/orca/clean` shows `ClauDe/orca/clean`.
 - `path_depth` controls total segments shown. The alias counts as one segment, so depth 3 means alias + 2 subdirectories.
-- If no alias matches, the default is `~` substitution + last `path_depth` segments.
+- When segments are elided, an ellipsis (`…`) appears and the alias abbreviates to its first character (teal) with the drive prefix, so you can tell the path is truncated.
+- If no alias matches, the default is `~` substitution + last `path_depth` segments (also with `…/` when truncated).
 
 ### Examples
 
@@ -115,8 +116,8 @@ Create `~/.claude/statusline-config.json` to customize the working directory dis
 |--------|-----|---------|
 | `"D:/ClauDe": "ClauDe"`, depth 3 | `D:/ClauDe` | `ClauDe` |
 | `"D:/ClauDe": "ClauDe"`, depth 3 | `D:/ClauDe/orca/clean` | `ClauDe/orca/clean` |
-| `"D:/ClauDe": "ClauDe"`, depth 3 | `D:/ClauDe/orca/clean/build` | `ClauDe/clean/build` |
-| No alias, depth 3 | `/home/user/dev/myapp/src` | `dev/myapp/src` |
+| `"D:/ClauDe": "ClauDe"`, depth 3 | `D:/ClauDe/orca/clean/build` | `D:/C…/clean/build` |
+| No alias, depth 3 | `/home/user/dev/myapp/src` | `…/dev/myapp/src` |
 
 ## Files created
 
