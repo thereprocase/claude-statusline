@@ -154,7 +154,7 @@ else:
     m = re.sub(r'\s*\(.*?\)', '', m).strip()[:6]
 
 sz = f'{cw_size // 1_000_000}M' if cw_size >= 1_000_000 else (f'{cw_size // 1_000}k' if cw_size >= 1_000 else '')
-parts = [f'{BOLD}{m} {sz}{R}' if sz else f'{BOLD}{m}{R}']
+parts = [f'{DIM}{m} {sz}{R}' if sz else f'{DIM}{m}{R}']
 
 # ── Working directory ────────────────────────────────────────────────────────
 # Config file: ~/.claude/statusline-config.json
@@ -189,11 +189,23 @@ if cwd:
         r_segs = remainder.split('/') if remainder else []
         # Alias counts as one segment toward path_depth
         max_r = max(path_depth - 1, 0)
-        if len(r_segs) > max_r:
+        elided = len(r_segs) > max_r
+        if elided:
             r_segs = r_segs[-max_r:]
-        alias_part = rainbow_text(best_alias) if do_rainbow else f'{BOLD}{best_alias}{R}'
+        # When segments are elided: show drive + abbreviated alias + ellipsis
+        if elided:
+            # Extract drive prefix from original path (e.g. "D:/" from "D:/ClauDe")
+            drive = ''
+            if len(best_prefix) >= 2 and best_prefix[1] == ':':
+                drive = best_prefix[:3]  # "D:/"
+            abbrev = best_alias[0] if best_alias else best_alias
+            alias_part = f'{fg(51)}{abbrev}{R}' if do_rainbow else f'{BOLD}{abbrev}{R}'
+            alias_part = f'{DIM}{drive}{R}{alias_part}'
+        else:
+            alias_part = rainbow_text(best_alias) if do_rainbow else f'{BOLD}{best_alias}{R}'
         if r_segs:
-            short_cwd = f'{alias_part}{DIM}/{R}{DIM}{\"/\".join(r_segs)}{R}'
+            sep = f'{DIM}\u2026/{R}' if elided else f'{DIM}/{R}'
+            short_cwd = f'{alias_part}{sep}{\"/\".join(r_segs)}{R}'
         else:
             short_cwd = alias_part
     else:
@@ -202,9 +214,11 @@ if cwd:
         if norm_cwd.startswith(home):
             norm_cwd = '~' + norm_cwd[len(home):]
         segs = norm_cwd.split('/')
-        if len(segs) > path_depth:
+        elided = len(segs) > path_depth
+        if elided:
             segs = segs[-path_depth:]
-        short_cwd = f'{DIM}{\"/\".join(segs)}{R}'
+        prefix = f'{DIM}\u2026/{R}' if elided else ''
+        short_cwd = f'{prefix}{\"/\".join(segs)}{R}'
 
     parts.append(short_cwd)
 
