@@ -2,9 +2,7 @@
 
 A colorful, information-dense status line for [Claude Code](https://claude.ai/code).
 
-```
-Op4.6 1M │ ClauDe │ ██████──── 58% │ 7%8p │ 52%fr11a
-```
+![Clean statusline at 30% context](images/statusline-clean.svg)
 
 ## What it shows
 
@@ -35,6 +33,23 @@ Op4.6 1M │ ClauDe │ ██████──── 58% │ 7%8p │ 52%fr11a
 | Claude Sonnet 4.0 | `So4` |
 | Claude Haiku 4.5 | `Ha4.5` |
 | Claude Haiku 3.5 | `Ha3.5` |
+
+## Context corruption
+
+As the context window fills past 55%, the status bar progressively self-destructs. The bar cells mutate into random block and line-drawing characters, colors wobble, glitch characters leak past the bar boundary and start consuming the model name, path, and separators. Rate limit percentages are never touched — you can always read your actual usage.
+
+![Corruption progression from 30% to 100%](images/corruption-progression.svg)
+
+| Range | What happens |
+|-------|-------------|
+| 0–55% | Clean, normal rendering |
+| 55–60% | Bar cells start flickering to glitch characters |
+| 60–65% | Color wobble, overflow chars leak past bar, path text catches stray glitches |
+| 65–80% | Reverse video on bar cells, separators degrading, model/path visibly corrupted |
+| 80–95% | Bar is mostly unrecognizable, glitch chars infest everything, separators mutate independently |
+| 95–100% | The statusline has been consumed. Only the rate limit percentages survive. |
+
+The corruption is seeded from the current timestamp, so the glitch pattern shifts on every render — it looks alive.
 
 ## Requirements
 
@@ -143,6 +158,8 @@ If you don't use claude-usage, the log file is harmless — it grows slowly (one
 **Bash required.** The script uses `<<< here-string` syntax, which is a bashism. It will fail under `/bin/sh` on strict systems. The shebang is `#!/usr/bin/env bash` — as long as bash is on PATH, it works. On Windows, run it via Git Bash or WSL; the Claude Code `settings.json` command should be `bash ~/.claude/statusline-command.sh`, not `sh`.
 
 **Rate limits are all-model aggregates.** The Claude Code statusline hook payload exposes `five_hour` and `seven_day` rate limit percentages combined across all models. There is no per-model breakdown available to external hooks. The `/usage` dialog in Claude Code shows per-model data; that is not accessible here.
+
+**Regenerating renders.** Run `python generate-renders.py` to regenerate the SVG images in `images/`. Requires the statusline script and bash on PATH.
 
 **Unicode block characters.** The bar uses Unicode block elements (U+2588, U+258x series) and separator (U+2502). These render correctly in most modern terminals. If you see garbled characters, your terminal font doesn't cover the Block Elements or Box Drawing Unicode blocks — switch to a font like JetBrains Mono, Cascadia Code, or any Nerd Font.
 
