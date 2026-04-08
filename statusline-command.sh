@@ -3,7 +3,7 @@
 # https://github.com/thereprocase/claude-statusline
 
 PYTHONIOENCODING=utf-8 python -c "
-import sys, json, os, tempfile
+import sys, json, os, tempfile, random
 from datetime import datetime
 
 # ── Parse input ──────────────────────────────────────────────────────────────
@@ -18,6 +18,12 @@ else:                       model_family = 'sonnet'
 cw         = data.get('context_window', {})
 used_pct   = cw.get('used_percentage')
 cw_size    = cw.get('context_window_size', 0)
+
+# Corruption level: 0.0 at <=55%, ~0.9 at 65%, exponentially worse to 3.0 at 100%
+# Power curve: 3.0 * t^0.8 where t = linear 0..1 over 55-100%
+linear_t = max(0.0, (used_pct - 55) / 45) if used_pct is not None else 0.0
+corruption = 3.0 * linear_t ** 0.8 if linear_t > 0 else 0.0
+random.seed(int(datetime.now().timestamp() * 1000) % 100000)
 
 # ── ANSI codes ───────────────────────────────────────────────────────────────
 R     = '\033[0m'
@@ -51,6 +57,52 @@ def rainbow_text(text):
         ci = int(i / max(n - 1, 1) * (len(RAINBOW) - 1))
         out += f'{fg(RAINBOW[ci])}{ch}'
     return out + R
+
+# ── Glitch / corruption engine (single-row only — no combining chars) ───────
+GLITCH_BLOCKS = list('\u2580\u2584\u259A\u259E\u259B\u259C\u259F\u2599')
+GLITCH_LINE   = list('\u2573\u256C\u256B\u256A\u2569\u2566\u2560\u2563\u253C')
+GLITCH_ALL    = GLITCH_BLOCKS + GLITCH_LINE
+BLINK   = '\033[5m'
+REVERSE = '\033[7m'
+STRIKE  = '\033[9m'
+
+def glitch_char(level):
+    \"\"\"Return a random inline glitch character with color.\"\"\"
+    gc = fg(random.choice(GRADIENT[-6:]))
+    gch = random.choice(GLITCH_ALL)
+    # At high corruption, add ANSI effects
+    if level > 1.5 and random.random() < 0.3:
+        gc = REVERSE + gc
+    return f'{gc}{gch}{R}'
+
+def corrupt_text(text, level):
+    \"\"\"Corrupt visible characters in text, preserving ANSI sequences.
+    All effects stay within a single terminal row — no combining chars.\"\"\"
+    if level <= 0:
+        return text
+    out = ''
+    in_esc = False
+    for ch in text:
+        if ch == '\033':
+            in_esc = True
+        if in_esc:
+            out += ch
+            if ch == 'm':
+                in_esc = False
+            continue
+        # Replace char with a glitch block
+        if random.random() < level * 0.25 and ch.strip():
+            out += glitch_char(level)
+        else:
+            # Color wobble on the original char
+            if random.random() < level * 0.2 and ch.strip():
+                out += f'{fg(random.choice(GRADIENT[-5:]))}{ch}{R}'
+            else:
+                out += ch
+        # Insert extra glitch char after
+        if random.random() < level * 0.12 and ch.strip():
+            out += glitch_char(level)
+    return out
 
 # ── Ensure storage dir exists ────────────────────────────────────────────────
 claude_dir = os.path.expanduser('~/.claude')
@@ -230,17 +282,49 @@ if used_pct is not None:
     for i in range(N):
         c = fg(GRADIENT[i])
         cell = fill - i
-        if   cell >= 1.0:  bar += f'{c}\u2588'
+
+        is_filled = cell >= 0.25
+        glitch_this = corruption > 0 and is_filled and random.random() < corruption * 0.7
+
+        if glitch_this:
+            gch = random.choice(GLITCH_ALL)
+            # Color wobble at medium corruption
+            if corruption > 0.4 and random.random() < corruption * 0.5:
+                c = fg(random.choice(GRADIENT))
+            # ANSI chaos at high corruption
+            if corruption > 0.7 and random.random() < corruption * 0.3:
+                c = REVERSE + c
+            if corruption > 0.9 and random.random() < min(0.8, corruption * 0.2):
+                c = BLINK + c
+            bar += f'{c}{gch}'
+        elif cell >= 1.0:  bar += f'{c}\u2588'
         elif cell >= 0.75: bar += f'{c}\u2593'
         elif cell >= 0.5:  bar += f'{c}\u2592'
         elif cell >= 0.25: bar += f'{c}\u2591'
-        else:              bar += f'{DIM}\u2500'
+        else:
+            # Empty cells: at high corruption, ghosts appear in the void
+            if corruption > 0.3 and random.random() < corruption * 0.3:
+                bar += f'{fg(random.choice(GRADIENT[-5:]))}{random.choice(GLITCH_ALL)}'
+            else:
+                bar += f'{DIM}\u2500'
     bar += R
 
+    # Overflow: glitch chars that leak past the bar boundary
+    overflow = ''
+    if corruption > 0.3:
+        n_leak = random.randint(0, int(corruption * 5))
+        for _ in range(n_leak):
+            overflow += glitch_char(corruption)
+        overflow += R if overflow else ''
+
     pc = fg(GRADIENT[min(int(fill), N - 1)])
-    parts.append(f'{bar} {pc}{int(round(used_pct))}%{R}')
+    pct_str = f'{int(round(used_pct))}%'
+    if corruption > 0.2:
+        pct_str = corrupt_text(pct_str, corruption * 0.4)
+    parts.append(f'{bar}{overflow} {pc}{pct_str}{R}')
 
 # ── Rate limits and threshold tracking ──────────────────────────────────────
+sacred_indices = set()   # parts indices that must not be corrupted in final pass
 state = safe_read_json(state_file)
 state_dirty = False
 state_lost = len(state) == 0
@@ -279,9 +363,13 @@ for key in ['five_hour', 'seven_day']:
                 ts = fmt_reset(resets_at, day_only=True)
 
     if ts:
-        parts.append(f'{DIM}{label} {R}{rc}{rl_i}%{R}{DIM}@{ts}{R}')
+        # Corrupt the reset time hint, but never the percentage
+        c_ts = corrupt_text(ts, corruption * 0.5) if corruption > 0.2 else ts
+        parts.append(f'{DIM}{label} {R}{rc}{rl_i}%{R}{DIM}@{c_ts}{R}')
     else:
         parts.append(f'{DIM}{label} {R}{rc}{rl_i}%{R}')
+    # Mark rate-limit parts as sacred (index tracked for final-output pass)
+    sacred_indices.add(len(parts) - 1)
 
     # ── Threshold crossing logging (silent — no display) ─────────────────────
     try:
@@ -325,5 +413,31 @@ for key in ['five_hour', 'seven_day']:
 if state_dirty:
     safe_write_json(state_file, state)
 
-print(SEP.join(parts), end='')
+# ── Final output (corruption spreads to everything at high levels) ───────────
+if corruption > 0.3:
+    # Corrupt other parts based on proximity to the bar (index 2)
+    bar_idx = 2 if len(parts) > 2 else len(parts) - 1
+    for idx in range(len(parts)):
+        if idx == bar_idx or idx in sacred_indices:
+            continue  # bar already corrupted; rate-limit %s are sacred
+        # Distance from bar determines corruption intensity
+        dist = abs(idx - bar_idx)
+        part_level = corruption * max(0, 1.0 - dist * 0.25)
+        # Only start corrupting neighbors at medium corruption
+        if part_level > 0.3:
+            parts[idx] = corrupt_text(parts[idx], part_level * 0.4)
+    # Corrupt the separators themselves
+    sep_level = corruption * 0.4
+    glitch_sep = corrupt_text(SEP, sep_level)
+    # At extreme corruption, the separator mutates per-join
+    if corruption > 0.8:
+        result = parts[0]
+        for p in parts[1:]:
+            s = corrupt_text(SEP, sep_level + random.uniform(0, 0.2))
+            result += s + p
+        print(result, end='')
+    else:
+        print(glitch_sep.join(parts), end='')
+else:
+    print(SEP.join(parts), end='')
 " <<< "$(cat)"
