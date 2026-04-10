@@ -8,12 +8,15 @@ A colorful, information-dense status line for [Claude Code](https://claude.ai/co
 
 | Section | Description |
 |---------|-------------|
-| `Op4.6 1M` | Model abbreviation + context window size (dimmed) |
+| `use` | First 3 chars of the active Claude account email — each char gets a unique color from a 60-char golden-angle palette (a–z, 0–9, dot-atom specials) |
+| `Op4.6 1M` | Model abbreviation + context window size — bold tier color (Opus-1M gold, Opus-200k orange, Sonnet-1M cyan, Sonnet-200k azure, Haiku lime) |
 | `ClauDe` | Working directory — rainbow alias (configurable, normal weight) |
 | `██████────` | Context window usage bar — shaded fill (░▒▓█), cyan → red gradient |
 | `58%` | Context window usage percentage |
 | `7%8p` | 5-hour rate limit % + reset time (today) |
 | `52%fr11a` | 7-day rate limit % + reset time (day prefix when not today) |
+
+The account prefix lets you tell at a glance which account a Claude Code session is signed into when you run multiple accounts side-by-side via `CLAUDE_CONFIG_DIR`. The script reads `emailAddress` from `.claude.json` (checking both inside `CLAUDE_CONFIG_DIR` and one level up) and falls back silently if no email is found.
 
 ### Reset time format
 
