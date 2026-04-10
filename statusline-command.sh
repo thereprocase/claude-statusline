@@ -206,7 +206,69 @@ else:
     m = re.sub(r'\s*\(.*?\)', '', m).strip()[:6]
 
 sz = f'{cw_size // 1_000_000}M' if cw_size >= 1_000_000 else (f'{cw_size // 1_000}k' if cw_size >= 1_000 else '')
-parts = [f'{DIM}{m} {sz}{R}' if sz else f'{DIM}{m}{R}']
+
+# Flat tier color applied uniformly across the full model+size segment.
+# Opus-1M and Opus-200k get distinct colors so the context tier reads at a glance.
+_is_1m = cw_size >= 1_000_000
+if model_family == 'opus':
+    _tier_color = 220 if _is_1m else 208   # gold (1M) vs orange (200k)
+elif model_family == 'sonnet':
+    _tier_color = 51 if _is_1m else 39     # bright cyan vs azure
+else:  # haiku
+    _tier_color = 118                       # lime green
+
+# Claude account email → first 3 chars of local-part.
+# .claude.json lives either inside CLAUDE_CONFIG_DIR (account-switcher layout)
+# or one level up (default layout where CLAUDE_CONFIG_DIR=~/.claude).
+def _find_claude_account():
+    import re
+    cfg_dir = os.environ.get('CLAUDE_CONFIG_DIR') or os.path.expanduser('~/.claude')
+    candidates = [
+        os.path.join(cfg_dir, '.claude.json'),
+        os.path.join(os.path.dirname(cfg_dir.rstrip(os.sep).rstrip('/')), '.claude.json'),
+    ]
+    for p in candidates:
+        try:
+            with open(p, 'r', encoding='utf-8') as f:
+                txt = f.read()
+            mo = re.search(r'\"emailAddress\"\s*:\s*\"([^\"]+)\"', txt)
+            if mo:
+                return mo.group(1)
+        except Exception:
+            continue
+    return ''
+
+email = _find_claude_account()
+user = (email.split('@', 1)[0] if email else '')[:3]
+
+# Permanent per-char color map: every legal dot-atom email local-part char
+# gets a unique xterm-256 color. Uses golden-angle hue rotation (137.508°) so
+# adjacent indices are maximally separated on the color wheel — no two chars
+# land in the same hue band. Value/saturation wobble adds a second axis of
+# separation. Fully deterministic, no RNG needed.
+import colorsys as _cs
+_LEGAL_EMAIL_CHARS = \"abcdefghijklmnopqrstuvwxyz0123456789!#\$%&'*+-/=?^_\`{|}~.\"
+def _hsv_to_xterm256(h, s, v):
+    r, g, b = _cs.hsv_to_rgb(h / 360.0, s, v)
+    return 16 + 36 * round(r * 5) + 6 * round(g * 5) + round(b * 5)
+CHAR_COLORS = {}
+for _i, _ch in enumerate(_LEGAL_EMAIL_CHARS):
+    _h = (_i * 137.508) % 360
+    _s = 0.85 + 0.15 * (_i % 2)
+    _v = 0.80 + 0.20 * ((_i // 2) % 2)
+    CHAR_COLORS[_ch] = _hsv_to_xterm256(_h, _s, _v)
+
+parts = []
+if user:
+    colored = ''
+    for _ch in user:
+        _c = CHAR_COLORS.get(_ch.lower())
+        if _c is not None:
+            colored += f'{BOLD}{fg(_c)}{_ch}{R}'
+        else:
+            colored += f'{DIM}{_ch}{R}'
+    parts.append(colored)
+parts.append(f'{BOLD}{fg(_tier_color)}{m} {sz}{R}' if sz else f'{BOLD}{fg(_tier_color)}{m}{R}')
 
 # ── Working directory ────────────────────────────────────────────────────────
 # Config file: ~/.claude/statusline-config.json
@@ -415,8 +477,8 @@ if state_dirty:
 
 # ── Final output (corruption spreads to everything at high levels) ───────────
 if corruption > 0.3:
-    # Corrupt other parts based on proximity to the bar (index 2)
-    bar_idx = 2 if len(parts) > 2 else len(parts) - 1
+    # Corrupt other parts based on proximity to the bar (user, model, cwd, bar)
+    bar_idx = 3 if len(parts) > 3 else len(parts) - 1
     for idx in range(len(parts)):
         if idx == bar_idx or idx in sacred_indices:
             continue  # bar already corrupted; rate-limit %s are sacred
