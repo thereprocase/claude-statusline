@@ -31,27 +31,117 @@ DIM   = '\033[2m'
 BOLD  = '\033[1m'
 SEP   = f' {DIM}\u2502{R} '
 
-# Cyan → green → yellow → orange → red
-GRADIENT = [
-    51, 50, 49, 48, 47, 83, 119, 155, 191, 227,
-    226, 220, 214, 208, 202, 196, 196, 196, 196, 196,
-]
-THRESHOLDS = [95]
-
 def fg(c):
     return f'\033[38;5;{c}m'
+
+# ── Sherwin-Williams Colormix Foresight 2025 'SHIFT' palette ─────────────────
+# 18 colors sampled from the DesignHouse SHIFT forecast overview page. Tuned
+# for readability on black terminals: the 6 dark earth tones in the forecast
+# (Kindred, Restore, Prosperity, Dark Cloud, Equilibrium, Green Build) are
+# kept out of the active rotation — they collapse into the background on
+# black. The 12 luminous colors drive every gradient, tier badge, and rainbow
+# in this statusline.
+SHIFT = {
+    'onward':       (225, 230, 236),  # pale ice blue — lightest coolest
+    'fractal':      (232, 224, 221),  # off-white
+    'aqualogic':    (208, 221, 212),  # pale mint
+    'manifest':     (226, 198, 210),  # pale rose
+    'stratum':      (209, 201, 190),  # warm sand neutral
+    'frequency':    (207, 200, 182),  # champagne
+    'activate':     (167,  46,  47),  # signal red
+    'fortifind':    (172, 106,  88),  # terracotta
+    'interstellar': (214, 160, 105),  # copper shimmer
+    'alt':          (200, 220,  73),  # neon yellow-green
+    'bills':        (121, 192, 148),  # minted green
+    'dopamine':     ( 63, 113, 169),  # electric blue
+}
+
+def _rgb_to_256(r, g, b):
+    \"\"\"Nearest xterm-256 index for an (r,g,b) triple — exhaustive search
+    over the 6x6x6 cube plus the grayscale ramp. Uses squared RGB distance
+    with a green bias (roughly matches perceived luminance weighting).\"\"\"
+    _cube_levels = (0, 95, 135, 175, 215, 255)
+    best_i, best_d = 16, 10 ** 9
+    for ri, rv in enumerate(_cube_levels):
+        for gi, gv in enumerate(_cube_levels):
+            for bi, bv in enumerate(_cube_levels):
+                d = (r - rv) ** 2 + 2 * (g - gv) ** 2 + (b - bv) ** 2
+                if d < best_d:
+                    best_d = d
+                    best_i = 16 + 36 * ri + 6 * gi + bi
+    for gi in range(24):
+        gv = 8 + gi * 10
+        d = (r - gv) ** 2 + 2 * (g - gv) ** 2 + (b - gv) ** 2
+        if d < best_d:
+            best_d = d
+            best_i = 232 + gi
+    return best_i
+
+S = {k: _rgb_to_256(*v) for k, v in SHIFT.items()}
+
+# ── 'Buddy' sunset rainbow ──────────────────────────────────────────────────
+# Sampled from the buddy CLI's rainbow '/buddy' header (which I can't edit).
+# This is a warmer, pastel ROYGBV arc. Blended into the text rainbow and the
+# expanded per-char palette so the statusline harmonizes with the buddy UI.
+BUDDY = {
+    'red':    (230,  93,  85),
+    'orange': (245, 139,  87),
+    'gold':   (250, 195,  95),
+    'green':  (145, 200, 130),
+    'blue':   (130, 170, 220),
+    'violet': (155, 130, 200),
+}
+B = {k: _rgb_to_256(*v) for k, v in BUDDY.items()}
+
+def _lerp(a, b, t):
+    return tuple(int(round(a[i] + (b[i] - a[i]) * t)) for i in range(3))
+
+def _build_gradient(stops, total=20):
+    \"\"\"Piecewise-linear RGB gradient through stop colors → xterm-256 list.\"\"\"
+    n = len(stops) - 1
+    out = []
+    for i in range(total):
+        t = i / (total - 1)
+        seg = min(int(t * n), n - 1)
+        local = t * n - seg
+        out.append(_rgb_to_256(*_lerp(stops[seg], stops[seg + 1], local)))
+    return out
+
+# Cool → hot 20-step gradient for the context bar and rate-limit percent.
+# Anchored on the SHIFT palette's saturated colors only — the pastels
+# (onward, fractal, aqualogic, manifest, stratum, frequency) are reserved
+# for text/chrome, where they'd otherwise wash out against black in a bar.
+_GRAD_STOPS = [
+    SHIFT['dopamine'],      #   0% — electric blue, calm
+    SHIFT['bills'],         #  25% — minted green
+    SHIFT['alt'],           #  50% — neon yellow-green
+    SHIFT['interstellar'],  #  75% — copper
+    SHIFT['fortifind'],     #  90% — terracotta
+    SHIFT['activate'],      # 100% — signal red, alarm
+]
+GRADIENT = _build_gradient(_GRAD_STOPS, total=20)
+THRESHOLDS = [95]
 
 def gradient_color(pct, total=20):
     return min(int(pct / 100 * (total - 1)), total - 1)
 
+# Six-color text rainbow for path alias / nickname rendering. This is the
+# buddy CLI's own '/buddy' arc so the statusline alias visually rhymes with
+# the buddy UI the user can't modify.
+RAINBOW = [
+    B['red'],
+    B['orange'],
+    B['gold'],
+    B['green'],
+    B['blue'],
+    B['violet'],
+]
+
 def rainbow_text(text):
-    \"\"\"Apply rainbow gradient across characters of text.\"\"\"
+    \"\"\"Apply SHIFT rainbow gradient across characters of text.\"\"\"
     if not text:
         return text
-    # Spread the full gradient across the string length
     n = len(text)
-    # Use a curated rainbow: red, orange, yellow, green, cyan, blue, violet
-    RAINBOW = [196, 208, 220, 118, 51, 75, 141]
     out = ''
     for i, ch in enumerate(text):
         ci = int(i / max(n - 1, 1) * (len(RAINBOW) - 1))
@@ -208,14 +298,17 @@ else:
 sz = f'{cw_size // 1_000_000}M' if cw_size >= 1_000_000 else (f'{cw_size // 1_000}k' if cw_size >= 1_000 else '')
 
 # Flat tier color applied uniformly across the full model+size segment.
-# Opus-1M and Opus-200k get distinct colors so the context tier reads at a glance.
+# 1M and 200k contexts get distinct hues. Tier families map to ROYGBIV
+# descending by power: Opus→violet, Sonnet→blue, Haiku→yellow-green.
+# Interstellar's copper rounds to xterm-179 mustard on black (baby-poop),
+# so Opus takes buddy violet instead — premium, distinct, on-palette.
 _is_1m = cw_size >= 1_000_000
 if model_family == 'opus':
-    _tier_color = 220 if _is_1m else 208   # gold (1M) vs orange (200k)
+    _tier_color = B['violet'] if _is_1m else _rgb_to_256(115, 85, 155)
 elif model_family == 'sonnet':
-    _tier_color = 51 if _is_1m else 39     # bright cyan vs azure
+    _tier_color = S['dopamine'] if _is_1m else _rgb_to_256(70, 100, 140)
 else:  # haiku
-    _tier_color = 118                       # lime green
+    _tier_color = S['alt']
 
 # Claude account email → first 3 chars of local-part.
 # .claude.json lives either inside CLAUDE_CONFIG_DIR (account-switcher layout)
@@ -242,21 +335,75 @@ email = _find_claude_account()
 user = (email.split('@', 1)[0] if email else '')[:3]
 
 # Permanent per-char color map: every legal dot-atom email local-part char
-# gets a unique xterm-256 color. Uses golden-angle hue rotation (137.508°) so
-# adjacent indices are maximally separated on the color wheel — no two chars
-# land in the same hue band. Value/saturation wobble adds a second axis of
-# separation. Fully deterministic, no RNG needed.
-import colorsys as _cs
+# gets a UNIQUE xterm-256 color drawn from an expanded SHIFT palette — a
+# smooth closed loop through all 12 luminous base colors, densely sampled
+# and deduped. Every character lands on its own color, every color stays
+# recognizably on-palette.
 _LEGAL_EMAIL_CHARS = \"abcdefghijklmnopqrstuvwxyz0123456789!#\$%&'*+-/=?^_\`{|}~.\"
-def _hsv_to_xterm256(h, s, v):
-    r, g, b = _cs.hsv_to_rgb(h / 360.0, s, v)
-    return 16 + 36 * round(r * 5) + 6 * round(g * 5) + round(b * 5)
+
+# Closed-loop traversal through both palettes — SHIFT + buddy — hue-ordered
+# for smooth interpolation. Per-char email colors sample from this combined
+# loop, so initials blend DNA from the Colormix forecast and the buddy CLI.
+_LOOP_RGB = [
+    SHIFT['dopamine'],     # electric blue
+    BUDDY['blue'],         # pastel sky
+    SHIFT['onward'],       # pale ice
+    SHIFT['aqualogic'],    # pale mint
+    SHIFT['bills'],        # minted green
+    BUDDY['green'],        # pastel leaf
+    SHIFT['alt'],           # neon yellow-green
+    BUDDY['gold'],          # warm gold
+    SHIFT['frequency'],     # champagne
+    SHIFT['stratum'],       # warm sand
+    SHIFT['fractal'],       # off-white
+    SHIFT['interstellar'],  # copper
+    BUDDY['orange'],        # pastel orange
+    SHIFT['fortifind'],     # terracotta
+    BUDDY['red'],           # pastel red
+    SHIFT['activate'],      # signal red
+    SHIFT['manifest'],      # rose
+    BUDDY['violet'],        # twilight violet
+]
+_LOOP_RGB.append(_LOOP_RGB[0])  # close the loop
+
+def _expand_palette(target_count):
+    \"\"\"Densely sample the SHIFT loop, dedupe xterm-256 hits, return at least
+    target_count unique color indices. Starts at 8 steps/segment, doubles
+    until we have enough uniques.\"\"\"
+    steps = 8
+    while True:
+        uniques, seen = [], set()
+        for seg in range(len(_LOOP_RGB) - 1):
+            a, b = _LOOP_RGB[seg], _LOOP_RGB[seg + 1]
+            for k in range(steps):
+                t = k / steps
+                idx = _rgb_to_256(*_lerp(a, b, t))
+                if idx not in seen:
+                    seen.add(idx)
+                    uniques.append(idx)
+        if len(uniques) >= target_count or steps > 128:
+            return uniques
+        steps *= 2
+
+_EXPANDED = _expand_palette(len(_LEGAL_EMAIL_CHARS))
+
+# Deterministic spread: stride through the expanded palette with a step
+# coprime to its length so consecutive chars land on maximally separated hues.
+_stride = max(1, len(_EXPANDED) // len(_LEGAL_EMAIL_CHARS)) or 1
+# Nudge stride up by 1 if it divides the length evenly (to stay coprime-ish).
+if _stride > 1 and len(_EXPANDED) % _stride == 0:
+    _stride += 1
 CHAR_COLORS = {}
+_used = set()
 for _i, _ch in enumerate(_LEGAL_EMAIL_CHARS):
-    _h = (_i * 137.508) % 360
-    _s = 0.85 + 0.15 * (_i % 2)
-    _v = 0.80 + 0.20 * ((_i // 2) % 2)
-    CHAR_COLORS[_ch] = _hsv_to_xterm256(_h, _s, _v)
+    _pos = (_i * _stride) % len(_EXPANDED)
+    # Linear probe if stride collision somehow occurs
+    _probe = 0
+    while _EXPANDED[(_pos + _probe) % len(_EXPANDED)] in _used and _probe < len(_EXPANDED):
+        _probe += 1
+    _color = _EXPANDED[(_pos + _probe) % len(_EXPANDED)]
+    _used.add(_color)
+    CHAR_COLORS[_ch] = _color
 
 parts = []
 if user:
@@ -313,7 +460,7 @@ if cwd:
             if len(best_prefix) >= 2 and best_prefix[1] == ':':
                 drive = best_prefix[:3]  # "D:/"
             abbrev = best_alias[0] if best_alias else best_alias
-            alias_part = f'{fg(51)}{abbrev}{R}' if do_rainbow else f'{BOLD}{abbrev}{R}'
+            alias_part = f\"{fg(S['alt'])}{abbrev}{R}\" if do_rainbow else f'{BOLD}{abbrev}{R}'
             alias_part = f'{DIM}{drive}{R}{alias_part}'
         else:
             alias_part = rainbow_text(best_alias) if do_rainbow else f'{BOLD}{best_alias}{R}'
