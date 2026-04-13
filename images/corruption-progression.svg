@@ -1,671 +1,855 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1034 256" width="1034" height="256">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 815 480" width="815" height="480">
   <style>text { font-family: JetBrains Mono, Cascadia Code, Consolas, monospace; }</style>
   <rect width="100%" height="100%" rx="8" fill="#0d1117"/>
   <text x="16" y="31" font-size="13" fill="#8b949e" font-weight="bold">context window corruption</text>
-  <text x="16" y="63.6" font-size="11.5" fill="#8b949e">30%  · clean</text>
-  <text x="186.0" y="63.6" font-size="14" fill="rgb(93,93,93)">O</text>
-  <text x="194.4" y="63.6" font-size="14" fill="rgb(93,93,93)">p</text>
-  <text x="202.8" y="63.6" font-size="14" fill="rgb(93,93,93)">4</text>
-  <text x="211.2" y="63.6" font-size="14" fill="rgb(93,93,93)">.</text>
-  <text x="219.6" y="63.6" font-size="14" fill="rgb(93,93,93)">6</text>
-  <text x="228.0" y="63.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="236.4" y="63.6" font-size="14" fill="rgb(93,93,93)">1</text>
-  <text x="244.8" y="63.6" font-size="14" fill="rgb(93,93,93)">M</text>
-  <text x="253.2" y="63.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="261.6" y="63.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="270.0" y="63.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="278.4" y="63.6" font-size="14" fill="rgb(255,0,0)">C</text>
-  <text x="286.8" y="63.6" font-size="14" fill="rgb(255,135,0)">l</text>
-  <text x="295.2" y="63.6" font-size="14" fill="rgb(255,215,0)">a</text>
-  <text x="303.6" y="63.6" font-size="14" fill="rgb(135,255,0)">u</text>
-  <text x="312.0" y="63.6" font-size="14" fill="rgb(0,255,255)">D</text>
-  <text x="320.4" y="63.6" font-size="14" fill="rgb(175,135,255)">e</text>
-  <text x="328.8" y="63.6" font-size="14" fill="rgb(93,93,93)">/</text>
-  <text x="337.2" y="63.6" font-size="14" fill="rgb(187,187,187)">t</text>
-  <text x="345.6" y="63.6" font-size="14" fill="rgb(187,187,187)">o</text>
-  <text x="354.0" y="63.6" font-size="14" fill="rgb(187,187,187)">o</text>
-  <text x="362.4" y="63.6" font-size="14" fill="rgb(187,187,187)">l</text>
-  <text x="370.8" y="63.6" font-size="14" fill="rgb(187,187,187)">s</text>
-  <text x="379.2" y="63.6" font-size="14" fill="rgb(187,187,187)">/</text>
-  <text x="387.6" y="63.6" font-size="14" fill="rgb(187,187,187)">c</text>
-  <text x="396.0" y="63.6" font-size="14" fill="rgb(187,187,187)">l</text>
-  <text x="404.4" y="63.6" font-size="14" fill="rgb(187,187,187)">a</text>
-  <text x="412.8" y="63.6" font-size="14" fill="rgb(187,187,187)">u</text>
-  <text x="421.2" y="63.6" font-size="14" fill="rgb(187,187,187)">d</text>
-  <text x="429.6" y="63.6" font-size="14" fill="rgb(187,187,187)">e</text>
-  <text x="438.0" y="63.6" font-size="14" fill="rgb(187,187,187)">-</text>
-  <text x="446.4" y="63.6" font-size="14" fill="rgb(187,187,187)">s</text>
-  <text x="454.8" y="63.6" font-size="14" fill="rgb(187,187,187)">t</text>
-  <text x="463.2" y="63.6" font-size="14" fill="rgb(187,187,187)">a</text>
-  <text x="471.6" y="63.6" font-size="14" fill="rgb(187,187,187)">t</text>
-  <text x="480.0" y="63.6" font-size="14" fill="rgb(187,187,187)">u</text>
-  <text x="488.4" y="63.6" font-size="14" fill="rgb(187,187,187)">s</text>
-  <text x="496.8" y="63.6" font-size="14" fill="rgb(187,187,187)">l</text>
-  <text x="505.2" y="63.6" font-size="14" fill="rgb(187,187,187)">i</text>
-  <text x="513.6" y="63.6" font-size="14" fill="rgb(187,187,187)">n</text>
-  <text x="522.0" y="63.6" font-size="14" fill="rgb(187,187,187)">e</text>
+  <text x="16" y="65.0" font-size="11.5" fill="#8b949e">30%  · clean</text>
+  <text x="186.0" y="63.6" font-size="14" font-weight="bold" fill="rgb(95,135,175)">b</text>
+  <text x="194.4" y="63.6" font-size="14" font-weight="bold" fill="rgb(135,175,135)">o</text>
+  <text x="202.8" y="63.6" font-size="14" font-weight="bold" fill="rgb(95,135,175)">b</text>
+  <text x="211.2" y="63.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="219.6" y="63.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="228.0" y="63.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="236.4" y="63.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">O</text>
+  <text x="244.8" y="63.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">p</text>
+  <text x="253.2" y="63.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">4</text>
+  <text x="261.6" y="63.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">.</text>
+  <text x="270.0" y="63.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">6</text>
+  <text x="278.4" y="63.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)"> </text>
+  <text x="286.8" y="63.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">1</text>
+  <text x="295.2" y="63.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">M</text>
+  <text x="303.6" y="63.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="312.0" y="63.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="320.4" y="63.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="328.8" y="63.6" font-size="14" fill="rgb(104,104,104)">m</text>
+  <text x="337.2" y="63.6" font-size="14" fill="rgb(104,104,104)">a</text>
+  <text x="345.6" y="63.6" font-size="14" fill="rgb(104,104,104)">x</text>
+  <text x="354.0" y="63.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="362.4" y="63.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="370.8" y="63.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="379.2" y="63.6" font-size="14" fill="rgb(93,93,93)">5</text>
+  <text x="387.6" y="63.6" font-size="14" fill="rgb(93,93,93)">h</text>
+  <text x="396.0" y="63.6" font-size="14" fill="rgb(93,93,93)"> </text>
+  <text x="404.4" y="63.6" font-size="14" fill="rgb(175,215,95)">4</text>
+  <text x="412.8" y="63.6" font-size="14" fill="rgb(175,215,95)">2</text>
+  <text x="421.2" y="63.6" font-size="14" fill="rgb(175,215,95)">%</text>
+  <text x="429.6" y="63.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="438.0" y="63.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="446.4" y="63.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="454.8" y="63.6" font-size="14" fill="rgb(93,93,93)">7</text>
+  <text x="463.2" y="63.6" font-size="14" fill="rgb(93,93,93)">d</text>
+  <text x="471.6" y="63.6" font-size="14" fill="rgb(93,93,93)"> </text>
+  <text x="480.0" y="63.6" font-size="14" fill="rgb(95,175,135)">1</text>
+  <text x="488.4" y="63.6" font-size="14" fill="rgb(95,175,135)">8</text>
+  <text x="496.8" y="63.6" font-size="14" fill="rgb(95,175,135)">%</text>
+  <text x="505.2" y="63.6" font-size="14" fill="rgb(93,93,93)">@</text>
+  <text x="513.6" y="63.6" font-size="14" fill="rgb(93,93,93)">t</text>
+  <text x="522.0" y="63.6" font-size="14" fill="rgb(93,93,93)">h</text>
   <text x="530.4" y="63.6" font-size="14" fill="rgb(187,187,187)"> </text>
   <text x="538.8" y="63.6" font-size="14" fill="rgb(93,93,93)">│</text>
   <text x="547.2" y="63.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="555.6" y="63.6" font-size="14" fill="rgb(0,255,255)">█</text>
-  <text x="564.0" y="63.6" font-size="14" fill="rgb(0,255,215)">█</text>
-  <text x="572.4" y="63.6" font-size="14" fill="rgb(0,255,175)">█</text>
-  <text x="580.8" y="63.6" font-size="14" fill="rgb(0,127,87)">─</text>
-  <text x="589.2" y="63.6" font-size="14" fill="rgb(0,127,87)">─</text>
-  <text x="597.6" y="63.6" font-size="14" fill="rgb(0,127,87)">─</text>
-  <text x="606.0" y="63.6" font-size="14" fill="rgb(0,127,87)">─</text>
-  <text x="614.4" y="63.6" font-size="14" fill="rgb(0,127,87)">─</text>
-  <text x="622.8" y="63.6" font-size="14" fill="rgb(0,127,87)">─</text>
-  <text x="631.2" y="63.6" font-size="14" fill="rgb(0,127,87)">─</text>
+  <text x="555.6" y="63.6" font-size="14" fill="rgb(95,95,175)">█</text>
+  <text x="564.0" y="63.6" font-size="14" fill="rgb(95,135,175)">█</text>
+  <text x="572.4" y="63.6" font-size="14" fill="rgb(95,135,175)">█</text>
+  <text x="580.8" y="63.6" font-size="14" fill="rgb(47,67,87)">─</text>
+  <text x="589.2" y="63.6" font-size="14" fill="rgb(47,67,87)">─</text>
+  <text x="597.6" y="63.6" font-size="14" fill="rgb(47,67,87)">─</text>
+  <text x="606.0" y="63.6" font-size="14" fill="rgb(47,67,87)">─</text>
+  <text x="614.4" y="63.6" font-size="14" fill="rgb(47,67,87)">─</text>
+  <text x="622.8" y="63.6" font-size="14" fill="rgb(47,67,87)">─</text>
+  <text x="631.2" y="63.6" font-size="14" fill="rgb(47,67,87)">─</text>
   <text x="639.6" y="63.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="648.0" y="63.6" font-size="14" fill="rgb(0,255,135)">3</text>
-  <text x="656.4" y="63.6" font-size="14" fill="rgb(0,255,135)">0</text>
-  <text x="664.8" y="63.6" font-size="14" fill="rgb(0,255,135)">%</text>
+  <text x="648.0" y="63.6" font-size="14" fill="rgb(95,175,135)">3</text>
+  <text x="656.4" y="63.6" font-size="14" fill="rgb(95,175,135)">0</text>
+  <text x="664.8" y="63.6" font-size="14" fill="rgb(95,175,135)">%</text>
   <text x="673.2" y="63.6" font-size="14" fill="rgb(187,187,187)"> </text>
   <text x="681.6" y="63.6" font-size="14" fill="rgb(93,93,93)">│</text>
   <text x="690.0" y="63.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="698.4" y="63.6" font-size="14" fill="rgb(93,93,93)">5</text>
+  <text x="698.4" y="63.6" font-size="14" fill="rgb(93,93,93)">1</text>
   <text x="706.8" y="63.6" font-size="14" fill="rgb(93,93,93)">h</text>
-  <text x="715.2" y="63.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="723.6" y="63.6" font-size="14" fill="rgb(175,255,95)">4</text>
-  <text x="732.0" y="63.6" font-size="14" fill="rgb(175,255,95)">2</text>
-  <text x="740.4" y="63.6" font-size="14" fill="rgb(175,255,95)">%</text>
-  <text x="748.8" y="63.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="757.2" y="63.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="765.6" y="63.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="774.0" y="63.6" font-size="14" fill="rgb(93,93,93)">7</text>
-  <text x="782.4" y="63.6" font-size="14" fill="rgb(93,93,93)">d</text>
-  <text x="790.8" y="63.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="799.2" y="63.6" font-size="14" fill="rgb(0,255,135)">1</text>
-  <text x="807.6" y="63.6" font-size="14" fill="rgb(0,255,135)">8</text>
-  <text x="816.0" y="63.6" font-size="14" fill="rgb(0,255,135)">%</text>
-  <text x="824.4" y="63.6" font-size="14" fill="rgb(93,93,93)">@</text>
-  <text x="832.8" y="63.6" font-size="14" fill="rgb(93,93,93)">s</text>
-  <text x="841.2" y="63.6" font-size="14" fill="rgb(93,93,93)">a</text>
-  <line x1="16" y1="72" x2="1017.5999999999999" y2="72" stroke="#21262d" stroke-width="1"/>
-  <text x="16" y="91.6" font-size="11.5" fill="#8b949e">55%  · threshold</text>
-  <text x="186.0" y="91.6" font-size="14" fill="rgb(93,93,93)">O</text>
-  <text x="194.4" y="91.6" font-size="14" fill="rgb(93,93,93)">p</text>
-  <text x="202.8" y="91.6" font-size="14" fill="rgb(93,93,93)">4</text>
-  <text x="211.2" y="91.6" font-size="14" fill="rgb(93,93,93)">.</text>
-  <text x="219.6" y="91.6" font-size="14" fill="rgb(93,93,93)">6</text>
-  <text x="228.0" y="91.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="236.4" y="91.6" font-size="14" fill="rgb(93,93,93)">1</text>
-  <text x="244.8" y="91.6" font-size="14" fill="rgb(93,93,93)">M</text>
-  <text x="253.2" y="91.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="261.6" y="91.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="270.0" y="91.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="278.4" y="91.6" font-size="14" fill="rgb(255,0,0)">C</text>
-  <text x="286.8" y="91.6" font-size="14" fill="rgb(255,135,0)">l</text>
-  <text x="295.2" y="91.6" font-size="14" fill="rgb(255,215,0)">a</text>
-  <text x="303.6" y="91.6" font-size="14" fill="rgb(135,255,0)">u</text>
-  <text x="312.0" y="91.6" font-size="14" fill="rgb(0,255,255)">D</text>
-  <text x="320.4" y="91.6" font-size="14" fill="rgb(175,135,255)">e</text>
-  <text x="328.8" y="91.6" font-size="14" fill="rgb(93,93,93)">/</text>
-  <text x="337.2" y="91.6" font-size="14" fill="rgb(187,187,187)">t</text>
-  <text x="345.6" y="91.6" font-size="14" fill="rgb(187,187,187)">o</text>
-  <text x="354.0" y="91.6" font-size="14" fill="rgb(187,187,187)">o</text>
-  <text x="362.4" y="91.6" font-size="14" fill="rgb(187,187,187)">l</text>
-  <text x="370.8" y="91.6" font-size="14" fill="rgb(187,187,187)">s</text>
-  <text x="379.2" y="91.6" font-size="14" fill="rgb(187,187,187)">/</text>
-  <text x="387.6" y="91.6" font-size="14" fill="rgb(187,187,187)">c</text>
-  <text x="396.0" y="91.6" font-size="14" fill="rgb(187,187,187)">l</text>
-  <text x="404.4" y="91.6" font-size="14" fill="rgb(187,187,187)">a</text>
-  <text x="412.8" y="91.6" font-size="14" fill="rgb(187,187,187)">u</text>
-  <text x="421.2" y="91.6" font-size="14" fill="rgb(187,187,187)">d</text>
-  <text x="429.6" y="91.6" font-size="14" fill="rgb(187,187,187)">e</text>
-  <text x="438.0" y="91.6" font-size="14" fill="rgb(187,187,187)">-</text>
-  <text x="446.4" y="91.6" font-size="14" fill="rgb(187,187,187)">s</text>
-  <text x="454.8" y="91.6" font-size="14" fill="rgb(187,187,187)">t</text>
-  <text x="463.2" y="91.6" font-size="14" fill="rgb(187,187,187)">a</text>
-  <text x="471.6" y="91.6" font-size="14" fill="rgb(187,187,187)">t</text>
-  <text x="480.0" y="91.6" font-size="14" fill="rgb(187,187,187)">u</text>
-  <text x="488.4" y="91.6" font-size="14" fill="rgb(187,187,187)">s</text>
-  <text x="496.8" y="91.6" font-size="14" fill="rgb(187,187,187)">l</text>
-  <text x="505.2" y="91.6" font-size="14" fill="rgb(187,187,187)">i</text>
-  <text x="513.6" y="91.6" font-size="14" fill="rgb(187,187,187)">n</text>
-  <text x="522.0" y="91.6" font-size="14" fill="rgb(187,187,187)">e</text>
-  <text x="530.4" y="91.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="538.8" y="91.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="547.2" y="91.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="555.6" y="91.6" font-size="14" fill="rgb(0,255,255)">█</text>
-  <text x="564.0" y="91.6" font-size="14" fill="rgb(0,255,215)">█</text>
-  <text x="572.4" y="91.6" font-size="14" fill="rgb(0,255,175)">█</text>
-  <text x="580.8" y="91.6" font-size="14" fill="rgb(0,255,135)">█</text>
-  <text x="589.2" y="91.6" font-size="14" fill="rgb(0,255,95)">█</text>
-  <text x="597.6" y="91.6" font-size="14" fill="rgb(95,255,95)">▒</text>
-  <text x="606.0" y="91.6" font-size="14" fill="rgb(47,127,47)">─</text>
-  <text x="614.4" y="91.6" font-size="14" fill="rgb(47,127,47)">─</text>
-  <text x="622.8" y="91.6" font-size="14" fill="rgb(47,127,47)">─</text>
-  <text x="631.2" y="91.6" font-size="14" fill="rgb(47,127,47)">─</text>
-  <text x="639.6" y="91.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="648.0" y="91.6" font-size="14" fill="rgb(95,255,95)">5</text>
-  <text x="656.4" y="91.6" font-size="14" fill="rgb(95,255,95)">5</text>
-  <text x="664.8" y="91.6" font-size="14" fill="rgb(95,255,95)">%</text>
-  <text x="673.2" y="91.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="681.6" y="91.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="690.0" y="91.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="698.4" y="91.6" font-size="14" fill="rgb(93,93,93)">5</text>
-  <text x="706.8" y="91.6" font-size="14" fill="rgb(93,93,93)">h</text>
-  <text x="715.2" y="91.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="723.6" y="91.6" font-size="14" fill="rgb(175,255,95)">4</text>
-  <text x="732.0" y="91.6" font-size="14" fill="rgb(175,255,95)">2</text>
-  <text x="740.4" y="91.6" font-size="14" fill="rgb(175,255,95)">%</text>
-  <text x="748.8" y="91.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="757.2" y="91.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="765.6" y="91.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="774.0" y="91.6" font-size="14" fill="rgb(93,93,93)">7</text>
-  <text x="782.4" y="91.6" font-size="14" fill="rgb(93,93,93)">d</text>
-  <text x="790.8" y="91.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="799.2" y="91.6" font-size="14" fill="rgb(0,255,135)">1</text>
-  <text x="807.6" y="91.6" font-size="14" fill="rgb(0,255,135)">8</text>
-  <text x="816.0" y="91.6" font-size="14" fill="rgb(0,255,135)">%</text>
-  <text x="824.4" y="91.6" font-size="14" fill="rgb(93,93,93)">@</text>
-  <text x="832.8" y="91.6" font-size="14" fill="rgb(93,93,93)">s</text>
-  <text x="841.2" y="91.6" font-size="14" fill="rgb(93,93,93)">a</text>
-  <line x1="16" y1="100" x2="1017.5999999999999" y2="100" stroke="#21262d" stroke-width="1"/>
-  <text x="16" y="119.6" font-size="11.5" fill="#8b949e">60%  · it begins</text>
-  <text x="186.0" y="119.6" font-size="14" fill="rgb(93,93,93)">O</text>
-  <text x="194.4" y="119.6" font-size="14" fill="rgb(93,93,93)">p</text>
-  <text x="202.8" y="119.6" font-size="14" fill="rgb(93,93,93)">4</text>
-  <text x="211.2" y="119.6" font-size="14" fill="rgb(93,93,93)">.</text>
-  <text x="219.6" y="119.6" font-size="14" fill="rgb(93,93,93)">6</text>
-  <text x="228.0" y="119.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="236.4" y="119.6" font-size="14" fill="rgb(93,93,93)">1</text>
-  <text x="244.8" y="119.6" font-size="14" fill="rgb(93,93,93)">M</text>
-  <text x="253.2" y="119.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="261.6" y="119.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="270.0" y="119.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="278.4" y="119.6" font-size="14" fill="rgb(255,0,0)">C</text>
-  <text x="286.8" y="119.6" font-size="14" fill="rgb(255,135,0)">l</text>
-  <text x="295.2" y="119.6" font-size="14" fill="rgb(255,215,0)">a</text>
-  <text x="303.6" y="119.6" font-size="14" fill="rgb(135,255,0)">u</text>
-  <text x="312.0" y="119.6" font-size="14" fill="rgb(0,255,255)">D</text>
-  <text x="320.4" y="119.6" font-size="14" fill="rgb(175,135,255)">e</text>
-  <text x="328.8" y="119.6" font-size="14" fill="rgb(93,93,93)">/</text>
-  <text x="337.2" y="119.6" font-size="14" fill="rgb(187,187,187)">t</text>
-  <text x="345.6" y="119.6" font-size="14" fill="rgb(187,187,187)">o</text>
-  <text x="354.0" y="119.6" font-size="14" fill="rgb(187,187,187)">o</text>
-  <text x="362.4" y="119.6" font-size="14" fill="rgb(187,187,187)">l</text>
-  <text x="370.8" y="119.6" font-size="14" fill="rgb(255,0,0)">╣</text>
-  <text x="379.2" y="119.6" font-size="14" fill="rgb(187,187,187)">s</text>
-  <text x="387.6" y="119.6" font-size="14" fill="rgb(187,187,187)">/</text>
-  <text x="396.0" y="119.6" font-size="14" fill="rgb(187,187,187)">c</text>
-  <text x="404.4" y="119.6" font-size="14" fill="rgb(187,187,187)">l</text>
-  <text x="412.8" y="119.6" font-size="14" fill="rgb(187,187,187)">a</text>
-  <text x="421.2" y="119.6" font-size="14" fill="rgb(255,0,0)">╪</text>
-  <text x="429.6" y="119.6" font-size="14" fill="rgb(187,187,187)">u</text>
-  <text x="438.0" y="119.6" font-size="14" fill="rgb(187,187,187)">d</text>
-  <text x="446.4" y="119.6" font-size="14" fill="rgb(255,95,0)">╪</text>
-  <text x="454.8" y="119.6" font-size="14" fill="rgb(187,187,187)">e</text>
-  <text x="463.2" y="119.6" font-size="14" fill="rgb(187,187,187)">-</text>
-  <text x="471.6" y="119.6" font-size="14" fill="rgb(187,187,187)">s</text>
-  <text x="480.0" y="119.6" font-size="14" fill="rgb(187,187,187)">t</text>
-  <text x="488.4" y="119.6" font-size="14" fill="rgb(187,187,187)">a</text>
-  <text x="496.8" y="119.6" font-size="14" fill="rgb(187,187,187)">t</text>
-  <text x="505.2" y="119.6" font-size="14" fill="rgb(187,187,187)">u</text>
-  <text x="513.6" y="119.6" font-size="14" fill="rgb(187,187,187)">s</text>
-  <text x="522.0" y="119.6" font-size="14" fill="rgb(187,187,187)">l</text>
-  <text x="530.4" y="119.6" font-size="14" fill="rgb(187,187,187)">i</text>
-  <text x="538.8" y="119.6" font-size="14" fill="rgb(187,187,187)">n</text>
-  <text x="547.2" y="119.6" font-size="14" fill="rgb(187,187,187)">e</text>
-  <text x="555.6" y="119.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="564.0" y="119.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="572.4" y="119.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="580.8" y="119.6" font-size="14" fill="rgb(0,255,255)">█</text>
-  <text x="589.2" y="119.6" font-size="14" fill="rgb(0,255,215)">▛</text>
-  <text x="597.6" y="119.6" font-size="14" fill="rgb(0,255,175)">█</text>
-  <text x="606.0" y="119.6" font-size="14" fill="rgb(0,255,135)">█</text>
-  <text x="614.4" y="119.6" font-size="14" fill="rgb(0,255,95)">█</text>
-  <text x="622.8" y="119.6" font-size="14" fill="rgb(95,255,95)">█</text>
-  <text x="631.2" y="119.6" font-size="14" fill="rgb(47,127,47)">─</text>
-  <text x="639.6" y="119.6" font-size="14" fill="rgb(47,127,47)">─</text>
-  <text x="648.0" y="119.6" font-size="14" fill="rgb(47,127,47)">─</text>
-  <text x="656.4" y="119.6" font-size="14" fill="rgb(127,0,0)">╬</text>
-  <text x="664.8" y="119.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="673.2" y="119.6" font-size="14" fill="rgb(135,255,95)">6</text>
-  <text x="681.6" y="119.6" font-size="14" fill="rgb(135,255,95)">0</text>
-  <text x="690.0" y="119.6" font-size="14" fill="rgb(135,255,95)">%</text>
-  <text x="698.4" y="119.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="706.8" y="119.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="715.2" y="119.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="723.6" y="119.6" font-size="14" fill="rgb(93,93,93)">5</text>
-  <text x="732.0" y="119.6" font-size="14" fill="rgb(93,93,93)">h</text>
-  <text x="740.4" y="119.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="748.8" y="119.6" font-size="14" fill="rgb(175,255,95)">4</text>
-  <text x="757.2" y="119.6" font-size="14" fill="rgb(175,255,95)">2</text>
-  <text x="765.6" y="119.6" font-size="14" fill="rgb(175,255,95)">%</text>
-  <text x="774.0" y="119.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="782.4" y="119.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="790.8" y="119.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="799.2" y="119.6" font-size="14" fill="rgb(93,93,93)">7</text>
-  <text x="807.6" y="119.6" font-size="14" fill="rgb(93,93,93)">d</text>
-  <text x="816.0" y="119.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="824.4" y="119.6" font-size="14" fill="rgb(0,255,135)">1</text>
-  <text x="832.8" y="119.6" font-size="14" fill="rgb(0,255,135)">8</text>
-  <text x="841.2" y="119.6" font-size="14" fill="rgb(0,255,135)">%</text>
-  <text x="849.6" y="119.6" font-size="14" fill="rgb(93,93,93)">@</text>
-  <text x="858.0" y="119.6" font-size="14" fill="rgb(93,93,93)">s</text>
-  <text x="866.4" y="119.6" font-size="14" fill="rgb(93,93,93)">a</text>
-  <line x1="16" y1="128" x2="1017.5999999999999" y2="128" stroke="#21262d" stroke-width="1"/>
-  <text x="16" y="147.6" font-size="11.5" fill="#8b949e">65%  · aggressive</text>
-  <text x="186.0" y="147.6" font-size="14" fill="rgb(93,93,93)">O</text>
-  <text x="194.4" y="147.6" font-size="14" fill="rgb(93,93,93)">p</text>
-  <text x="202.8" y="147.6" font-size="14" fill="rgb(93,93,93)">4</text>
-  <text x="211.2" y="147.6" font-size="14" fill="rgb(93,93,93)">.</text>
-  <text x="219.6" y="147.6" font-size="14" fill="rgb(93,93,93)">6</text>
-  <text x="228.0" y="147.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="236.4" y="147.6" font-size="14" fill="rgb(93,93,93)">1</text>
-  <text x="244.8" y="147.6" font-size="14" fill="rgb(93,93,93)">M</text>
-  <text x="253.2" y="147.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="261.6" y="147.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="270.0" y="147.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="278.4" y="147.6" font-size="14" fill="rgb(255,0,0)">C</text>
-  <text x="286.8" y="147.6" font-size="14" fill="rgb(255,135,0)">l</text>
-  <text x="295.2" y="147.6" font-size="14" fill="rgb(255,215,0)">a</text>
-  <text x="303.6" y="147.6" font-size="14" fill="rgb(135,255,0)">u</text>
-  <text x="312.0" y="147.6" font-size="14" fill="rgb(0,255,255)">D</text>
-  <text x="320.4" y="147.6" font-size="14" fill="rgb(175,135,255)">e</text>
-  <text x="328.8" y="147.6" font-size="14" fill="rgb(127,0,0)">/</text>
-  <text x="337.2" y="147.6" font-size="14" fill="rgb(187,187,187)">t</text>
-  <text x="345.6" y="147.6" font-size="14" fill="rgb(187,187,187)">o</text>
-  <text x="354.0" y="147.6" font-size="14" fill="rgb(187,187,187)">o</text>
-  <text x="362.4" y="147.6" font-size="14" fill="rgb(187,187,187)">l</text>
-  <text x="370.8" y="147.6" font-size="14" fill="rgb(255,0,0)">s</text>
-  <text x="379.2" y="147.6" font-size="14" fill="rgb(187,187,187)">/</text>
-  <text x="387.6" y="147.6" font-size="14" fill="rgb(187,187,187)">c</text>
-  <text x="396.0" y="147.6" font-size="14" fill="rgb(187,187,187)">l</text>
-  <text x="404.4" y="147.6" font-size="14" fill="rgb(187,187,187)">a</text>
-  <text x="412.8" y="147.6" font-size="14" fill="rgb(187,187,187)">u</text>
-  <text x="421.2" y="147.6" font-size="14" fill="rgb(187,187,187)">d</text>
-  <text x="429.6" y="147.6" font-size="14" fill="rgb(187,187,187)">e</text>
-  <text x="438.0" y="147.6" font-size="14" fill="rgb(187,187,187)">-</text>
-  <text x="446.4" y="147.6" font-size="14" fill="rgb(255,0,0)">s</text>
-  <text x="454.8" y="147.6" font-size="14" fill="rgb(187,187,187)">t</text>
-  <text x="463.2" y="147.6" font-size="14" fill="rgb(187,187,187)">a</text>
-  <text x="471.6" y="147.6" font-size="14" fill="rgb(187,187,187)">t</text>
-  <text x="480.0" y="147.6" font-size="14" fill="rgb(187,187,187)">u</text>
-  <text x="488.4" y="147.6" font-size="14" fill="rgb(187,187,187)">s</text>
-  <text x="496.8" y="147.6" font-size="14" fill="rgb(187,187,187)">l</text>
-  <text x="505.2" y="147.6" font-size="14" fill="rgb(187,187,187)">i</text>
-  <text x="513.6" y="147.6" font-size="14" fill="rgb(187,187,187)">n</text>
-  <text x="522.0" y="147.6" font-size="14" fill="rgb(187,187,187)">e</text>
-  <text x="530.4" y="147.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="538.8" y="147.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="547.2" y="147.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <rect x="555.6" y="128" width="8.4" height="28" fill="rgb(255,0,0)"/>
-  <text x="555.6" y="147.6" font-size="14" fill="rgb(13,17,23)">▙</text>
-  <rect x="564.0" y="128" width="8.4" height="28" fill="rgb(255,0,0)"/>
-  <text x="564.0" y="147.6" font-size="14" fill="rgb(13,17,23)">╳</text>
-  <rect x="572.4" y="128" width="8.4" height="28" fill="rgb(0,255,175)"/>
-  <text x="572.4" y="147.6" font-size="14" fill="rgb(13,17,23)">█</text>
-  <rect x="580.8" y="128" width="8.4" height="28" fill="rgb(0,255,135)"/>
-  <text x="580.8" y="147.6" font-size="14" fill="rgb(13,17,23)">█</text>
-  <rect x="589.2" y="128" width="8.4" height="28" fill="rgb(0,255,95)"/>
-  <text x="589.2" y="147.6" font-size="14" fill="rgb(13,17,23)">╬</text>
-  <rect x="597.6" y="128" width="8.4" height="28" fill="rgb(95,255,95)"/>
-  <text x="597.6" y="147.6" font-size="14" fill="rgb(13,17,23)">┼</text>
-  <rect x="606.0" y="128" width="8.4" height="28" fill="rgb(0,255,215)"/>
-  <text x="606.0" y="147.6" font-size="14" fill="rgb(13,17,23)">▙</text>
-  <rect x="614.4" y="128" width="8.4" height="28" fill="rgb(0,127,107)"/>
-  <text x="614.4" y="147.6" font-size="14" fill="rgb(13,17,23)">─</text>
-  <rect x="622.8" y="128" width="8.4" height="28" fill="rgb(0,127,107)"/>
-  <text x="622.8" y="147.6" font-size="14" fill="rgb(13,17,23)">─</text>
-  <rect x="631.2" y="128" width="8.4" height="28" fill="rgb(0,127,107)"/>
-  <text x="631.2" y="147.6" font-size="14" fill="rgb(13,17,23)">─</text>
-  <text x="639.6" y="147.6" font-size="14" fill="rgb(255,95,0)">╩</text>
-  <text x="648.0" y="147.6" font-size="14" fill="rgb(255,0,0)">▄</text>
-  <text x="656.4" y="147.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="664.8" y="147.6" font-size="14" fill="rgb(135,255,95)">6</text>
-  <text x="673.2" y="147.6" font-size="14" fill="rgb(135,255,95)">5</text>
-  <text x="681.6" y="147.6" font-size="14" fill="rgb(135,255,95)">%</text>
-  <text x="690.0" y="147.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="698.4" y="147.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="706.8" y="147.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="715.2" y="147.6" font-size="14" fill="rgb(93,93,93)">5</text>
-  <text x="723.6" y="147.6" font-size="14" fill="rgb(93,93,93)">h</text>
-  <text x="732.0" y="147.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="740.4" y="147.6" font-size="14" fill="rgb(175,255,95)">4</text>
-  <text x="748.8" y="147.6" font-size="14" fill="rgb(175,255,95)">2</text>
-  <text x="757.2" y="147.6" font-size="14" fill="rgb(175,255,95)">%</text>
-  <text x="765.6" y="147.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="774.0" y="147.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="782.4" y="147.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="790.8" y="147.6" font-size="14" fill="rgb(93,93,93)">7</text>
-  <text x="799.2" y="147.6" font-size="14" fill="rgb(93,93,93)">d</text>
-  <text x="807.6" y="147.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="816.0" y="147.6" font-size="14" fill="rgb(0,255,135)">1</text>
-  <text x="824.4" y="147.6" font-size="14" fill="rgb(0,255,135)">8</text>
-  <text x="832.8" y="147.6" font-size="14" fill="rgb(0,255,135)">%</text>
-  <text x="841.2" y="147.6" font-size="14" fill="rgb(93,93,93)">@</text>
-  <text x="849.6" y="147.6" font-size="14" fill="rgb(93,93,93)">s</text>
-  <text x="858.0" y="147.6" font-size="14" fill="rgb(93,93,93)">a</text>
-  <line x1="16" y1="156" x2="1017.5999999999999" y2="156" stroke="#21262d" stroke-width="1"/>
-  <text x="16" y="175.6" font-size="11.5" fill="#8b949e">80%  · deteriorating</text>
-  <text x="186.0" y="175.6" font-size="14" fill="rgb(93,93,93)">O</text>
-  <text x="194.4" y="175.6" font-size="14" fill="rgb(127,0,0)">▛</text>
-  <text x="202.8" y="175.6" font-size="14" fill="rgb(255,0,0)">p</text>
-  <text x="211.2" y="175.6" font-size="14" fill="rgb(255,0,0)">▄</text>
-  <text x="219.6" y="175.6" font-size="14" fill="rgb(255,0,0)">4</text>
-  <text x="228.0" y="175.6" font-size="14" fill="rgb(187,187,187)">.</text>
-  <text x="236.4" y="175.6" font-size="14" fill="rgb(187,187,187)">6</text>
-  <text x="244.8" y="175.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="253.2" y="175.6" font-size="14" fill="rgb(187,187,187)">1</text>
-  <text x="261.6" y="175.6" font-size="14" fill="rgb(255,0,0)">┼</text>
-  <text x="270.0" y="175.6" font-size="14" fill="rgb(255,0,0)">▟</text>
-  <text x="278.4" y="175.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="286.8" y="175.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="295.2" y="175.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="303.6" y="175.6" font-size="14" fill="rgb(255,0,0)">C</text>
-  <text x="312.0" y="175.6" font-size="14" fill="rgb(255,135,0)">l</text>
-  <text x="320.4" y="175.6" font-size="14" fill="rgb(255,215,0)">a</text>
-  <text x="328.8" y="175.6" font-size="14" fill="rgb(135,255,0)">u</text>
-  <text x="337.2" y="175.6" font-size="14" fill="rgb(0,255,255)">D</text>
-  <text x="345.6" y="175.6" font-size="14" fill="rgb(255,0,0)">╩</text>
-  <text x="354.0" y="175.6" font-size="14" fill="rgb(93,93,93)">/</text>
-  <text x="362.4" y="175.6" font-size="14" fill="rgb(255,0,0)">t</text>
-  <text x="370.8" y="175.6" font-size="14" fill="rgb(187,187,187)">o</text>
-  <text x="379.2" y="175.6" font-size="14" fill="rgb(187,187,187)">o</text>
-  <text x="387.6" y="175.6" font-size="14" fill="rgb(187,187,187)">l</text>
-  <text x="396.0" y="175.6" font-size="14" fill="rgb(187,187,187)">s</text>
-  <text x="404.4" y="175.6" font-size="14" fill="rgb(255,0,0)">╪</text>
-  <text x="412.8" y="175.6" font-size="14" fill="rgb(187,187,187)">c</text>
-  <text x="421.2" y="175.6" font-size="14" fill="rgb(187,187,187)">l</text>
-  <text x="429.6" y="175.6" font-size="14" fill="rgb(187,187,187)">a</text>
-  <text x="438.0" y="175.6" font-size="14" fill="rgb(187,187,187)">u</text>
-  <text x="446.4" y="175.6" font-size="14" fill="rgb(187,187,187)">d</text>
-  <text x="454.8" y="175.6" font-size="14" fill="rgb(187,187,187)">e</text>
-  <text x="463.2" y="175.6" font-size="14" fill="rgb(255,0,0)">╪</text>
-  <text x="471.6" y="175.6" font-size="14" fill="rgb(187,187,187)">s</text>
-  <text x="480.0" y="175.6" font-size="14" fill="rgb(187,187,187)">t</text>
-  <text x="488.4" y="175.6" font-size="14" fill="rgb(187,187,187)">a</text>
-  <text x="496.8" y="175.6" font-size="14" fill="rgb(255,0,0)">▟</text>
-  <text x="505.2" y="175.6" font-size="14" fill="rgb(187,187,187)">t</text>
-  <text x="513.6" y="175.6" font-size="14" fill="rgb(187,187,187)">u</text>
-  <text x="522.0" y="175.6" font-size="14" fill="rgb(255,0,0)">s</text>
-  <text x="530.4" y="175.6" font-size="14" fill="rgb(187,187,187)">l</text>
-  <text x="538.8" y="175.6" font-size="14" fill="rgb(187,187,187)">i</text>
-  <text x="547.2" y="175.6" font-size="14" fill="rgb(187,187,187)">n</text>
-  <text x="555.6" y="175.6" font-size="14" fill="rgb(255,0,0)">▛</text>
-  <text x="564.0" y="175.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="572.4" y="175.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="580.8" y="175.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="589.2" y="175.6" font-size="14" fill="rgb(255,0,0)">╳</text>
-  <rect x="597.6" y="156" width="8.4" height="28" fill="rgb(255,95,0)"/>
-  <text x="597.6" y="175.6" font-size="14" fill="rgb(13,17,23)">╠</text>
-  <rect x="606.0" y="156" width="8.4" height="28" fill="rgb(215,255,95)"/>
-  <text x="606.0" y="175.6" font-size="14" fill="rgb(13,17,23)">▀</text>
-  <rect x="614.4" y="156" width="8.4" height="28" fill="rgb(0,255,135)"/>
-  <text x="614.4" y="175.6" font-size="14" fill="rgb(13,17,23)">┼</text>
-  <rect x="622.8" y="156" width="8.4" height="28" fill="rgb(255,215,0)"/>
-  <text x="622.8" y="175.6" font-size="14" fill="rgb(13,17,23)">╩</text>
-  <rect x="631.2" y="156" width="8.4" height="28" fill="rgb(175,255,95)"/>
-  <text x="631.2" y="175.6" font-size="14" fill="rgb(13,17,23)">▀</text>
-  <rect x="639.6" y="156" width="8.4" height="28" fill="rgb(255,0,0)"/>
-  <text x="639.6" y="175.6" font-size="14" fill="rgb(13,17,23)">╦</text>
-  <rect x="648.0" y="156" width="8.4" height="28" fill="rgb(255,95,0)"/>
-  <text x="648.0" y="175.6" font-size="14" fill="rgb(13,17,23)">╦</text>
-  <rect x="656.4" y="156" width="8.4" height="28" fill="rgb(255,0,0)"/>
-  <text x="656.4" y="175.6" font-size="14" fill="rgb(13,17,23)">▀</text>
-  <rect x="664.8" y="156" width="8.4" height="28" fill="rgb(255,0,0)"/>
-  <text x="664.8" y="175.6" font-size="14" fill="rgb(13,17,23)">╩</text>
-  <text x="673.2" y="175.6" font-size="14" fill="rgb(255,95,0)">╪</text>
-  <text x="681.6" y="175.6" font-size="14" fill="rgb(255,0,0)">╠</text>
-  <rect x="690.0" y="156" width="8.4" height="28" fill="rgb(255,0,0)"/>
-  <text x="690.0" y="175.6" font-size="14" fill="rgb(13,17,23)">╳</text>
-  <text x="698.4" y="175.6" font-size="14" fill="rgb(255,0,0)">╦</text>
-  <text x="706.8" y="175.6" font-size="14" fill="rgb(255,95,0)">╫</text>
-  <text x="715.2" y="175.6" font-size="14" fill="rgb(255,0,0)">▀</text>
-  <rect x="723.6" y="156" width="8.4" height="28" fill="rgb(255,0,0)"/>
-  <text x="723.6" y="175.6" font-size="14" fill="rgb(13,17,23)">▟</text>
-  <text x="732.0" y="175.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="740.4" y="175.6" font-size="14" fill="rgb(215,255,95)">8</text>
-  <text x="748.8" y="175.6" font-size="14" fill="rgb(215,255,95)">0</text>
-  <text x="757.2" y="175.6" font-size="14" fill="rgb(215,255,95)">%</text>
-  <text x="765.6" y="175.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="774.0" y="175.6" font-size="14" fill="rgb(127,0,0)">▞</text>
-  <text x="782.4" y="175.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="790.8" y="175.6" font-size="14" fill="rgb(93,93,93)">5</text>
-  <text x="799.2" y="175.6" font-size="14" fill="rgb(93,93,93)">h</text>
-  <text x="807.6" y="175.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="816.0" y="175.6" font-size="14" fill="rgb(175,255,95)">4</text>
-  <text x="824.4" y="175.6" font-size="14" fill="rgb(175,255,95)">2</text>
-  <text x="832.8" y="175.6" font-size="14" fill="rgb(175,255,95)">%</text>
-  <text x="841.2" y="175.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="849.6" y="175.6" font-size="14" fill="rgb(127,0,0)">│</text>
-  <text x="858.0" y="175.6" font-size="14" fill="rgb(255,0,0)">▟</text>
-  <text x="866.4" y="175.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="874.8" y="175.6" font-size="14" fill="rgb(93,93,93)">7</text>
-  <text x="883.2" y="175.6" font-size="14" fill="rgb(93,93,93)">d</text>
-  <text x="891.6" y="175.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="900.0" y="175.6" font-size="14" fill="rgb(0,255,135)">1</text>
-  <text x="908.4" y="175.6" font-size="14" fill="rgb(0,255,135)">8</text>
-  <text x="916.8" y="175.6" font-size="14" fill="rgb(0,255,135)">%</text>
-  <text x="925.2" y="175.6" font-size="14" fill="rgb(93,93,93)">@</text>
-  <text x="933.6" y="175.6" font-size="14" fill="rgb(127,0,0)">▟</text>
-  <text x="942.0" y="175.6" font-size="14" fill="rgb(187,187,187)">a</text>
-  <line x1="16" y1="184" x2="1017.5999999999999" y2="184" stroke="#21262d" stroke-width="1"/>
-  <text x="16" y="203.6" font-size="11.5" fill="#8b949e">95%  · critical</text>
-  <text x="186.0" y="203.6" font-size="14" fill="rgb(93,93,93)">O</text>
-  <text x="194.4" y="203.6" font-size="14" fill="rgb(93,93,93)">p</text>
-  <text x="202.8" y="203.6" font-size="14" fill="rgb(127,0,0)">╦</text>
-  <text x="211.2" y="203.6" font-size="14" fill="rgb(187,187,187)">.</text>
-  <text x="219.6" y="203.6" font-size="14" fill="rgb(187,187,187)">6</text>
-  <text x="228.0" y="203.6" font-size="14" fill="rgb(255,0,0)">╣</text>
-  <text x="236.4" y="203.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="244.8" y="203.6" font-size="14" fill="rgb(187,187,187)">1</text>
-  <text x="253.2" y="203.6" font-size="14" fill="rgb(255,0,0)">M</text>
-  <text x="261.6" y="203.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="270.0" y="203.6" font-size="14" fill="rgb(127,0,0)">▟</text>
-  <text x="278.4" y="203.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="286.8" y="203.6" font-size="14" fill="rgb(255,0,0)">C</text>
-  <text x="295.2" y="203.6" font-size="14" fill="rgb(255,135,0)">l</text>
-  <text x="303.6" y="203.6" font-size="14" fill="rgb(255,0,0)">a</text>
-  <text x="312.0" y="203.6" font-size="14" fill="rgb(255,0,0)">▄</text>
-  <text x="320.4" y="203.6" font-size="14" fill="rgb(135,255,0)">u</text>
-  <text x="328.8" y="203.6" font-size="14" fill="rgb(255,0,0)">D</text>
-  <text x="337.2" y="203.6" font-size="14" fill="rgb(175,135,255)">e</text>
-  <text x="345.6" y="203.6" font-size="14" fill="rgb(127,0,0)">/</text>
-  <text x="354.0" y="203.6" font-size="14" fill="rgb(187,187,187)">t</text>
-  <text x="362.4" y="203.6" font-size="14" fill="rgb(187,187,187)">o</text>
-  <text x="370.8" y="203.6" font-size="14" fill="rgb(187,187,187)">o</text>
-  <text x="379.2" y="203.6" font-size="14" fill="rgb(255,0,0)">l</text>
-  <text x="387.6" y="203.6" font-size="14" fill="rgb(255,0,0)">s</text>
-  <text x="396.0" y="203.6" font-size="14" fill="rgb(255,0,0)">/</text>
-  <text x="404.4" y="203.6" font-size="14" fill="rgb(187,187,187)">c</text>
-  <text x="412.8" y="203.6" font-size="14" fill="rgb(187,187,187)">l</text>
-  <text x="421.2" y="203.6" font-size="14" fill="rgb(187,187,187)">a</text>
-  <text x="429.6" y="203.6" font-size="14" fill="rgb(187,187,187)">u</text>
-  <text x="438.0" y="203.6" font-size="14" fill="rgb(255,0,0)">▙</text>
-  <text x="446.4" y="203.6" font-size="14" fill="rgb(187,187,187)">d</text>
-  <text x="454.8" y="203.6" font-size="14" fill="rgb(187,187,187)">e</text>
-  <text x="463.2" y="203.6" font-size="14" fill="rgb(255,0,0)">▀</text>
-  <text x="471.6" y="203.6" font-size="14" fill="rgb(187,187,187)">s</text>
-  <text x="480.0" y="203.6" font-size="14" fill="rgb(255,0,0)">t</text>
-  <text x="488.4" y="203.6" font-size="14" fill="rgb(187,187,187)">a</text>
-  <text x="496.8" y="203.6" font-size="14" fill="rgb(187,187,187)">t</text>
-  <text x="505.2" y="203.6" font-size="14" fill="rgb(255,95,0)">╩</text>
-  <text x="513.6" y="203.6" font-size="14" fill="rgb(255,0,0)">╣</text>
-  <text x="522.0" y="203.6" font-size="14" fill="rgb(187,187,187)">s</text>
-  <text x="530.4" y="203.6" font-size="14" fill="rgb(255,0,0)">l</text>
-  <text x="538.8" y="203.6" font-size="14" fill="rgb(187,187,187)">i</text>
-  <text x="547.2" y="203.6" font-size="14" fill="rgb(255,95,0)">▀</text>
-  <text x="555.6" y="203.6" font-size="14" fill="rgb(187,187,187)">n</text>
-  <text x="564.0" y="203.6" font-size="14" fill="rgb(187,187,187)">e</text>
-  <text x="572.4" y="203.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="580.8" y="203.6" font-size="14" fill="rgb(127,0,0)">│</text>
-  <text x="589.2" y="203.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="597.6" y="203.6" font-size="14" fill="rgb(215,255,95)">┼</text>
-  <rect x="606.0" y="184" width="8.4" height="28" fill="rgb(95,255,95)"/>
-  <text x="606.0" y="203.6" font-size="14" fill="rgb(13,17,23)">▙</text>
-  <rect x="614.4" y="184" width="8.4" height="28" fill="rgb(0,255,255)"/>
-  <text x="614.4" y="203.6" font-size="14" fill="rgb(13,17,23)">▜</text>
-  <rect x="622.8" y="184" width="8.4" height="28" fill="rgb(255,0,0)"/>
-  <text x="622.8" y="203.6" font-size="14" fill="rgb(13,17,23)">╫</text>
-  <rect x="631.2" y="184" width="8.4" height="28" fill="rgb(0,255,95)"/>
-  <text x="631.2" y="203.6" font-size="14" fill="rgb(13,17,23)">╬</text>
-  <rect x="639.6" y="184" width="8.4" height="28" fill="rgb(255,255,0)"/>
-  <text x="639.6" y="203.6" font-size="14" fill="rgb(13,17,23)">▞</text>
-  <rect x="648.0" y="184" width="8.4" height="28" fill="rgb(255,135,0)"/>
-  <text x="648.0" y="203.6" font-size="14" fill="rgb(13,17,23)">▞</text>
-  <rect x="656.4" y="184" width="8.4" height="28" fill="rgb(255,0,0)"/>
-  <text x="656.4" y="203.6" font-size="14" fill="rgb(13,17,23)">╣</text>
-  <rect x="664.8" y="184" width="8.4" height="28" fill="rgb(255,255,95)"/>
-  <text x="664.8" y="203.6" font-size="14" fill="rgb(13,17,23)">┼</text>
-  <rect x="673.2" y="184" width="8.4" height="28" fill="rgb(0,255,95)"/>
-  <text x="673.2" y="203.6" font-size="14" fill="rgb(13,17,23)">▙</text>
-  <text x="681.6" y="203.6" font-size="14" fill="rgb(255,0,0)">╳</text>
-  <text x="690.0" y="203.6" font-size="14" fill="rgb(255,0,0)">╠</text>
-  <rect x="698.4" y="184" width="8.4" height="28" fill="rgb(255,0,0)"/>
-  <text x="698.4" y="203.6" font-size="14" fill="rgb(13,17,23)">▟</text>
-  <text x="706.8" y="203.6" font-size="14" fill="rgb(255,0,0)">▙</text>
-  <text x="715.2" y="203.6" font-size="14" fill="rgb(255,0,0)">╬</text>
-  <text x="723.6" y="203.6" font-size="14" fill="rgb(255,95,0)">▙</text>
-  <text x="732.0" y="203.6" font-size="14" fill="rgb(255,0,0)">╫</text>
-  <text x="740.4" y="203.6" font-size="14" fill="rgb(255,0,0)">╠</text>
-  <text x="748.8" y="203.6" font-size="14" fill="rgb(255,0,0)">▚</text>
-  <text x="757.2" y="203.6" font-size="14" fill="rgb(255,0,0)">┼</text>
-  <text x="765.6" y="203.6" font-size="14" fill="rgb(255,0,0)">╳</text>
-  <rect x="774.0" y="184" width="8.4" height="28" fill="rgb(255,0,0)"/>
-  <text x="774.0" y="203.6" font-size="14" fill="rgb(13,17,23)">▄</text>
-  <text x="782.4" y="203.6" font-size="14" fill="rgb(255,0,0)">╠</text>
-  <text x="790.8" y="203.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="799.2" y="203.6" font-size="14" fill="rgb(255,255,95)">9</text>
-  <text x="807.6" y="203.6" font-size="14" fill="rgb(255,255,95)">5</text>
-  <text x="816.0" y="203.6" font-size="14" fill="rgb(255,255,95)">%</text>
-  <text x="824.4" y="203.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="832.8" y="203.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="841.2" y="203.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="849.6" y="203.6" font-size="14" fill="rgb(93,93,93)">5</text>
-  <text x="858.0" y="203.6" font-size="14" fill="rgb(93,93,93)">h</text>
-  <text x="866.4" y="203.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="874.8" y="203.6" font-size="14" fill="rgb(175,255,95)">4</text>
-  <text x="883.2" y="203.6" font-size="14" fill="rgb(175,255,95)">2</text>
-  <text x="891.6" y="203.6" font-size="14" fill="rgb(175,255,95)">%</text>
-  <text x="900.0" y="203.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="908.4" y="203.6" font-size="14" fill="rgb(127,0,0)">│</text>
-  <text x="916.8" y="203.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="925.2" y="203.6" font-size="14" fill="rgb(93,93,93)">7</text>
-  <text x="933.6" y="203.6" font-size="14" fill="rgb(93,93,93)">d</text>
-  <text x="942.0" y="203.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="950.4" y="203.6" font-size="14" fill="rgb(0,255,135)">1</text>
-  <text x="958.8" y="203.6" font-size="14" fill="rgb(0,255,135)">8</text>
-  <text x="967.2" y="203.6" font-size="14" fill="rgb(0,255,135)">%</text>
-  <text x="975.6" y="203.6" font-size="14" fill="rgb(93,93,93)">@</text>
-  <text x="984.0" y="203.6" font-size="14" fill="rgb(93,93,93)">s</text>
-  <text x="992.4" y="203.6" font-size="14" fill="rgb(93,93,93)">a</text>
-  <line x1="16" y1="212" x2="1017.5999999999999" y2="212" stroke="#21262d" stroke-width="1"/>
-  <text x="16" y="231.6" font-size="11.5" fill="#8b949e">100% · consumed</text>
-  <text x="186.0" y="231.6" font-size="14" fill="rgb(127,0,0)">O</text>
-  <text x="194.4" y="231.6" font-size="14" fill="rgb(255,0,0)">╬</text>
-  <text x="202.8" y="231.6" font-size="14" fill="rgb(187,187,187)">p</text>
-  <text x="211.2" y="231.6" font-size="14" fill="rgb(187,187,187)">4</text>
-  <text x="219.6" y="231.6" font-size="14" fill="rgb(187,187,187)">.</text>
-  <text x="228.0" y="231.6" font-size="14" fill="rgb(187,187,187)">6</text>
-  <text x="236.4" y="231.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="244.8" y="231.6" font-size="14" fill="rgb(187,187,187)">1</text>
-  <text x="253.2" y="231.6" font-size="14" fill="rgb(255,0,0)">╪</text>
-  <text x="261.6" y="231.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="270.0" y="231.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="278.4" y="231.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="286.8" y="231.6" font-size="14" fill="rgb(255,0,0)">╠</text>
-  <text x="295.2" y="231.6" font-size="14" fill="rgb(255,95,0)">▄</text>
-  <text x="303.6" y="231.6" font-size="14" fill="rgb(255,215,0)">a</text>
-  <text x="312.0" y="231.6" font-size="14" fill="rgb(255,95,0)">╦</text>
-  <text x="320.4" y="231.6" font-size="14" fill="rgb(0,255,255)">D</text>
-  <text x="328.8" y="231.6" font-size="14" fill="rgb(175,135,255)">e</text>
-  <text x="337.2" y="231.6" font-size="14" fill="rgb(93,93,93)">/</text>
-  <text x="345.6" y="231.6" font-size="14" fill="rgb(187,187,187)">t</text>
-  <text x="354.0" y="231.6" font-size="14" fill="rgb(187,187,187)">o</text>
-  <text x="362.4" y="231.6" font-size="14" fill="rgb(255,0,0)">▛</text>
-  <text x="370.8" y="231.6" font-size="14" fill="rgb(255,0,0)">╪</text>
-  <text x="379.2" y="231.6" font-size="14" fill="rgb(255,0,0)">l</text>
-  <text x="387.6" y="231.6" font-size="14" fill="rgb(187,187,187)">s</text>
-  <text x="396.0" y="231.6" font-size="14" fill="rgb(255,0,0)">/</text>
-  <text x="404.4" y="231.6" font-size="14" fill="rgb(187,187,187)">c</text>
-  <text x="412.8" y="231.6" font-size="14" fill="rgb(187,187,187)">l</text>
-  <text x="421.2" y="231.6" font-size="14" fill="rgb(187,187,187)">a</text>
-  <text x="429.6" y="231.6" font-size="14" fill="rgb(255,0,0)">▙</text>
-  <text x="438.0" y="231.6" font-size="14" fill="rgb(187,187,187)">d</text>
-  <text x="446.4" y="231.6" font-size="14" fill="rgb(255,0,0)">╠</text>
-  <text x="454.8" y="231.6" font-size="14" fill="rgb(187,187,187)">-</text>
-  <text x="463.2" y="231.6" font-size="14" fill="rgb(187,187,187)">s</text>
-  <text x="471.6" y="231.6" font-size="14" fill="rgb(255,0,0)">▛</text>
-  <text x="480.0" y="231.6" font-size="14" fill="rgb(187,187,187)">a</text>
-  <text x="488.4" y="231.6" font-size="14" fill="rgb(255,0,0)">t</text>
-  <text x="496.8" y="231.6" font-size="14" fill="rgb(255,0,0)">▛</text>
-  <text x="505.2" y="231.6" font-size="14" fill="rgb(255,95,0)">▄</text>
-  <text x="513.6" y="231.6" font-size="14" fill="rgb(255,0,0)">s</text>
-  <text x="522.0" y="231.6" font-size="14" fill="rgb(255,0,0)">l</text>
-  <text x="530.4" y="231.6" font-size="14" fill="rgb(187,187,187)">i</text>
-  <text x="538.8" y="231.6" font-size="14" fill="rgb(255,0,0)">╬</text>
-  <text x="547.2" y="231.6" font-size="14" fill="rgb(187,187,187)">e</text>
-  <text x="555.6" y="231.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="564.0" y="231.6" font-size="14" fill="rgb(127,47,0)">╫</text>
-  <text x="572.4" y="231.6" font-size="14" fill="rgb(255,0,0)">▞</text>
-  <text x="580.8" y="231.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <rect x="589.2" y="212" width="8.4" height="28" fill="rgb(95,255,95)"/>
-  <text x="589.2" y="231.6" font-size="14" fill="rgb(13,17,23)">▄</text>
-  <rect x="597.6" y="212" width="8.4" height="28" fill="rgb(175,255,95)"/>
-  <text x="597.6" y="231.6" font-size="14" fill="rgb(13,17,23)">╪</text>
-  <rect x="606.0" y="212" width="8.4" height="28" fill="rgb(0,255,95)"/>
-  <text x="606.0" y="231.6" font-size="14" fill="rgb(13,17,23)">╦</text>
-  <rect x="614.4" y="212" width="8.4" height="28" fill="rgb(255,0,0)"/>
-  <text x="614.4" y="231.6" font-size="14" fill="rgb(13,17,23)">╣</text>
-  <rect x="622.8" y="212" width="8.4" height="28" fill="rgb(255,0,0)"/>
-  <text x="622.8" y="231.6" font-size="14" fill="rgb(13,17,23)">╣</text>
-  <rect x="631.2" y="212" width="8.4" height="28" fill="rgb(255,255,0)"/>
-  <text x="631.2" y="231.6" font-size="14" fill="rgb(13,17,23)">▙</text>
-  <rect x="639.6" y="212" width="8.4" height="28" fill="rgb(0,255,175)"/>
-  <text x="639.6" y="231.6" font-size="14" fill="rgb(13,17,23)">▜</text>
-  <rect x="648.0" y="212" width="8.4" height="28" fill="rgb(255,0,0)"/>
-  <text x="648.0" y="231.6" font-size="14" fill="rgb(13,17,23)">╩</text>
-  <rect x="656.4" y="212" width="8.4" height="28" fill="rgb(175,255,95)"/>
-  <text x="656.4" y="231.6" font-size="14" fill="rgb(13,17,23)">▞</text>
-  <rect x="664.8" y="212" width="8.4" height="28" fill="rgb(175,255,95)"/>
-  <text x="664.8" y="231.6" font-size="14" fill="rgb(13,17,23)">╳</text>
-  <text x="673.2" y="231.6" font-size="14" fill="rgb(255,0,0)">▜</text>
-  <text x="681.6" y="231.6" font-size="14" fill="rgb(255,95,0)">╬</text>
-  <text x="690.0" y="231.6" font-size="14" fill="rgb(255,0,0)">▟</text>
-  <rect x="698.4" y="212" width="8.4" height="28" fill="rgb(255,0,0)"/>
-  <text x="698.4" y="231.6" font-size="14" fill="rgb(13,17,23)">▜</text>
-  <text x="706.8" y="231.6" font-size="14" fill="rgb(255,0,0)">▄</text>
-  <text x="715.2" y="231.6" font-size="14" fill="rgb(255,0,0)">▄</text>
-  <text x="723.6" y="231.6" font-size="14" fill="rgb(255,95,0)">▛</text>
-  <text x="732.0" y="231.6" font-size="14" fill="rgb(255,0,0)">▄</text>
-  <rect x="740.4" y="212" width="8.4" height="28" fill="rgb(255,0,0)"/>
-  <text x="740.4" y="231.6" font-size="14" fill="rgb(13,17,23)">▟</text>
-  <text x="748.8" y="231.6" font-size="14" fill="rgb(255,95,0)">╦</text>
-  <text x="757.2" y="231.6" font-size="14" fill="rgb(255,0,0)">╣</text>
-  <text x="765.6" y="231.6" font-size="14" fill="rgb(255,0,0)">▞</text>
-  <text x="774.0" y="231.6" font-size="14" fill="rgb(255,95,0)">▜</text>
-  <rect x="782.4" y="212" width="8.4" height="28" fill="rgb(255,0,0)"/>
-  <text x="782.4" y="231.6" font-size="14" fill="rgb(13,17,23)">▞</text>
-  <text x="790.8" y="231.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="799.2" y="231.6" font-size="14" fill="rgb(255,255,95)">1</text>
-  <text x="807.6" y="231.6" font-size="14" fill="rgb(255,255,95)">0</text>
-  <text x="816.0" y="231.6" font-size="14" fill="rgb(255,0,0)">▄</text>
-  <text x="824.4" y="231.6" font-size="14" fill="rgb(187,187,187)">%</text>
-  <text x="832.8" y="231.6" font-size="14" fill="rgb(255,0,0)">┼</text>
-  <text x="841.2" y="231.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="849.6" y="231.6" font-size="14" fill="rgb(127,0,0)">│</text>
-  <text x="858.0" y="231.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="866.4" y="231.6" font-size="14" fill="rgb(93,93,93)">5</text>
-  <text x="874.8" y="231.6" font-size="14" fill="rgb(93,93,93)">h</text>
-  <text x="883.2" y="231.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="891.6" y="231.6" font-size="14" fill="rgb(175,255,95)">4</text>
-  <text x="900.0" y="231.6" font-size="14" fill="rgb(175,255,95)">2</text>
-  <text x="908.4" y="231.6" font-size="14" fill="rgb(175,255,95)">%</text>
-  <text x="916.8" y="231.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="925.2" y="231.6" font-size="14" fill="rgb(93,93,93)">│</text>
-  <text x="933.6" y="231.6" font-size="14" fill="rgb(187,187,187)"> </text>
-  <text x="942.0" y="231.6" font-size="14" fill="rgb(93,93,93)">7</text>
-  <text x="950.4" y="231.6" font-size="14" fill="rgb(93,93,93)">d</text>
-  <text x="958.8" y="231.6" font-size="14" fill="rgb(93,93,93)"> </text>
-  <text x="967.2" y="231.6" font-size="14" fill="rgb(0,255,135)">1</text>
-  <text x="975.6" y="231.6" font-size="14" fill="rgb(0,255,135)">8</text>
-  <text x="984.0" y="231.6" font-size="14" fill="rgb(0,255,135)">%</text>
-  <text x="992.4" y="231.6" font-size="14" fill="rgb(93,93,93)">@</text>
-  <text x="1000.8" y="231.6" font-size="14" fill="rgb(127,0,0)">s</text>
-  <text x="1009.2" y="231.6" font-size="14" fill="rgb(187,187,187)">a</text>
+  <text x="715.2" y="63.6" font-size="14" fill="rgb(93,93,93)">2</text>
+  <text x="723.6" y="63.6" font-size="14" fill="rgb(93,93,93)">3</text>
+  <text x="732.0" y="63.6" font-size="14" fill="rgb(93,93,93)">m</text>
+  <text x="740.4" y="63.6" font-size="14" fill="rgb(187,187,187)"></text>
+  <text x="186.0" y="94.2" font-size="13" fill="rgb(107,107,107)">m</text>
+  <text x="194.4" y="94.2" font-size="13" fill="rgb(107,107,107)">a</text>
+  <text x="202.8" y="94.2" font-size="13" fill="rgb(107,107,107)">i</text>
+  <text x="211.2" y="94.2" font-size="13" fill="rgb(107,107,107)">n</text>
+  <text x="219.6" y="94.2" font-size="13" fill="rgb(107,107,107)"> </text>
+  <text x="228.0" y="94.2" font-size="13" fill="rgb(107,87,47)">+</text>
+  <text x="236.4" y="94.2" font-size="13" fill="rgb(107,87,47)">3</text>
+  <text x="244.8" y="94.2" font-size="13" fill="rgb(187,187,187)"> </text>
+  <text x="253.2" y="94.2" font-size="13" fill="rgb(93,93,93)">│</text>
+  <text x="261.6" y="94.2" font-size="13" fill="rgb(187,187,187)"> </text>
+  <text x="270.0" y="94.2" font-size="13" fill="rgb(93,93,93)">D</text>
+  <text x="278.4" y="94.2" font-size="13" fill="rgb(93,93,93)">:</text>
+  <text x="286.8" y="94.2" font-size="13" fill="rgb(93,93,93)">/</text>
+  <text x="295.2" y="94.2" font-size="13" fill="rgb(93,93,93)">C</text>
+  <text x="303.6" y="94.2" font-size="13" fill="rgb(93,93,93)">l</text>
+  <text x="312.0" y="94.2" font-size="13" fill="rgb(93,93,93)">a</text>
+  <text x="320.4" y="94.2" font-size="13" fill="rgb(93,93,93)">u</text>
+  <text x="328.8" y="94.2" font-size="13" fill="rgb(93,93,93)">D</text>
+  <text x="337.2" y="94.2" font-size="13" fill="rgb(93,93,93)">e</text>
+  <text x="345.6" y="94.2" font-size="13" fill="rgb(93,93,93)">/</text>
+  <text x="354.0" y="94.2" font-size="13" fill="rgb(93,93,93)">t</text>
+  <text x="362.4" y="94.2" font-size="13" fill="rgb(93,93,93)">o</text>
+  <text x="370.8" y="94.2" font-size="13" fill="rgb(93,93,93)">o</text>
+  <text x="379.2" y="94.2" font-size="13" fill="rgb(93,93,93)">l</text>
+  <text x="387.6" y="94.2" font-size="13" fill="rgb(93,93,93)">s</text>
+  <text x="396.0" y="94.2" font-size="13" fill="rgb(93,93,93)">/</text>
+  <text x="404.4" y="94.2" font-size="13" fill="rgb(93,93,93)">c</text>
+  <text x="412.8" y="94.2" font-size="13" fill="rgb(93,93,93)">l</text>
+  <text x="421.2" y="94.2" font-size="13" fill="rgb(93,93,93)">a</text>
+  <text x="429.6" y="94.2" font-size="13" fill="rgb(93,93,93)">u</text>
+  <text x="438.0" y="94.2" font-size="13" fill="rgb(93,93,93)">d</text>
+  <text x="446.4" y="94.2" font-size="13" fill="rgb(93,93,93)">e</text>
+  <text x="454.8" y="94.2" font-size="13" fill="rgb(93,93,93)">-</text>
+  <text x="463.2" y="94.2" font-size="13" fill="rgb(93,93,93)">s</text>
+  <text x="471.6" y="94.2" font-size="13" fill="rgb(93,93,93)">t</text>
+  <text x="480.0" y="94.2" font-size="13" fill="rgb(93,93,93)">a</text>
+  <text x="488.4" y="94.2" font-size="13" fill="rgb(93,93,93)">t</text>
+  <text x="496.8" y="94.2" font-size="13" fill="rgb(93,93,93)">u</text>
+  <text x="505.2" y="94.2" font-size="13" fill="rgb(93,93,93)">s</text>
+  <text x="513.6" y="94.2" font-size="13" fill="rgb(93,93,93)">l</text>
+  <text x="522.0" y="94.2" font-size="13" fill="rgb(93,93,93)">i</text>
+  <text x="530.4" y="94.2" font-size="13" fill="rgb(93,93,93)">n</text>
+  <text x="538.8" y="94.2" font-size="13" fill="rgb(93,93,93)">e</text>
+  <line x1="16" y1="104" x2="799.2" y2="104" stroke="#21262d" stroke-width="1"/>
+  <text x="16" y="125.0" font-size="11.5" fill="#8b949e">55%  · threshold</text>
+  <text x="186.0" y="123.6" font-size="14" font-weight="bold" fill="rgb(95,135,175)">b</text>
+  <text x="194.4" y="123.6" font-size="14" font-weight="bold" fill="rgb(135,175,135)">o</text>
+  <text x="202.8" y="123.6" font-size="14" font-weight="bold" fill="rgb(95,135,175)">b</text>
+  <text x="211.2" y="123.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="219.6" y="123.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="228.0" y="123.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="236.4" y="123.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">O</text>
+  <text x="244.8" y="123.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">p</text>
+  <text x="253.2" y="123.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">4</text>
+  <text x="261.6" y="123.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">.</text>
+  <text x="270.0" y="123.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">6</text>
+  <text x="278.4" y="123.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)"> </text>
+  <text x="286.8" y="123.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">1</text>
+  <text x="295.2" y="123.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">M</text>
+  <text x="303.6" y="123.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="312.0" y="123.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="320.4" y="123.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="328.8" y="123.6" font-size="14" fill="rgb(104,104,104)">m</text>
+  <text x="337.2" y="123.6" font-size="14" fill="rgb(104,104,104)">a</text>
+  <text x="345.6" y="123.6" font-size="14" fill="rgb(104,104,104)">x</text>
+  <text x="354.0" y="123.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="362.4" y="123.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="370.8" y="123.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="379.2" y="123.6" font-size="14" fill="rgb(93,93,93)">5</text>
+  <text x="387.6" y="123.6" font-size="14" fill="rgb(93,93,93)">h</text>
+  <text x="396.0" y="123.6" font-size="14" fill="rgb(93,93,93)"> </text>
+  <text x="404.4" y="123.6" font-size="14" fill="rgb(175,215,95)">4</text>
+  <text x="412.8" y="123.6" font-size="14" fill="rgb(175,215,95)">2</text>
+  <text x="421.2" y="123.6" font-size="14" fill="rgb(175,215,95)">%</text>
+  <text x="429.6" y="123.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="438.0" y="123.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="446.4" y="123.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="454.8" y="123.6" font-size="14" fill="rgb(93,93,93)">7</text>
+  <text x="463.2" y="123.6" font-size="14" fill="rgb(93,93,93)">d</text>
+  <text x="471.6" y="123.6" font-size="14" fill="rgb(93,93,93)"> </text>
+  <text x="480.0" y="123.6" font-size="14" fill="rgb(95,175,135)">1</text>
+  <text x="488.4" y="123.6" font-size="14" fill="rgb(95,175,135)">8</text>
+  <text x="496.8" y="123.6" font-size="14" fill="rgb(95,175,135)">%</text>
+  <text x="505.2" y="123.6" font-size="14" fill="rgb(93,93,93)">@</text>
+  <text x="513.6" y="123.6" font-size="14" fill="rgb(93,93,93)">t</text>
+  <text x="522.0" y="123.6" font-size="14" fill="rgb(93,93,93)">h</text>
+  <text x="530.4" y="123.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="538.8" y="123.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="547.2" y="123.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="555.6" y="123.6" font-size="14" fill="rgb(95,95,175)">█</text>
+  <text x="564.0" y="123.6" font-size="14" fill="rgb(95,135,175)">█</text>
+  <text x="572.4" y="123.6" font-size="14" fill="rgb(95,135,175)">█</text>
+  <text x="580.8" y="123.6" font-size="14" fill="rgb(95,175,135)">█</text>
+  <text x="589.2" y="123.6" font-size="14" fill="rgb(135,175,135)">█</text>
+  <text x="597.6" y="123.6" font-size="14" fill="rgb(135,215,135)">▒</text>
+  <text x="606.0" y="123.6" font-size="14" fill="rgb(67,107,67)">─</text>
+  <text x="614.4" y="123.6" font-size="14" fill="rgb(67,107,67)">─</text>
+  <text x="622.8" y="123.6" font-size="14" fill="rgb(67,107,67)">─</text>
+  <text x="631.2" y="123.6" font-size="14" fill="rgb(67,107,67)">─</text>
+  <text x="639.6" y="123.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="648.0" y="123.6" font-size="14" fill="rgb(135,215,135)">5</text>
+  <text x="656.4" y="123.6" font-size="14" fill="rgb(135,215,135)">5</text>
+  <text x="664.8" y="123.6" font-size="14" fill="rgb(135,215,135)">%</text>
+  <text x="673.2" y="123.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="681.6" y="123.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="690.0" y="123.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="698.4" y="123.6" font-size="14" fill="rgb(93,93,93)">1</text>
+  <text x="706.8" y="123.6" font-size="14" fill="rgb(93,93,93)">h</text>
+  <text x="715.2" y="123.6" font-size="14" fill="rgb(93,93,93)">2</text>
+  <text x="723.6" y="123.6" font-size="14" fill="rgb(93,93,93)">3</text>
+  <text x="732.0" y="123.6" font-size="14" fill="rgb(93,93,93)">m</text>
+  <text x="740.4" y="123.6" font-size="14" fill="rgb(187,187,187)"></text>
+  <text x="186.0" y="154.2" font-size="13" fill="rgb(107,107,107)">m</text>
+  <text x="194.4" y="154.2" font-size="13" fill="rgb(107,107,107)">a</text>
+  <text x="202.8" y="154.2" font-size="13" fill="rgb(107,107,107)">i</text>
+  <text x="211.2" y="154.2" font-size="13" fill="rgb(107,107,107)">n</text>
+  <text x="219.6" y="154.2" font-size="13" fill="rgb(107,107,107)"> </text>
+  <text x="228.0" y="154.2" font-size="13" fill="rgb(107,87,47)">+</text>
+  <text x="236.4" y="154.2" font-size="13" fill="rgb(107,87,47)">3</text>
+  <text x="244.8" y="154.2" font-size="13" fill="rgb(187,187,187)"> </text>
+  <text x="253.2" y="154.2" font-size="13" fill="rgb(93,93,93)">│</text>
+  <text x="261.6" y="154.2" font-size="13" fill="rgb(187,187,187)"> </text>
+  <text x="270.0" y="154.2" font-size="13" fill="rgb(93,93,93)">D</text>
+  <text x="278.4" y="154.2" font-size="13" fill="rgb(93,93,93)">:</text>
+  <text x="286.8" y="154.2" font-size="13" fill="rgb(93,93,93)">/</text>
+  <text x="295.2" y="154.2" font-size="13" fill="rgb(93,93,93)">C</text>
+  <text x="303.6" y="154.2" font-size="13" fill="rgb(93,93,93)">l</text>
+  <text x="312.0" y="154.2" font-size="13" fill="rgb(93,93,93)">a</text>
+  <text x="320.4" y="154.2" font-size="13" fill="rgb(93,93,93)">u</text>
+  <text x="328.8" y="154.2" font-size="13" fill="rgb(93,93,93)">D</text>
+  <text x="337.2" y="154.2" font-size="13" fill="rgb(93,93,93)">e</text>
+  <text x="345.6" y="154.2" font-size="13" fill="rgb(93,93,93)">/</text>
+  <text x="354.0" y="154.2" font-size="13" fill="rgb(93,93,93)">t</text>
+  <text x="362.4" y="154.2" font-size="13" fill="rgb(93,93,93)">o</text>
+  <text x="370.8" y="154.2" font-size="13" fill="rgb(93,93,93)">o</text>
+  <text x="379.2" y="154.2" font-size="13" fill="rgb(93,93,93)">l</text>
+  <text x="387.6" y="154.2" font-size="13" fill="rgb(93,93,93)">s</text>
+  <text x="396.0" y="154.2" font-size="13" fill="rgb(93,93,93)">/</text>
+  <text x="404.4" y="154.2" font-size="13" fill="rgb(93,93,93)">c</text>
+  <text x="412.8" y="154.2" font-size="13" fill="rgb(93,93,93)">l</text>
+  <text x="421.2" y="154.2" font-size="13" fill="rgb(93,93,93)">a</text>
+  <text x="429.6" y="154.2" font-size="13" fill="rgb(93,93,93)">u</text>
+  <text x="438.0" y="154.2" font-size="13" fill="rgb(93,93,93)">d</text>
+  <text x="446.4" y="154.2" font-size="13" fill="rgb(93,93,93)">e</text>
+  <text x="454.8" y="154.2" font-size="13" fill="rgb(93,93,93)">-</text>
+  <text x="463.2" y="154.2" font-size="13" fill="rgb(93,93,93)">s</text>
+  <text x="471.6" y="154.2" font-size="13" fill="rgb(93,93,93)">t</text>
+  <text x="480.0" y="154.2" font-size="13" fill="rgb(93,93,93)">a</text>
+  <text x="488.4" y="154.2" font-size="13" fill="rgb(93,93,93)">t</text>
+  <text x="496.8" y="154.2" font-size="13" fill="rgb(93,93,93)">u</text>
+  <text x="505.2" y="154.2" font-size="13" fill="rgb(93,93,93)">s</text>
+  <text x="513.6" y="154.2" font-size="13" fill="rgb(93,93,93)">l</text>
+  <text x="522.0" y="154.2" font-size="13" fill="rgb(93,93,93)">i</text>
+  <text x="530.4" y="154.2" font-size="13" fill="rgb(93,93,93)">n</text>
+  <text x="538.8" y="154.2" font-size="13" fill="rgb(93,93,93)">e</text>
+  <line x1="16" y1="164" x2="799.2" y2="164" stroke="#21262d" stroke-width="1"/>
+  <text x="16" y="185.0" font-size="11.5" fill="#8b949e">60%  · it begins</text>
+  <text x="186.0" y="183.6" font-size="14" font-weight="bold" fill="rgb(95,135,175)">b</text>
+  <text x="194.4" y="183.6" font-size="14" font-weight="bold" fill="rgb(135,175,135)">o</text>
+  <text x="202.8" y="183.6" font-size="14" font-weight="bold" fill="rgb(95,135,175)">b</text>
+  <text x="211.2" y="183.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="219.6" y="183.6" font-size="14" fill="rgb(87,0,0)">▙</text>
+  <text x="228.0" y="183.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="236.4" y="183.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">O</text>
+  <text x="244.8" y="183.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">p</text>
+  <text x="253.2" y="183.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">4</text>
+  <text x="261.6" y="183.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">.</text>
+  <text x="270.0" y="183.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">6</text>
+  <text x="278.4" y="183.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)"> </text>
+  <text x="286.8" y="183.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">1</text>
+  <text x="295.2" y="183.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">M</text>
+  <text x="303.6" y="183.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="312.0" y="183.6" font-size="14" fill="rgb(87,0,0)">▙</text>
+  <text x="320.4" y="183.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="328.8" y="183.6" font-size="14" fill="rgb(104,104,104)">m</text>
+  <text x="337.2" y="183.6" font-size="14" fill="rgb(104,104,104)">a</text>
+  <text x="345.6" y="183.6" font-size="14" fill="rgb(104,104,104)">x</text>
+  <text x="354.0" y="183.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="362.4" y="183.6" font-size="14" fill="rgb(87,0,0)">▙</text>
+  <text x="370.8" y="183.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="379.2" y="183.6" font-size="14" fill="rgb(93,93,93)">5</text>
+  <text x="387.6" y="183.6" font-size="14" fill="rgb(93,93,93)">h</text>
+  <text x="396.0" y="183.6" font-size="14" fill="rgb(93,93,93)"> </text>
+  <text x="404.4" y="183.6" font-size="14" fill="rgb(175,215,95)">4</text>
+  <text x="412.8" y="183.6" font-size="14" fill="rgb(175,215,95)">2</text>
+  <text x="421.2" y="183.6" font-size="14" fill="rgb(175,215,95)">%</text>
+  <text x="429.6" y="183.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="438.0" y="183.6" font-size="14" fill="rgb(87,0,0)">▙</text>
+  <text x="446.4" y="183.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="454.8" y="183.6" font-size="14" fill="rgb(93,93,93)">7</text>
+  <text x="463.2" y="183.6" font-size="14" fill="rgb(93,93,93)">d</text>
+  <text x="471.6" y="183.6" font-size="14" fill="rgb(93,93,93)"> </text>
+  <text x="480.0" y="183.6" font-size="14" fill="rgb(95,175,135)">1</text>
+  <text x="488.4" y="183.6" font-size="14" fill="rgb(95,175,135)">8</text>
+  <text x="496.8" y="183.6" font-size="14" fill="rgb(95,175,135)">%</text>
+  <text x="505.2" y="183.6" font-size="14" fill="rgb(93,93,93)">@</text>
+  <text x="513.6" y="183.6" font-size="14" fill="rgb(93,93,93)">t</text>
+  <text x="522.0" y="183.6" font-size="14" fill="rgb(93,93,93)">h</text>
+  <text x="530.4" y="183.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="538.8" y="183.6" font-size="14" fill="rgb(87,0,0)">▙</text>
+  <text x="547.2" y="183.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="555.6" y="183.6" font-size="14" fill="rgb(95,95,175)">█</text>
+  <text x="564.0" y="183.6" font-size="14" fill="rgb(95,135,175)">╫</text>
+  <text x="572.4" y="183.6" font-size="14" fill="rgb(95,135,175)">█</text>
+  <text x="580.8" y="183.6" font-size="14" fill="rgb(95,175,135)">█</text>
+  <text x="589.2" y="183.6" font-size="14" fill="rgb(135,175,135)">█</text>
+  <text x="597.6" y="183.6" font-size="14" fill="rgb(135,215,135)">▜</text>
+  <text x="606.0" y="183.6" font-size="14" fill="rgb(67,107,67)">─</text>
+  <text x="614.4" y="183.6" font-size="14" fill="rgb(67,107,67)">─</text>
+  <text x="622.8" y="183.6" font-size="14" fill="rgb(67,107,67)">─</text>
+  <text x="631.2" y="183.6" font-size="14" fill="rgb(67,107,67)">─</text>
+  <text x="639.6" y="183.6" font-size="14" fill="rgb(175,95,95)">╳</text>
+  <text x="648.0" y="183.6" font-size="14" fill="rgb(175,135,95)">▟</text>
+  <text x="656.4" y="183.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="664.8" y="183.6" font-size="14" fill="rgb(175,215,95)">6</text>
+  <text x="673.2" y="183.6" font-size="14" fill="rgb(175,215,95)">0</text>
+  <text x="681.6" y="183.6" font-size="14" fill="rgb(175,215,95)">%</text>
+  <text x="690.0" y="183.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="698.4" y="183.6" font-size="14" fill="rgb(87,0,0)">▙</text>
+  <text x="706.8" y="183.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="715.2" y="183.6" font-size="14" fill="rgb(93,93,93)">1</text>
+  <text x="723.6" y="183.6" font-size="14" fill="rgb(93,93,93)">h</text>
+  <text x="732.0" y="183.6" font-size="14" fill="rgb(93,93,93)">2</text>
+  <text x="740.4" y="183.6" font-size="14" fill="rgb(93,93,93)">3</text>
+  <text x="748.8" y="183.6" font-size="14" fill="rgb(93,93,93)">m</text>
+  <text x="757.2" y="183.6" font-size="14" fill="rgb(187,187,187)"></text>
+  <text x="186.0" y="214.2" font-size="13" fill="rgb(107,107,107)">m</text>
+  <text x="194.4" y="214.2" font-size="13" fill="rgb(107,107,107)">a</text>
+  <text x="202.8" y="214.2" font-size="13" fill="rgb(107,107,107)">i</text>
+  <text x="211.2" y="214.2" font-size="13" fill="rgb(107,107,107)">n</text>
+  <text x="219.6" y="214.2" font-size="13" fill="rgb(107,107,107)"> </text>
+  <text x="228.0" y="214.2" font-size="13" fill="rgb(107,87,47)">+</text>
+  <text x="236.4" y="214.2" font-size="13" fill="rgb(107,87,47)">3</text>
+  <text x="244.8" y="214.2" font-size="13" fill="rgb(187,187,187)"> </text>
+  <text x="253.2" y="214.2" font-size="13" fill="rgb(93,93,93)">│</text>
+  <text x="261.6" y="214.2" font-size="13" fill="rgb(187,187,187)"> </text>
+  <text x="270.0" y="214.2" font-size="13" fill="rgb(93,93,93)">D</text>
+  <text x="278.4" y="214.2" font-size="13" fill="rgb(93,93,93)">:</text>
+  <text x="286.8" y="214.2" font-size="13" fill="rgb(93,93,93)">/</text>
+  <text x="295.2" y="214.2" font-size="13" fill="rgb(93,93,93)">C</text>
+  <text x="303.6" y="214.2" font-size="13" fill="rgb(93,93,93)">l</text>
+  <text x="312.0" y="214.2" font-size="13" fill="rgb(93,93,93)">a</text>
+  <text x="320.4" y="214.2" font-size="13" fill="rgb(93,93,93)">u</text>
+  <text x="328.8" y="214.2" font-size="13" fill="rgb(93,93,93)">D</text>
+  <text x="337.2" y="214.2" font-size="13" fill="rgb(93,93,93)">e</text>
+  <text x="345.6" y="214.2" font-size="13" fill="rgb(93,93,93)">/</text>
+  <text x="354.0" y="214.2" font-size="13" fill="rgb(93,93,93)">t</text>
+  <text x="362.4" y="214.2" font-size="13" fill="rgb(87,67,47)">╬</text>
+  <text x="370.8" y="214.2" font-size="13" fill="rgb(187,187,187)">o</text>
+  <text x="379.2" y="214.2" font-size="13" fill="rgb(187,187,187)">l</text>
+  <text x="387.6" y="214.2" font-size="13" fill="rgb(187,187,187)">s</text>
+  <text x="396.0" y="214.2" font-size="13" fill="rgb(175,95,95)">/</text>
+  <text x="404.4" y="214.2" font-size="13" fill="rgb(187,187,187)">c</text>
+  <text x="412.8" y="214.2" font-size="13" fill="rgb(187,187,187)">l</text>
+  <text x="421.2" y="214.2" font-size="13" fill="rgb(187,187,187)">a</text>
+  <text x="429.6" y="214.2" font-size="13" fill="rgb(187,187,187)">u</text>
+  <text x="438.0" y="214.2" font-size="13" fill="rgb(187,187,187)">d</text>
+  <text x="446.4" y="214.2" font-size="13" fill="rgb(187,187,187)">e</text>
+  <text x="454.8" y="214.2" font-size="13" fill="rgb(187,187,187)">-</text>
+  <text x="463.2" y="214.2" font-size="13" fill="rgb(175,95,95)">s</text>
+  <text x="471.6" y="214.2" font-size="13" fill="rgb(187,187,187)">t</text>
+  <text x="480.0" y="214.2" font-size="13" fill="rgb(187,187,187)">a</text>
+  <text x="488.4" y="214.2" font-size="13" fill="rgb(175,95,95)">╳</text>
+  <text x="496.8" y="214.2" font-size="13" fill="rgb(187,187,187)">t</text>
+  <text x="505.2" y="214.2" font-size="13" fill="rgb(187,187,187)">u</text>
+  <text x="513.6" y="214.2" font-size="13" fill="rgb(187,187,187)">s</text>
+  <text x="522.0" y="214.2" font-size="13" fill="rgb(187,187,187)">l</text>
+  <text x="530.4" y="214.2" font-size="13" fill="rgb(187,187,187)">i</text>
+  <text x="538.8" y="214.2" font-size="13" fill="rgb(187,187,187)">n</text>
+  <text x="547.2" y="214.2" font-size="13" fill="rgb(187,187,187)">e</text>
+  <line x1="16" y1="224" x2="799.2" y2="224" stroke="#21262d" stroke-width="1"/>
+  <text x="16" y="245.0" font-size="11.5" fill="#8b949e">65%  · aggressive</text>
+  <text x="186.0" y="243.6" font-size="14" font-weight="bold" fill="rgb(95,135,175)">b</text>
+  <text x="194.4" y="243.6" font-size="14" font-weight="bold" fill="rgb(135,175,135)">o</text>
+  <text x="202.8" y="243.6" font-size="14" font-weight="bold" fill="rgb(95,135,175)">b</text>
+  <text x="211.2" y="243.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="219.6" y="243.6" font-size="14" fill="rgb(87,0,0)">▛</text>
+  <text x="228.0" y="243.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="236.4" y="243.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">O</text>
+  <text x="244.8" y="243.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">p</text>
+  <text x="253.2" y="243.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">4</text>
+  <text x="261.6" y="243.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">.</text>
+  <text x="270.0" y="243.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">6</text>
+  <text x="278.4" y="243.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)"> </text>
+  <text x="286.8" y="243.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">1</text>
+  <text x="295.2" y="243.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">M</text>
+  <text x="303.6" y="243.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="312.0" y="243.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="320.4" y="243.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="328.8" y="243.6" font-size="14" fill="rgb(104,104,104)">m</text>
+  <text x="337.2" y="243.6" font-size="14" fill="rgb(104,104,104)">a</text>
+  <text x="345.6" y="243.6" font-size="14" fill="rgb(104,104,104)">x</text>
+  <text x="354.0" y="243.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="362.4" y="243.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="370.8" y="243.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="379.2" y="243.6" font-size="14" fill="rgb(93,93,93)">5</text>
+  <text x="387.6" y="243.6" font-size="14" fill="rgb(93,93,93)">h</text>
+  <text x="396.0" y="243.6" font-size="14" fill="rgb(93,93,93)"> </text>
+  <text x="404.4" y="243.6" font-size="14" fill="rgb(175,215,95)">4</text>
+  <text x="412.8" y="243.6" font-size="14" fill="rgb(175,215,95)">2</text>
+  <text x="421.2" y="243.6" font-size="14" fill="rgb(175,215,95)">%</text>
+  <text x="429.6" y="243.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="438.0" y="243.6" font-size="14" fill="rgb(87,47,47)">╫</text>
+  <text x="446.4" y="243.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="454.8" y="243.6" font-size="14" fill="rgb(93,93,93)">7</text>
+  <text x="463.2" y="243.6" font-size="14" fill="rgb(93,93,93)">d</text>
+  <text x="471.6" y="243.6" font-size="14" fill="rgb(93,93,93)"> </text>
+  <text x="480.0" y="243.6" font-size="14" fill="rgb(95,175,135)">1</text>
+  <text x="488.4" y="243.6" font-size="14" fill="rgb(95,175,135)">8</text>
+  <text x="496.8" y="243.6" font-size="14" fill="rgb(95,175,135)">%</text>
+  <text x="505.2" y="243.6" font-size="14" fill="rgb(93,93,93)">@</text>
+  <text x="513.6" y="243.6" font-size="14" fill="rgb(87,0,0)">▀</text>
+  <text x="522.0" y="243.6" font-size="14" fill="rgb(187,187,187)">h</text>
+  <text x="530.4" y="243.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="538.8" y="243.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="547.2" y="243.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="555.6" y="243.6" font-size="14" fill="rgb(175,95,95)">╬</text>
+  <text x="564.0" y="243.6" font-size="14" fill="rgb(95,135,175)">█</text>
+  <text x="572.4" y="243.6" font-size="14" fill="rgb(175,135,95)">▞</text>
+  <text x="580.8" y="243.6" font-size="14" fill="rgb(95,175,135)">█</text>
+  <text x="589.2" y="243.6" font-size="14" fill="rgb(135,175,135)">╬</text>
+  <text x="597.6" y="243.6" font-size="14" fill="rgb(135,215,135)">█</text>
+  <text x="606.0" y="243.6" font-size="14" fill="rgb(95,135,175)">▀</text>
+  <text x="614.4" y="243.6" font-size="14" fill="rgb(47,67,87)">─</text>
+  <text x="622.8" y="243.6" font-size="14" fill="rgb(47,67,87)">─</text>
+  <text x="631.2" y="243.6" font-size="14" fill="rgb(47,67,87)">─</text>
+  <text x="639.6" y="243.6" font-size="14" fill="rgb(175,95,95)">╬</text>
+  <text x="648.0" y="243.6" font-size="14" fill="rgb(175,95,95)">╩</text>
+  <text x="656.4" y="243.6" font-size="14" fill="rgb(175,95,95)">▛</text>
+  <text x="664.8" y="243.6" font-size="14" fill="rgb(175,0,0)">╣</text>
+  <text x="673.2" y="243.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="681.6" y="243.6" font-size="14" fill="rgb(175,215,95)">6</text>
+  <text x="690.0" y="243.6" font-size="14" fill="rgb(175,215,95)">5</text>
+  <text x="698.4" y="243.6" font-size="14" fill="rgb(175,135,95)">▛</text>
+  <text x="706.8" y="243.6" font-size="14" fill="rgb(187,187,187)">%</text>
+  <text x="715.2" y="243.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="723.6" y="243.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="732.0" y="243.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="740.4" y="243.6" font-size="14" fill="rgb(93,93,93)">1</text>
+  <text x="748.8" y="243.6" font-size="14" fill="rgb(93,93,93)">h</text>
+  <text x="757.2" y="243.6" font-size="14" fill="rgb(93,93,93)">2</text>
+  <text x="765.6" y="243.6" font-size="14" fill="rgb(93,93,93)">3</text>
+  <text x="774.0" y="243.6" font-size="14" fill="rgb(93,93,93)">m</text>
+  <text x="782.4" y="243.6" font-size="14" fill="rgb(187,187,187)"></text>
+  <text x="186.0" y="274.2" font-size="13" fill="rgb(107,107,107)">m</text>
+  <text x="194.4" y="274.2" font-size="13" fill="rgb(107,107,107)">a</text>
+  <text x="202.8" y="274.2" font-size="13" fill="rgb(107,107,107)">i</text>
+  <text x="211.2" y="274.2" font-size="13" fill="rgb(107,107,107)">n</text>
+  <text x="219.6" y="274.2" font-size="13" fill="rgb(107,107,107)"> </text>
+  <text x="228.0" y="274.2" font-size="13" fill="rgb(107,87,47)">+</text>
+  <text x="236.4" y="274.2" font-size="13" fill="rgb(107,87,47)">3</text>
+  <text x="244.8" y="274.2" font-size="13" fill="rgb(187,187,187)"> </text>
+  <text x="253.2" y="274.2" font-size="13" fill="rgb(93,93,93)">│</text>
+  <text x="261.6" y="274.2" font-size="13" fill="rgb(187,187,187)"> </text>
+  <text x="270.0" y="274.2" font-size="13" fill="rgb(93,93,93)">D</text>
+  <text x="278.4" y="274.2" font-size="13" fill="rgb(93,93,93)">:</text>
+  <text x="286.8" y="274.2" font-size="13" fill="rgb(93,93,93)">/</text>
+  <text x="295.2" y="274.2" font-size="13" fill="rgb(93,93,93)">C</text>
+  <text x="303.6" y="274.2" font-size="13" fill="rgb(93,93,93)">l</text>
+  <text x="312.0" y="274.2" font-size="13" fill="rgb(93,93,93)">a</text>
+  <text x="320.4" y="274.2" font-size="13" fill="rgb(87,0,0)">╪</text>
+  <text x="328.8" y="274.2" font-size="13" fill="rgb(187,187,187)">D</text>
+  <text x="337.2" y="274.2" font-size="13" fill="rgb(187,187,187)">e</text>
+  <text x="345.6" y="274.2" font-size="13" fill="rgb(187,187,187)">/</text>
+  <text x="354.0" y="274.2" font-size="13" fill="rgb(187,187,187)">t</text>
+  <text x="362.4" y="274.2" font-size="13" fill="rgb(187,187,187)">o</text>
+  <text x="370.8" y="274.2" font-size="13" fill="rgb(187,187,187)">o</text>
+  <text x="379.2" y="274.2" font-size="13" fill="rgb(187,187,187)">l</text>
+  <text x="387.6" y="274.2" font-size="13" fill="rgb(187,187,187)">s</text>
+  <text x="396.0" y="274.2" font-size="13" fill="rgb(187,187,187)">/</text>
+  <text x="404.4" y="274.2" font-size="13" fill="rgb(187,187,187)">c</text>
+  <text x="412.8" y="274.2" font-size="13" fill="rgb(187,187,187)">l</text>
+  <text x="421.2" y="274.2" font-size="13" fill="rgb(187,187,187)">a</text>
+  <text x="429.6" y="274.2" font-size="13" fill="rgb(187,187,187)">u</text>
+  <text x="438.0" y="274.2" font-size="13" fill="rgb(187,187,187)">d</text>
+  <text x="446.4" y="274.2" font-size="13" fill="rgb(187,187,187)">e</text>
+  <text x="454.8" y="274.2" font-size="13" fill="rgb(187,187,187)">-</text>
+  <text x="463.2" y="274.2" font-size="13" fill="rgb(187,187,187)">s</text>
+  <text x="471.6" y="274.2" font-size="13" fill="rgb(187,187,187)">t</text>
+  <text x="480.0" y="274.2" font-size="13" fill="rgb(187,187,187)">a</text>
+  <text x="488.4" y="274.2" font-size="13" fill="rgb(187,187,187)">t</text>
+  <text x="496.8" y="274.2" font-size="13" fill="rgb(187,187,187)">u</text>
+  <text x="505.2" y="274.2" font-size="13" fill="rgb(187,187,187)">s</text>
+  <text x="513.6" y="274.2" font-size="13" fill="rgb(187,187,187)">l</text>
+  <text x="522.0" y="274.2" font-size="13" fill="rgb(187,187,187)">i</text>
+  <text x="530.4" y="274.2" font-size="13" fill="rgb(187,187,187)">n</text>
+  <text x="538.8" y="274.2" font-size="13" fill="rgb(175,95,95)">╦</text>
+  <line x1="16" y1="284" x2="799.2" y2="284" stroke="#21262d" stroke-width="1"/>
+  <text x="16" y="305.0" font-size="11.5" fill="#8b949e">80%  · deteriorating</text>
+  <text x="186.0" y="303.6" font-size="14" font-weight="bold" fill="rgb(95,135,175)">b</text>
+  <text x="194.4" y="303.6" font-size="14" font-weight="bold" fill="rgb(135,175,135)">o</text>
+  <text x="202.8" y="303.6" font-size="14" font-weight="bold" fill="rgb(95,135,175)">b</text>
+  <text x="211.2" y="303.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="219.6" y="303.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="228.0" y="303.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="236.4" y="303.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">O</text>
+  <text x="244.8" y="303.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">p</text>
+  <text x="253.2" y="303.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">4</text>
+  <text x="261.6" y="303.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">.</text>
+  <text x="270.0" y="303.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">6</text>
+  <text x="278.4" y="303.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)"> </text>
+  <text x="286.8" y="303.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">1</text>
+  <text x="295.2" y="303.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">M</text>
+  <text x="303.6" y="303.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="312.0" y="303.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="320.4" y="303.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="328.8" y="303.6" font-size="14" fill="rgb(104,104,104)">m</text>
+  <text x="337.2" y="303.6" font-size="14" fill="rgb(104,104,104)">a</text>
+  <text x="345.6" y="303.6" font-size="14" fill="rgb(104,104,104)">x</text>
+  <text x="354.0" y="303.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="362.4" y="303.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="370.8" y="303.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="379.2" y="303.6" font-size="14" fill="rgb(93,93,93)">5</text>
+  <text x="387.6" y="303.6" font-size="14" fill="rgb(93,93,93)">h</text>
+  <text x="396.0" y="303.6" font-size="14" fill="rgb(93,93,93)"> </text>
+  <text x="404.4" y="303.6" font-size="14" fill="rgb(175,215,95)">4</text>
+  <text x="412.8" y="303.6" font-size="14" fill="rgb(175,215,95)">2</text>
+  <text x="421.2" y="303.6" font-size="14" fill="rgb(175,215,95)">%</text>
+  <text x="429.6" y="303.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="438.0" y="303.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="446.4" y="303.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="454.8" y="303.6" font-size="14" fill="rgb(93,93,93)">7</text>
+  <text x="463.2" y="303.6" font-size="14" fill="rgb(93,93,93)">d</text>
+  <text x="471.6" y="303.6" font-size="14" fill="rgb(93,93,93)"> </text>
+  <text x="480.0" y="303.6" font-size="14" fill="rgb(95,175,135)">1</text>
+  <text x="488.4" y="303.6" font-size="14" fill="rgb(95,175,135)">8</text>
+  <text x="496.8" y="303.6" font-size="14" fill="rgb(95,175,135)">%</text>
+  <text x="505.2" y="303.6" font-size="14" fill="rgb(93,93,93)">@</text>
+  <text x="513.6" y="303.6" font-size="14" fill="rgb(93,93,93)">t</text>
+  <text x="522.0" y="303.6" font-size="14" fill="rgb(87,47,47)">h</text>
+  <text x="530.4" y="303.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="538.8" y="303.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="547.2" y="303.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <rect x="555.6" y="284" width="8.4" height="28" fill="rgb(215,215,95)"/>
+  <text x="555.6" y="303.6" font-size="14" fill="rgb(13,17,23)">▛</text>
+  <rect x="564.0" y="284" width="8.4" height="28" fill="rgb(175,95,95)"/>
+  <text x="564.0" y="303.6" font-size="14" fill="rgb(13,17,23)">╳</text>
+  <rect x="572.4" y="284" width="8.4" height="28" fill="rgb(215,175,95)"/>
+  <text x="572.4" y="303.6" font-size="14" fill="rgb(13,17,23)">▚</text>
+  <rect x="580.8" y="284" width="8.4" height="28" fill="rgb(95,175,135)"/>
+  <text x="580.8" y="303.6" font-size="14" fill="rgb(13,17,23)">▛</text>
+  <rect x="589.2" y="284" width="8.4" height="28" fill="rgb(215,215,95)"/>
+  <text x="589.2" y="303.6" font-size="14" fill="rgb(13,17,23)">╦</text>
+  <rect x="597.6" y="284" width="8.4" height="28" fill="rgb(215,175,95)"/>
+  <text x="597.6" y="303.6" font-size="14" fill="rgb(13,17,23)">▞</text>
+  <rect x="606.0" y="284" width="8.4" height="28" fill="rgb(175,215,95)"/>
+  <text x="606.0" y="303.6" font-size="14" fill="rgb(13,17,23)">╩</text>
+  <rect x="614.4" y="284" width="8.4" height="28" fill="rgb(215,215,95)"/>
+  <text x="614.4" y="303.6" font-size="14" fill="rgb(13,17,23)">╬</text>
+  <rect x="622.8" y="284" width="8.4" height="28" fill="rgb(107,107,47)"/>
+  <text x="622.8" y="303.6" font-size="14" fill="rgb(13,17,23)">─</text>
+  <rect x="631.2" y="284" width="8.4" height="28" fill="rgb(87,47,47)"/>
+  <text x="631.2" y="303.6" font-size="14" fill="rgb(13,17,23)">╳</text>
+  <text x="639.6" y="303.6" font-size="14" fill="rgb(175,135,95)">╫</text>
+  <text x="648.0" y="303.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="656.4" y="303.6" font-size="14" fill="rgb(175,95,95)">╣</text>
+  <text x="664.8" y="303.6" font-size="14" fill="rgb(187,187,187)">0</text>
+  <text x="673.2" y="303.6" font-size="14" fill="rgb(175,95,95)">╪</text>
+  <text x="681.6" y="303.6" font-size="14" fill="rgb(175,95,95)">%</text>
+  <text x="690.0" y="303.6" font-size="14" fill="rgb(175,95,95)">╳</text>
+  <text x="698.4" y="303.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="706.8" y="303.6" font-size="14" fill="rgb(87,0,0)">│</text>
+  <text x="715.2" y="303.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="723.6" y="303.6" font-size="14" fill="rgb(93,93,93)">1</text>
+  <text x="732.0" y="303.6" font-size="14" fill="rgb(93,93,93)">h</text>
+  <text x="740.4" y="303.6" font-size="14" fill="rgb(93,93,93)">2</text>
+  <text x="748.8" y="303.6" font-size="14" fill="rgb(93,93,93)">3</text>
+  <text x="757.2" y="303.6" font-size="14" fill="rgb(93,93,93)">m</text>
+  <text x="765.6" y="303.6" font-size="14" fill="rgb(187,187,187)"></text>
+  <text x="186.0" y="334.2" font-size="13" fill="rgb(107,107,107)">m</text>
+  <text x="194.4" y="334.2" font-size="13" fill="rgb(107,107,107)">a</text>
+  <text x="202.8" y="334.2" font-size="13" fill="rgb(107,107,107)">i</text>
+  <text x="211.2" y="334.2" font-size="13" fill="rgb(87,47,47)">▞</text>
+  <text x="219.6" y="334.2" font-size="13" fill="rgb(175,95,95)">╬</text>
+  <text x="228.0" y="334.2" font-size="13" fill="rgb(187,187,187)"> </text>
+  <text x="236.4" y="334.2" font-size="13" fill="rgb(175,95,95)">╠</text>
+  <text x="244.8" y="334.2" font-size="13" fill="rgb(187,187,187)">3</text>
+  <text x="253.2" y="334.2" font-size="13" fill="rgb(187,187,187)"> </text>
+  <text x="261.6" y="334.2" font-size="13" fill="rgb(93,93,93)">│</text>
+  <text x="270.0" y="334.2" font-size="13" fill="rgb(187,187,187)"> </text>
+  <text x="278.4" y="334.2" font-size="13" fill="rgb(93,93,93)">D</text>
+  <text x="286.8" y="334.2" font-size="13" fill="rgb(93,93,93)">:</text>
+  <text x="295.2" y="334.2" font-size="13" fill="rgb(87,47,47)">▀</text>
+  <text x="303.6" y="334.2" font-size="13" fill="rgb(187,187,187)">C</text>
+  <text x="312.0" y="334.2" font-size="13" fill="rgb(175,0,0)">▛</text>
+  <text x="320.4" y="334.2" font-size="13" fill="rgb(187,187,187)">l</text>
+  <text x="328.8" y="334.2" font-size="13" fill="rgb(187,187,187)">a</text>
+  <text x="337.2" y="334.2" font-size="13" fill="rgb(187,187,187)">u</text>
+  <text x="345.6" y="334.2" font-size="13" fill="rgb(187,187,187)">D</text>
+  <text x="354.0" y="334.2" font-size="13" fill="rgb(175,95,95)">▄</text>
+  <text x="362.4" y="334.2" font-size="13" fill="rgb(187,187,187)">e</text>
+  <text x="370.8" y="334.2" font-size="13" fill="rgb(187,187,187)">/</text>
+  <text x="379.2" y="334.2" font-size="13" fill="rgb(187,187,187)">t</text>
+  <text x="387.6" y="334.2" font-size="13" fill="rgb(187,187,187)">o</text>
+  <text x="396.0" y="334.2" font-size="13" fill="rgb(175,95,95)">▙</text>
+  <text x="404.4" y="334.2" font-size="13" fill="rgb(187,187,187)">o</text>
+  <text x="412.8" y="334.2" font-size="13" fill="rgb(175,95,95)">▄</text>
+  <text x="421.2" y="334.2" font-size="13" fill="rgb(175,95,95)">s</text>
+  <text x="429.6" y="334.2" font-size="13" fill="rgb(187,187,187)">/</text>
+  <text x="438.0" y="334.2" font-size="13" fill="rgb(187,187,187)">c</text>
+  <text x="446.4" y="334.2" font-size="13" fill="rgb(187,187,187)">l</text>
+  <text x="454.8" y="334.2" font-size="13" fill="rgb(175,95,95)">╫</text>
+  <text x="463.2" y="334.2" font-size="13" fill="rgb(175,0,0)">┼</text>
+  <text x="471.6" y="334.2" font-size="13" fill="rgb(187,187,187)">u</text>
+  <text x="480.0" y="334.2" font-size="13" fill="rgb(187,187,187)">d</text>
+  <text x="488.4" y="334.2" font-size="13" fill="rgb(187,187,187)">e</text>
+  <text x="496.8" y="334.2" font-size="13" fill="rgb(187,187,187)">-</text>
+  <text x="505.2" y="334.2" font-size="13" fill="rgb(187,187,187)">s</text>
+  <text x="513.6" y="334.2" font-size="13" fill="rgb(175,0,0)">t</text>
+  <text x="522.0" y="334.2" font-size="13" fill="rgb(187,187,187)">a</text>
+  <text x="530.4" y="334.2" font-size="13" fill="rgb(187,187,187)">t</text>
+  <text x="538.8" y="334.2" font-size="13" fill="rgb(175,95,95)">u</text>
+  <text x="547.2" y="334.2" font-size="13" fill="rgb(175,135,95)">╣</text>
+  <text x="555.6" y="334.2" font-size="13" fill="rgb(187,187,187)">l</text>
+  <text x="564.0" y="334.2" font-size="13" fill="rgb(187,187,187)">i</text>
+  <text x="572.4" y="334.2" font-size="13" fill="rgb(187,187,187)">n</text>
+  <text x="580.8" y="334.2" font-size="13" fill="rgb(187,187,187)">e</text>
+  <line x1="16" y1="344" x2="799.2" y2="344" stroke="#21262d" stroke-width="1"/>
+  <text x="16" y="365.0" font-size="11.5" fill="#8b949e">95%  · critical</text>
+  <text x="186.0" y="363.6" font-size="14" font-weight="bold" fill="rgb(95,135,175)">b</text>
+  <text x="194.4" y="363.6" font-size="14" font-weight="bold" fill="rgb(135,175,135)">o</text>
+  <text x="202.8" y="363.6" font-size="14" font-weight="bold" fill="rgb(95,135,175)">b</text>
+  <text x="211.2" y="363.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="219.6" y="363.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="228.0" y="363.6" font-size="14" fill="rgb(87,47,47)">▙</text>
+  <text x="236.4" y="363.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="244.8" y="363.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">O</text>
+  <text x="253.2" y="363.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">p</text>
+  <text x="261.6" y="363.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">4</text>
+  <text x="270.0" y="363.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">.</text>
+  <text x="278.4" y="363.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">6</text>
+  <text x="286.8" y="363.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)"> </text>
+  <text x="295.2" y="363.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">1</text>
+  <text x="303.6" y="363.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">M</text>
+  <text x="312.0" y="363.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="320.4" y="363.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="328.8" y="363.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="337.2" y="363.6" font-size="14" fill="rgb(104,104,104)">m</text>
+  <text x="345.6" y="363.6" font-size="14" fill="rgb(104,104,104)">a</text>
+  <text x="354.0" y="363.6" font-size="14" fill="rgb(104,104,104)">x</text>
+  <text x="362.4" y="363.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="370.8" y="363.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="379.2" y="363.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="387.6" y="363.6" font-size="14" fill="rgb(93,93,93)">5</text>
+  <text x="396.0" y="363.6" font-size="14" fill="rgb(93,93,93)">h</text>
+  <text x="404.4" y="363.6" font-size="14" fill="rgb(93,93,93)"> </text>
+  <text x="412.8" y="363.6" font-size="14" fill="rgb(175,215,95)">4</text>
+  <text x="421.2" y="363.6" font-size="14" fill="rgb(175,215,95)">2</text>
+  <text x="429.6" y="363.6" font-size="14" fill="rgb(175,215,95)">%</text>
+  <text x="438.0" y="363.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="446.4" y="363.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="454.8" y="363.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="463.2" y="363.6" font-size="14" fill="rgb(93,93,93)">7</text>
+  <text x="471.6" y="363.6" font-size="14" fill="rgb(93,93,93)">d</text>
+  <text x="480.0" y="363.6" font-size="14" fill="rgb(93,93,93)"> </text>
+  <text x="488.4" y="363.6" font-size="14" fill="rgb(95,175,135)">1</text>
+  <text x="496.8" y="363.6" font-size="14" fill="rgb(95,175,135)">8</text>
+  <text x="505.2" y="363.6" font-size="14" fill="rgb(95,175,135)">%</text>
+  <text x="513.6" y="363.6" font-size="14" fill="rgb(93,93,93)">@</text>
+  <text x="522.0" y="363.6" font-size="14" fill="rgb(87,47,47)">▀</text>
+  <text x="530.4" y="363.6" font-size="14" fill="rgb(175,95,95)">▄</text>
+  <text x="538.8" y="363.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="547.2" y="363.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="555.6" y="363.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <rect x="564.0" y="344" width="8.4" height="28" fill="rgb(175,95,95)"/>
+  <text x="564.0" y="363.6" font-size="14" fill="rgb(13,17,23)">▚</text>
+  <rect x="572.4" y="344" width="8.4" height="28" fill="rgb(215,215,95)"/>
+  <text x="572.4" y="363.6" font-size="14" fill="rgb(13,17,23)">▙</text>
+  <rect x="580.8" y="344" width="8.4" height="28" fill="rgb(215,175,95)"/>
+  <text x="580.8" y="363.6" font-size="14" fill="rgb(13,17,23)">▀</text>
+  <rect x="589.2" y="344" width="8.4" height="28" fill="rgb(135,215,135)"/>
+  <text x="589.2" y="363.6" font-size="14" fill="rgb(13,17,23)">╦</text>
+  <rect x="597.6" y="344" width="8.4" height="28" fill="rgb(175,95,95)"/>
+  <text x="597.6" y="363.6" font-size="14" fill="rgb(13,17,23)">╩</text>
+  <text x="606.0" y="363.6" font-size="14" fill="rgb(175,95,95)">▙</text>
+  <rect x="614.4" y="344" width="8.4" height="28" fill="rgb(95,95,175)"/>
+  <text x="614.4" y="363.6" font-size="14" fill="rgb(13,17,23)">▀</text>
+  <rect x="622.8" y="344" width="8.4" height="28" fill="rgb(175,95,95)"/>
+  <text x="622.8" y="363.6" font-size="14" fill="rgb(13,17,23)">╦</text>
+  <rect x="631.2" y="344" width="8.4" height="28" fill="rgb(175,135,95)"/>
+  <text x="631.2" y="363.6" font-size="14" fill="rgb(13,17,23)">╦</text>
+  <rect x="639.6" y="344" width="8.4" height="28" fill="rgb(175,215,95)"/>
+  <text x="639.6" y="363.6" font-size="14" fill="rgb(13,17,23)">╦</text>
+  <rect x="648.0" y="344" width="8.4" height="28" fill="rgb(175,95,95)"/>
+  <text x="648.0" y="363.6" font-size="14" fill="rgb(13,17,23)">▀</text>
+  <text x="656.4" y="363.6" font-size="14" fill="rgb(175,135,95)">╳</text>
+  <text x="664.8" y="363.6" font-size="14" fill="rgb(175,95,95)">╫</text>
+  <text x="673.2" y="363.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="681.6" y="363.6" font-size="14" fill="rgb(215,215,95)">9</text>
+  <text x="690.0" y="363.6" font-size="14" fill="rgb(175,0,0)">╠</text>
+  <text x="698.4" y="363.6" font-size="14" fill="rgb(175,95,95)">▚</text>
+  <text x="706.8" y="363.6" font-size="14" fill="rgb(175,95,95)">▟</text>
+  <text x="715.2" y="363.6" font-size="14" fill="rgb(175,95,95)">▄</text>
+  <text x="723.6" y="363.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="732.0" y="363.6" font-size="14" fill="rgb(87,47,47)">╫</text>
+  <text x="740.4" y="363.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="748.8" y="363.6" font-size="14" fill="rgb(93,93,93)">1</text>
+  <text x="757.2" y="363.6" font-size="14" fill="rgb(93,93,93)">h</text>
+  <text x="765.6" y="363.6" font-size="14" fill="rgb(93,93,93)">2</text>
+  <text x="774.0" y="363.6" font-size="14" fill="rgb(93,93,93)">3</text>
+  <text x="782.4" y="363.6" font-size="14" fill="rgb(93,93,93)">m</text>
+  <text x="790.8" y="363.6" font-size="14" fill="rgb(187,187,187)"></text>
+  <text x="186.0" y="394.2" font-size="13" fill="rgb(107,107,107)">m</text>
+  <text x="194.4" y="394.2" font-size="13" fill="rgb(107,107,107)">a</text>
+  <text x="202.8" y="394.2" font-size="13" fill="rgb(107,107,107)">i</text>
+  <text x="211.2" y="394.2" font-size="13" fill="rgb(107,107,107)">n</text>
+  <text x="219.6" y="394.2" font-size="13" fill="rgb(87,67,47)">╣</text>
+  <text x="228.0" y="394.2" font-size="13" fill="rgb(187,187,187)"> </text>
+  <text x="236.4" y="394.2" font-size="13" fill="rgb(215,175,95)">+</text>
+  <text x="244.8" y="394.2" font-size="13" fill="rgb(215,175,95)">3</text>
+  <text x="253.2" y="394.2" font-size="13" fill="rgb(187,187,187)"> </text>
+  <text x="261.6" y="394.2" font-size="13" fill="rgb(87,67,47)">╩</text>
+  <text x="270.0" y="394.2" font-size="13" fill="rgb(187,187,187)"> </text>
+  <text x="278.4" y="394.2" font-size="13" fill="rgb(93,93,93)">D</text>
+  <text x="286.8" y="394.2" font-size="13" fill="rgb(93,93,93)">:</text>
+  <text x="295.2" y="394.2" font-size="13" fill="rgb(87,47,47)">/</text>
+  <text x="303.6" y="394.2" font-size="13" fill="rgb(175,95,95)">┼</text>
+  <text x="312.0" y="394.2" font-size="13" fill="rgb(187,187,187)">l</text>
+  <text x="320.4" y="394.2" font-size="13" fill="rgb(175,0,0)">┼</text>
+  <text x="328.8" y="394.2" font-size="13" fill="rgb(175,95,95)">╬</text>
+  <text x="337.2" y="394.2" font-size="13" fill="rgb(187,187,187)">u</text>
+  <text x="345.6" y="394.2" font-size="13" fill="rgb(187,187,187)">D</text>
+  <text x="354.0" y="394.2" font-size="13" fill="rgb(175,95,95)">e</text>
+  <text x="362.4" y="394.2" font-size="13" fill="rgb(187,187,187)">/</text>
+  <text x="370.8" y="394.2" font-size="13" fill="rgb(187,187,187)">t</text>
+  <text x="379.2" y="394.2" font-size="13" fill="rgb(175,95,95)">o</text>
+  <text x="387.6" y="394.2" font-size="13" fill="rgb(187,187,187)">o</text>
+  <text x="396.0" y="394.2" font-size="13" fill="rgb(187,187,187)">l</text>
+  <text x="404.4" y="394.2" font-size="13" fill="rgb(187,187,187)">s</text>
+  <text x="412.8" y="394.2" font-size="13" fill="rgb(175,0,0)">/</text>
+  <text x="421.2" y="394.2" font-size="13" fill="rgb(187,187,187)">c</text>
+  <text x="429.6" y="394.2" font-size="13" fill="rgb(175,95,95)">╣</text>
+  <text x="438.0" y="394.2" font-size="13" fill="rgb(175,0,0)">▄</text>
+  <text x="446.4" y="394.2" font-size="13" fill="rgb(187,187,187)">a</text>
+  <text x="454.8" y="394.2" font-size="13" fill="rgb(187,187,187)">u</text>
+  <text x="463.2" y="394.2" font-size="13" fill="rgb(187,187,187)">d</text>
+  <text x="471.6" y="394.2" font-size="13" fill="rgb(175,95,95)">╫</text>
+  <text x="480.0" y="394.2" font-size="13" fill="rgb(187,187,187)">e</text>
+  <text x="488.4" y="394.2" font-size="13" fill="rgb(187,187,187)">-</text>
+  <text x="496.8" y="394.2" font-size="13" fill="rgb(187,187,187)">s</text>
+  <text x="505.2" y="394.2" font-size="13" fill="rgb(187,187,187)">t</text>
+  <text x="513.6" y="394.2" font-size="13" fill="rgb(187,187,187)">a</text>
+  <text x="522.0" y="394.2" font-size="13" fill="rgb(187,187,187)">t</text>
+  <text x="530.4" y="394.2" font-size="13" fill="rgb(175,95,95)">╦</text>
+  <text x="538.8" y="394.2" font-size="13" fill="rgb(175,135,95)">▀</text>
+  <text x="547.2" y="394.2" font-size="13" fill="rgb(187,187,187)">s</text>
+  <text x="555.6" y="394.2" font-size="13" fill="rgb(175,95,95)">l</text>
+  <text x="564.0" y="394.2" font-size="13" fill="rgb(187,187,187)">i</text>
+  <text x="572.4" y="394.2" font-size="13" fill="rgb(175,95,95)">╦</text>
+  <text x="580.8" y="394.2" font-size="13" fill="rgb(175,0,0)">▙</text>
+  <line x1="16" y1="404" x2="799.2" y2="404" stroke="#21262d" stroke-width="1"/>
+  <text x="16" y="425.0" font-size="11.5" fill="#8b949e">100% · consumed</text>
+  <text x="186.0" y="423.6" font-size="14" font-weight="bold" fill="rgb(95,135,175)">b</text>
+  <text x="194.4" y="423.6" font-size="14" font-weight="bold" fill="rgb(135,175,135)">o</text>
+  <text x="202.8" y="423.6" font-size="14" font-weight="bold" fill="rgb(95,135,175)">b</text>
+  <text x="211.2" y="423.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="219.6" y="423.6" font-size="14" fill="rgb(87,47,47)">│</text>
+  <text x="228.0" y="423.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="236.4" y="423.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">O</text>
+  <text x="244.8" y="423.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">p</text>
+  <text x="253.2" y="423.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">4</text>
+  <text x="261.6" y="423.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">.</text>
+  <text x="270.0" y="423.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">6</text>
+  <text x="278.4" y="423.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)"> </text>
+  <text x="286.8" y="423.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">1</text>
+  <text x="295.2" y="423.6" font-size="14" font-weight="bold" fill="rgb(135,135,215)">M</text>
+  <text x="303.6" y="423.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="312.0" y="423.6" font-size="14" fill="rgb(87,0,0)">│</text>
+  <text x="320.4" y="423.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="328.8" y="423.6" font-size="14" fill="rgb(104,104,104)">m</text>
+  <text x="337.2" y="423.6" font-size="14" fill="rgb(104,104,104)">a</text>
+  <text x="345.6" y="423.6" font-size="14" fill="rgb(104,104,104)">x</text>
+  <text x="354.0" y="423.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="362.4" y="423.6" font-size="14" fill="rgb(87,0,0)">╪</text>
+  <text x="370.8" y="423.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="379.2" y="423.6" font-size="14" fill="rgb(93,93,93)">5</text>
+  <text x="387.6" y="423.6" font-size="14" fill="rgb(93,93,93)">h</text>
+  <text x="396.0" y="423.6" font-size="14" fill="rgb(93,93,93)"> </text>
+  <text x="404.4" y="423.6" font-size="14" fill="rgb(175,215,95)">4</text>
+  <text x="412.8" y="423.6" font-size="14" fill="rgb(175,215,95)">2</text>
+  <text x="421.2" y="423.6" font-size="14" fill="rgb(175,215,95)">%</text>
+  <text x="429.6" y="423.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="438.0" y="423.6" font-size="14" fill="rgb(87,47,47)">▜</text>
+  <text x="446.4" y="423.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="454.8" y="423.6" font-size="14" fill="rgb(93,93,93)">7</text>
+  <text x="463.2" y="423.6" font-size="14" fill="rgb(93,93,93)">d</text>
+  <text x="471.6" y="423.6" font-size="14" fill="rgb(93,93,93)"> </text>
+  <text x="480.0" y="423.6" font-size="14" fill="rgb(95,175,135)">1</text>
+  <text x="488.4" y="423.6" font-size="14" fill="rgb(95,175,135)">8</text>
+  <text x="496.8" y="423.6" font-size="14" fill="rgb(95,175,135)">%</text>
+  <text x="505.2" y="423.6" font-size="14" fill="rgb(93,93,93)">@</text>
+  <text x="513.6" y="423.6" font-size="14" fill="rgb(87,47,47)">t</text>
+  <text x="522.0" y="423.6" font-size="14" fill="rgb(187,187,187)">h</text>
+  <text x="530.4" y="423.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="538.8" y="423.6" font-size="14" fill="rgb(93,93,93)">│</text>
+  <text x="547.2" y="423.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <rect x="555.6" y="404" width="8.4" height="28" fill="rgb(215,135,95)"/>
+  <text x="555.6" y="423.6" font-size="14" fill="rgb(13,17,23)">╦</text>
+  <rect x="564.0" y="404" width="8.4" height="28" fill="rgb(175,135,95)"/>
+  <text x="564.0" y="423.6" font-size="14" fill="rgb(13,17,23)">▀</text>
+  <rect x="572.4" y="404" width="8.4" height="28" fill="rgb(175,95,95)"/>
+  <text x="572.4" y="423.6" font-size="14" fill="rgb(13,17,23)">▟</text>
+  <rect x="580.8" y="404" width="8.4" height="28" fill="rgb(135,175,135)"/>
+  <text x="580.8" y="423.6" font-size="14" fill="rgb(13,17,23)">╳</text>
+  <rect x="589.2" y="404" width="8.4" height="28" fill="rgb(175,135,95)"/>
+  <text x="589.2" y="423.6" font-size="14" fill="rgb(13,17,23)">▞</text>
+  <rect x="597.6" y="404" width="8.4" height="28" fill="rgb(95,135,175)"/>
+  <text x="597.6" y="423.6" font-size="14" fill="rgb(13,17,23)">╫</text>
+  <rect x="606.0" y="404" width="8.4" height="28" fill="rgb(215,135,95)"/>
+  <text x="606.0" y="423.6" font-size="14" fill="rgb(13,17,23)">╠</text>
+  <rect x="614.4" y="404" width="8.4" height="28" fill="rgb(215,175,95)"/>
+  <text x="614.4" y="423.6" font-size="14" fill="rgb(13,17,23)">╠</text>
+  <rect x="622.8" y="404" width="8.4" height="28" fill="rgb(175,95,95)"/>
+  <text x="622.8" y="423.6" font-size="14" fill="rgb(13,17,23)">╫</text>
+  <rect x="631.2" y="404" width="8.4" height="28" fill="rgb(175,215,95)"/>
+  <text x="631.2" y="423.6" font-size="14" fill="rgb(13,17,23)">▞</text>
+  <text x="639.6" y="423.6" font-size="14" fill="rgb(175,0,0)">╠</text>
+  <text x="648.0" y="423.6" font-size="14" fill="rgb(175,95,95)">╬</text>
+  <text x="656.4" y="423.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="664.8" y="423.6" font-size="14" fill="rgb(175,95,95)">1</text>
+  <text x="673.2" y="423.6" font-size="14" fill="rgb(175,95,95)">0</text>
+  <text x="681.6" y="423.6" font-size="14" fill="rgb(175,95,95)">╬</text>
+  <text x="690.0" y="423.6" font-size="14" fill="rgb(187,187,187)">%</text>
+  <text x="698.4" y="423.6" font-size="14" fill="rgb(175,0,0)">┼</text>
+  <text x="706.8" y="423.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="715.2" y="423.6" font-size="14" fill="rgb(87,47,47)">╳</text>
+  <text x="723.6" y="423.6" font-size="14" fill="rgb(187,187,187)"> </text>
+  <text x="732.0" y="423.6" font-size="14" fill="rgb(93,93,93)">1</text>
+  <text x="740.4" y="423.6" font-size="14" fill="rgb(93,93,93)">h</text>
+  <text x="748.8" y="423.6" font-size="14" fill="rgb(93,93,93)">2</text>
+  <text x="757.2" y="423.6" font-size="14" fill="rgb(93,93,93)">3</text>
+  <text x="765.6" y="423.6" font-size="14" fill="rgb(93,93,93)">m</text>
+  <text x="774.0" y="423.6" font-size="14" fill="rgb(187,187,187)"></text>
+  <text x="186.0" y="454.2" font-size="13" fill="rgb(107,107,107)">m</text>
+  <text x="194.4" y="454.2" font-size="13" fill="rgb(107,107,107)">a</text>
+  <text x="202.8" y="454.2" font-size="13" fill="rgb(87,47,47)">▞</text>
+  <text x="211.2" y="454.2" font-size="13" fill="rgb(187,187,187)">i</text>
+  <text x="219.6" y="454.2" font-size="13" fill="rgb(187,187,187)">n</text>
+  <text x="228.0" y="454.2" font-size="13" fill="rgb(175,95,95)">▛</text>
+  <text x="236.4" y="454.2" font-size="13" fill="rgb(187,187,187)"> </text>
+  <text x="244.8" y="454.2" font-size="13" fill="rgb(215,175,95)">+</text>
+  <text x="253.2" y="454.2" font-size="13" fill="rgb(175,95,95)">3</text>
+  <text x="261.6" y="454.2" font-size="13" fill="rgb(187,187,187)"> </text>
+  <text x="270.0" y="454.2" font-size="13" fill="rgb(87,47,47)">│</text>
+  <text x="278.4" y="454.2" font-size="13" fill="rgb(187,187,187)"> </text>
+  <text x="286.8" y="454.2" font-size="13" fill="rgb(93,93,93)">D</text>
+  <text x="295.2" y="454.2" font-size="13" fill="rgb(93,93,93)">:</text>
+  <text x="303.6" y="454.2" font-size="13" fill="rgb(93,93,93)">/</text>
+  <text x="312.0" y="454.2" font-size="13" fill="rgb(87,47,47)">▀</text>
+  <text x="320.4" y="454.2" font-size="13" fill="rgb(175,135,95)">╣</text>
+  <text x="328.8" y="454.2" font-size="13" fill="rgb(175,135,95)">╳</text>
+  <text x="337.2" y="454.2" font-size="13" fill="rgb(187,187,187)">u</text>
+  <text x="345.6" y="454.2" font-size="13" fill="rgb(175,95,95)">╩</text>
+  <text x="354.0" y="454.2" font-size="13" fill="rgb(187,187,187)">D</text>
+  <text x="362.4" y="454.2" font-size="13" fill="rgb(175,135,95)">╳</text>
+  <text x="370.8" y="454.2" font-size="13" fill="rgb(187,187,187)">/</text>
+  <text x="379.2" y="454.2" font-size="13" fill="rgb(187,187,187)">t</text>
+  <text x="387.6" y="454.2" font-size="13" fill="rgb(175,95,95)">o</text>
+  <text x="396.0" y="454.2" font-size="13" fill="rgb(175,95,95)">╣</text>
+  <text x="404.4" y="454.2" font-size="13" fill="rgb(175,135,95)">╠</text>
+  <text x="412.8" y="454.2" font-size="13" fill="rgb(187,187,187)">s</text>
+  <text x="421.2" y="454.2" font-size="13" fill="rgb(187,187,187)">/</text>
+  <text x="429.6" y="454.2" font-size="13" fill="rgb(175,135,95)">▚</text>
+  <text x="438.0" y="454.2" font-size="13" fill="rgb(187,187,187)">c</text>
+  <text x="446.4" y="454.2" font-size="13" fill="rgb(175,95,95)">▚</text>
+  <text x="454.8" y="454.2" font-size="13" fill="rgb(175,135,95)">▙</text>
+  <text x="463.2" y="454.2" font-size="13" fill="rgb(187,187,187)">a</text>
+  <text x="471.6" y="454.2" font-size="13" fill="rgb(187,187,187)">u</text>
+  <text x="480.0" y="454.2" font-size="13" fill="rgb(187,187,187)">d</text>
+  <text x="488.4" y="454.2" font-size="13" fill="rgb(187,187,187)">e</text>
+  <text x="496.8" y="454.2" font-size="13" fill="rgb(187,187,187)">-</text>
+  <text x="505.2" y="454.2" font-size="13" fill="rgb(175,95,95)">s</text>
+  <text x="513.6" y="454.2" font-size="13" fill="rgb(187,187,187)">t</text>
+  <text x="522.0" y="454.2" font-size="13" fill="rgb(187,187,187)">a</text>
+  <text x="530.4" y="454.2" font-size="13" fill="rgb(175,95,95)">▜</text>
+  <text x="538.8" y="454.2" font-size="13" fill="rgb(187,187,187)">t</text>
+  <text x="547.2" y="454.2" font-size="13" fill="rgb(187,187,187)">u</text>
+  <text x="555.6" y="454.2" font-size="13" fill="rgb(175,135,95)">▜</text>
+  <text x="564.0" y="454.2" font-size="13" fill="rgb(175,95,95)">l</text>
+  <text x="572.4" y="454.2" font-size="13" fill="rgb(175,95,95)">▄</text>
+  <text x="580.8" y="454.2" font-size="13" fill="rgb(175,95,95)">▙</text>
+  <text x="589.2" y="454.2" font-size="13" fill="rgb(187,187,187)">e</text>
 </svg>
