@@ -377,13 +377,12 @@ if used_pct is not None:
 
 # ── Session duration (end of line 1) ────────────────────────────────────────
 _now_ts = datetime.now().timestamp()
+_sid = data.get('session_id', '')
 _sess = state.get('session_start', {})
-# Gap > 5 minutes between renders means new session
-if _now_ts - _sess.get('last_seen', 0) > 300:
-    _sess = {'ts': _now_ts}
-_sess['last_seen'] = _now_ts
-state['session_start'] = _sess
-state_dirty = True
+if _sess.get('sid') != _sid:
+    _sess = {'sid': _sid, 'ts': _now_ts}
+    state['session_start'] = _sess
+    state_dirty = True
 _elapsed = _now_ts - _sess.get('ts', _now_ts)
 if _elapsed >= 3600:
     _dur = f'{int(_elapsed // 3600)}h{int(_elapsed % 3600 // 60)}m'

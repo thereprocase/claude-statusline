@@ -23,7 +23,7 @@ main +3 │ F:/Claude/products/fieldLog
 | `5h 7%8p` | 5-hour rate limit % + reset time hint |
 | `7d 52%fr11a` | 7-day rate limit % + reset time hint |
 | `██████──── 58%` | Context window usage bar + percentage — shaded fill, cyan-to-red gradient |
-| `1h23m` | Session duration — resets after 5 minutes of inactivity |
+| `1h23m` | Session duration — resets on `/clear` or new session |
 
 ### Line 2
 
