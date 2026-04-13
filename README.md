@@ -9,8 +9,8 @@ A colorful, information-dense status line for [Claude Code](https://claude.ai/co
 Two lines. Line 1 is the dashboard, line 2 is where you are.
 
 ```
-Bob │ Op4.6 1M │ max │ 5h 7%8p │ 7d 52%fr11a │ ██████──── 58%
-main │ F:/Claude/products/fieldLog
+Bob │ Op4.6 1M │ max │ 5h 7%8p │ 7d 52%fr11a │ ██████──── 58% │ 1h23m
+main +3 │ F:/Claude/products/fieldLog
 ```
 
 ### Line 1
@@ -22,13 +22,14 @@ main │ F:/Claude/products/fieldLog
 | `max` | Effort level (shown only if exposed in statusline data) |
 | `5h 7%8p` | 5-hour rate limit % + reset time hint |
 | `7d 52%fr11a` | 7-day rate limit % + reset time hint |
-| `██████──── 58%` | Context window usage bar + percentage (rightmost) — shaded fill, cyan-to-red gradient |
+| `██████──── 58%` | Context window usage bar + percentage — shaded fill, cyan-to-red gradient |
+| `1h23m` | Session duration — resets when Claude Code restarts (tracked via parent PID) |
 
 ### Line 2
 
 | Section | Description |
 |---------|-------------|
-| `main` | Git branch (omitted if not in a git repo) |
+| `main +3` | Git branch + dirty file count in copper (count hidden when clean; omitted entirely if not a git repo) |
 | `F:/Claude/...` | Working directory — full path up to 75 chars, then truncated |
 
 The account prefix lets you tell at a glance which account a Claude Code session is signed into when you run multiple accounts side-by-side via `CLAUDE_CONFIG_DIR`. The script reads `emailAddress` from `.claude.json` (checking both inside `CLAUDE_CONFIG_DIR` and one level up) and falls back silently if no email is found.
