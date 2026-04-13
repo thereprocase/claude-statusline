@@ -2,7 +2,7 @@
 # Claude Code rainbow status line
 # https://github.com/thereprocase/claude-statusline
 
-PYTHONIOENCODING=utf-8 python -c "
+PYTHONIOENCODING=utf-8 python3 -c "
 import sys, json, os, re, tempfile, random, subprocess
 from datetime import datetime, timedelta
 

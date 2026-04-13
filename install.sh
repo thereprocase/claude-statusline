@@ -13,7 +13,7 @@ echo "Installed statusline-command.sh to ${DEST}"
 
 # Update settings.json
 if [ -f "${SETTINGS}" ]; then
-    if python -c "
+    if python3 -c "
 import json, sys
 with open('${SETTINGS}') as f: s = json.load(f)
 s['statusLine'] = {'type': 'command', 'command': 'bash ~/.claude/statusline-command.sh'}
