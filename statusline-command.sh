@@ -375,6 +375,22 @@ if used_pct is not None:
         pct_str = corrupt_text(pct_str, corruption * 0.4)
     parts.append(f'{bar}{overflow} {pc}{pct_str}{R}')
 
+# ── Session duration (end of line 1) ────────────────────────────────────────
+_ppid = str(os.getppid())
+_sess_start = state.get('session_start', {})
+if _sess_start.get('pid') != _ppid:
+    _sess_start = {'pid': _ppid, 'ts': datetime.now().timestamp()}
+    state['session_start'] = _sess_start
+    state_dirty = True
+_elapsed = datetime.now().timestamp() - _sess_start.get('ts', datetime.now().timestamp())
+if _elapsed >= 3600:
+    _dur = f'{int(_elapsed // 3600)}h{int(_elapsed % 3600 // 60)}m'
+elif _elapsed >= 60:
+    _dur = f'{int(_elapsed // 60)}m'
+else:
+    _dur = f'{int(_elapsed)}s'
+parts.append(f'{DIM}{_dur}{R}')
+
 # ── Log rotation (keep 2 months) ────────────────────────────────────────────
 try:
     if os.path.exists(log_file) and os.path.getsize(log_file) > 4096:
@@ -438,10 +454,24 @@ if cwd:
         truncated = prefix + ''.join(tail_parts)
         path_line = f'{DIM}{truncated}{R}'
 
+_dirty = 0
+try:
+    _gs = subprocess.check_output(
+        ['git', 'status', '--porcelain'],
+        cwd=cwd or None, stderr=subprocess.DEVNULL, timeout=2
+    ).decode().strip()
+    _dirty = len(_gs.splitlines()) if _gs else 0
+except Exception:
+    pass
+
 line2_parts = []
 if _br:
     _bc = fg(S['aqualogic'])
-    line2_parts.append(f'{DIM}{_bc}{_br}{R}')
+    if _dirty:
+        _dc = fg(S['interstellar'])
+        line2_parts.append(f'{DIM}{_bc}{_br} {_dc}+{_dirty}{R}')
+    else:
+        line2_parts.append(f'{DIM}{_bc}{_br}{R}')
 if path_line:
     line2_parts.append(path_line)
 line2 = SEP.join(line2_parts)
