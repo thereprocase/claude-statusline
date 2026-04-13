@@ -9,8 +9,8 @@ A colorful, information-dense status line for [Claude Code](https://claude.ai/co
 Two lines. Line 1 is the dashboard, line 2 is where you are.
 
 ```
-Bob │ Op4.6 1M │ max │ 5h 7%8p │ 7d 52%fr11a │ ██████──── 58% │ 1h23m
-main +3 │ F:/Claude/products/fieldLog
+Bob │ Op4.6 1M │ max │ 5h 7%@8p │ 7d 52%@fr11a │ ██████──── 58% │ 1h23m
+main +3 │ D:/ClauDe/orca/orca-dev
 ```
 
 ### Line 1
@@ -20,8 +20,8 @@ main +3 │ F:/Claude/products/fieldLog
 | `Bob` | First 3 chars of the active Claude account email — each char gets a unique color from a 43-color palette derived from the SHIFT + buddy palettes |
 | `Op4.6 1M` | Model abbreviation + context window size — bold tier color (Opus violet, Sonnet blue, Haiku lime; 1M brighter than 200k) |
 | `max` | Effort level (shown only if exposed in statusline data) |
-| `5h 7%8p` | 5-hour rate limit % + reset time hint |
-| `7d 52%fr11a` | 7-day rate limit % + reset time hint |
+| `5h 7%@8p` | 5-hour rate limit % + reset time hint |
+| `7d 52%@fr11a` | 7-day rate limit % + reset time hint |
 | `██████──── 58%` | Context window usage bar + percentage — shaded fill, cyan-to-red gradient |
 | `1h23m` | Session duration — resets on `/clear` or new session |
 
@@ -39,7 +39,7 @@ The account prefix lets you tell at a glance which account a Claude Code session
 Paths under 75 characters are shown in full. Longer paths truncate to:
 
 ```
-F:/Cl.../products/fieldLog/src/components
+D:/Cl.../orca/orca-dev/src/libslic3r/Arrange
 ```
 
 The format is `{drive}:/{first-2-chars}.../{trailing segments}`, filling from the right until the 75-character budget is spent.
