@@ -110,6 +110,43 @@ class TestAbbreviateModel(unittest.TestCase):
     def test_long_sonnet_4_0(self):
         self.assertEqual(core._abbreviate_model('claude-sonnet-4-0', 'Claude Sonnet 4', 'long'), 'Sonnet 4')
 
+    # ── short format: programmatically-derived future versions ──────────────
+    # These aren't in any hardcoded table — they're parsed from the model id.
+
+    def test_short_opus_4_7(self):
+        self.assertEqual(core._abbreviate_model('claude-opus-4-7', 'Claude Opus 4.7', 'short'), 'Op47')
+
+    def test_short_opus_4_7_with_context_suffix(self):
+        self.assertEqual(core._abbreviate_model('claude-opus-4-7[1m]', 'Claude Opus 4.7', 'short'), 'Op47')
+
+    def test_short_future_opus_5_0(self):
+        # minor=0 drops the zero: Op5, not Op50
+        self.assertEqual(core._abbreviate_model('claude-opus-5-0', 'Claude Opus 5', 'short'), 'Op5')
+
+    def test_short_future_sonnet_5_3(self):
+        self.assertEqual(core._abbreviate_model('claude-sonnet-5-3', 'Claude Sonnet 5.3', 'short'), 'Sn53')
+
+    def test_short_future_haiku_5_0(self):
+        self.assertEqual(core._abbreviate_model('claude-haiku-5-0', 'Claude Haiku 5', 'short'), 'Hk5')
+
+    def test_short_future_haiku_5_1_with_date_suffix(self):
+        self.assertEqual(core._abbreviate_model('claude-haiku-5-1-20271015', 'Claude Haiku 5.1', 'short'), 'Hk51')
+
+    # ── long format: programmatically-derived future versions ───────────────
+
+    def test_long_opus_4_7(self):
+        self.assertEqual(core._abbreviate_model('claude-opus-4-7', 'Claude Opus 4.7', 'long'), 'Opus 4.7')
+
+    def test_long_future_opus_5_0(self):
+        # minor=0 drops to bare major: 'Opus 5', not 'Opus 5.0'
+        self.assertEqual(core._abbreviate_model('claude-opus-5-0', 'Claude Opus 5', 'long'), 'Opus 5')
+
+    def test_long_future_sonnet_5_3(self):
+        self.assertEqual(core._abbreviate_model('claude-sonnet-5-3', 'Claude Sonnet 5.3', 'long'), 'Sonnet 5.3')
+
+    def test_long_future_haiku_5_0(self):
+        self.assertEqual(core._abbreviate_model('claude-haiku-5-0', 'Claude Haiku 5', 'long'), 'Haiku 5')
+
     # ── full format: returns display_name verbatim ───────────────────────────
 
     def test_full_returns_display_name(self):
@@ -120,30 +157,46 @@ class TestAbbreviateModel(unittest.TestCase):
         display = 'Claude Future 9.9 (beta)'
         self.assertEqual(core._abbreviate_model('claude-future-9-9', display, 'full'), display)
 
-    # ── short format: unknown model falls back to truncated display_name ─────
+    # ── unknown family: parsed from model id (first 2 chars capitalized) ────
 
-    def test_short_unknown_strips_claude_prefix(self):
-        # display_name 'Claude Future 9.9 (beta)' → strip 'Claude ' → 'Future 9.9 (beta)'
-        # remove parens → 'Future 9.9' → [:5] → 'Futur'
+    def test_short_unknown_family_mythos(self):
+        # Hypothetical new family — no code change needed
+        result = core._abbreviate_model('claude-mythos-5-1', 'Claude Mythos 5.1', 'short')
+        self.assertEqual(result, 'My51')
+
+    def test_long_unknown_family_mythos(self):
+        result = core._abbreviate_model('claude-mythos-5-1', 'Claude Mythos 5.1', 'long')
+        self.assertEqual(result, 'Mythos 5.1')
+
+    def test_short_unknown_family_minor_zero_drops(self):
+        result = core._abbreviate_model('claude-mythos-5-0', 'Claude Mythos 5', 'short')
+        self.assertEqual(result, 'My5')
+
+    def test_long_unknown_family_minor_zero_drops(self):
+        result = core._abbreviate_model('claude-mythos-5-0', 'Claude Mythos 5', 'long')
+        self.assertEqual(result, 'Mythos 5')
+
+    def test_short_unknown_family_future(self):
+        # Old test expected 'Futur' via display-name truncation; new behavior
+        # parses the id directly → 'Fu99'. Programmatic is better.
         result = core._abbreviate_model('claude-future-9-9', 'Claude Future 9.9 (beta)', 'short')
-        self.assertEqual(result, 'Futur')
+        self.assertEqual(result, 'Fu99')
 
-    def test_short_unknown_no_claude_prefix_in_display(self):
-        # display_name already has no 'Claude ' prefix
-        result = core._abbreviate_model('some-other-model', 'GPT Nano', 'short')
-        # re.sub does not match, strip parenthetical → 'GPT Nano' → [:5] → 'GPT N'
-        self.assertEqual(result, 'GPT N')
-
-    def test_short_unknown_strips_parenthetical(self):
-        # 'Claude Beta (preview)' → 'Beta (preview)' → 'Beta' → 'Beta'
-        result = core._abbreviate_model('claude-beta-1-0', 'Claude Beta (preview)', 'short')
-        self.assertEqual(result, 'Beta')
-
-    # ── long format: unknown model fallback ──────────────────────────────────
-
-    def test_long_unknown_strips_claude_prefix(self):
+    def test_long_unknown_family_future(self):
         result = core._abbreviate_model('claude-future-9-9', 'Claude Future 9.9 (beta)', 'long')
         self.assertEqual(result, 'Future 9.9')
+
+    # ── malformed id: falls through to display-name parsing ──────────────────
+
+    def test_short_malformed_id_uses_display_name(self):
+        # id doesn't match claude-<family>-<M>-<N> shape at all
+        result = core._abbreviate_model('some-other-model', 'GPT Nano', 'short')
+        self.assertEqual(result, 'GPT N')
+
+    def test_short_malformed_id_strips_parenthetical(self):
+        # 'claude-beta' without a version — doesn't match → display-name fallback
+        result = core._abbreviate_model('claude-beta', 'Claude Beta (preview)', 'short')
+        self.assertEqual(result, 'Beta')
 
     # ── empty / None edge cases ──────────────────────────────────────────────
 
@@ -835,6 +888,10 @@ class TestBuildContext(unittest.TestCase):
 
     def test_model_family_opus(self):
         ctx = self._call(_minimal_data(model={'id': 'claude-opus-4-6', 'display_name': 'Claude Opus 4.6'}))
+        self.assertEqual(ctx['model_family'], 'opus')
+
+    def test_model_family_opus_4_7(self):
+        ctx = self._call(_minimal_data(model={'id': 'claude-opus-4-7', 'display_name': 'Claude Opus 4.7'}))
         self.assertEqual(ctx['model_family'], 'opus')
 
     def test_model_family_haiku(self):
