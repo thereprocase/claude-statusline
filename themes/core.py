@@ -153,31 +153,49 @@ def fmt_reset_long(epoch, day_only=False, uppercase=False):
     return time_s
 
 # ── Model abbreviation ──────────────────────────────────────────────────────
-_SHORT = {
-    'claude-opus-4-6': 'Op46', 'claude-opus-4-5': 'Op45',
-    'claude-sonnet-4-6': 'Sn46', 'claude-sonnet-4-5': 'Sn45', 'claude-sonnet-4-0': 'Sn4',
-    'claude-haiku-4-5': 'Hk45', 'claude-haiku-3-5': 'Hk35',
+# Parse `claude-<family>-<major>-<minor>` programmatically so new versions
+# (opus-4-7, sonnet-5-0) and even new families (e.g. mythos) render without
+# code changes. Known families get a curated 2-char prefix; unknown families
+# derive one from their name.
+_FAMILY_MAP = {
+    'opus':   ('Op', 'Opus'),
+    'sonnet': ('Sn', 'Sonnet'),
+    'haiku':  ('Hk', 'Haiku'),
 }
-_LONG = {
-    'claude-opus-4-6': 'Opus 4.6', 'claude-opus-4-5': 'Opus 4.5',
-    'claude-sonnet-4-6': 'Sonnet 4.6', 'claude-sonnet-4-5': 'Sonnet 4.5', 'claude-sonnet-4-0': 'Sonnet 4',
-    'claude-haiku-4-5': 'Haiku 4.5', 'claude-haiku-3-5': 'Haiku 3.5',
-}
+_MODEL_RE = re.compile(r'^claude-([a-z]+)-(\d+)-(\d+)')
 
 def _abbreviate_model(model_id, display_name, fmt):
-    """Return model name in requested format: 'short', 'long', or 'full'."""
+    """Return model name in requested format: 'short', 'long', or 'full'.
+
+    Derives short/long names from the model id via regex, so any future
+    `claude-<family>-<major>-<minor>` id works without a patch. Convention:
+    when minor is 0, drop it (`Sn4`, `Sonnet 4` — not `Sn40`/`Sonnet 4.0`).
+    For unknown families the short prefix is the first two letters of the
+    family name capitalized (e.g. mythos → `My51`, `Mythos 5.1`).
+    """
     if fmt == 'full':
         return display_name
-    table = _SHORT if fmt == 'short' else _LONG
-    for prefix, short in table.items():
-        if model_id.startswith(prefix):
-            return short
-    # Fallback
-    m = re.sub(r'^Claude\s+', '', display_name)
-    m = re.sub(r'\s*\(.*?\)', '', m).strip()
+
+    m = _MODEL_RE.match(model_id) if model_id else None
+    if m:
+        family, major, minor = m.group(1), m.group(2), m.group(3)
+        if family in _FAMILY_MAP:
+            short_prefix, long_name = _FAMILY_MAP[family]
+        else:
+            short_prefix = family[:2].capitalize() if family else '??'
+            long_name = family.capitalize() if family else 'Claude'
+        if minor == '0':
+            return f'{short_prefix}{major}' if fmt == 'short' else f'{long_name} {major}'
+        if fmt == 'short':
+            return f'{short_prefix}{major}{minor}'
+        return f'{long_name} {major}.{minor}'
+
+    # Malformed id — fall back to parsing the display name
+    name = re.sub(r'^Claude\s+', '', display_name)
+    name = re.sub(r'\s*\(.*?\)', '', name).strip()
     if fmt == 'short':
-        return m[:5]
-    return m
+        return name[:5]
+    return name
 
 # ── Account discovery ───────────────────────────────────────────────────────
 _cached_account = None  # account never changes within a process lifetime
@@ -548,9 +566,14 @@ def build_context(data=None):
     model_display = data.get('model', {}).get('display_name', 'Claude')
     model_id = data.get('model', {}).get('id', '')
 
-    if   'opus'   in model_id: model_family = 'opus'
-    elif 'haiku'  in model_id: model_family = 'haiku'
-    else:                       model_family = 'sonnet'
+    # Extract family from `claude-<family>-<major>-<minor>` so unknown
+    # families (e.g. mythos) flow through instead of being forced to sonnet.
+    _fm = _MODEL_RE.match(model_id) if model_id else None
+    if _fm:
+        model_family = _fm.group(1)
+    elif 'opus'  in model_id: model_family = 'opus'
+    elif 'haiku' in model_id: model_family = 'haiku'
+    else:                     model_family = 'sonnet'
 
     cw = data.get('context_window', {})
     used_pct = cw.get('used_percentage')
