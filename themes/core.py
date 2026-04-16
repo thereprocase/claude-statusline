@@ -204,7 +204,7 @@ def _collect_git(cwd):
         'branch': '', 'detached': False, 'dirty': 0,
         'ahead': 0, 'behind': 0, 'stash': 0,
         'remote_short': '', 'worktree': '',
-        'operation': '',
+        'operation': '', 'repo_name': '',
     }
 
     def _run(args):
@@ -225,6 +225,11 @@ def _collect_git(cwd):
         br = sha or br
     git['branch'] = br
     git['detached'] = det
+
+    # Repo name from toplevel directory
+    toplevel = _run(['git', 'rev-parse', '--show-toplevel'])
+    if toplevel:
+        git['repo_name'] = os.path.basename(os.path.normpath(toplevel))
 
     # Remote tracking
     if br and not det:

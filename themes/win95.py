@@ -89,10 +89,13 @@ def render(ctx):
     if git['worktree']:
         l2.append(f'{fg(GRAY)}[{git["worktree"]}]{R}')
     if git['branch']:
+        br_label = git['branch']
+        if git['repo_name']:
+            br_label = f'{git["repo_name"]}/{br_label}'
         if git['detached']:
-            l2.append(f'{fg(WIN_RED)}{git["branch"]} det{R}')
+            l2.append(f'{fg(WIN_RED)}{br_label} det{R}')
         else:
-            l2.append(f'{fg(WHITE)}{git["branch"]}{R}')
+            l2.append(f'{fg(WHITE)}{br_label}{R}')
         if git['remote_short']:
             l2.append(f'{fg(DK_GRAY)}\u2192{git["remote_short"]}{R}')
         ab = ''
