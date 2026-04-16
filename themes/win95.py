@@ -53,7 +53,7 @@ def _win95_rl(rl, theme):
     """Win95 rate limit with threshold-based status color."""
     pct = rl['pct']
     if pct is None:
-        return f'{fg(DK_GRAY)}{rl["label"]} --{R}'
+        return ''
     sc = _status_color(pct)
     ts = rl['reset_str']
     if ts:

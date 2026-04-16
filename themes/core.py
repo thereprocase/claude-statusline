@@ -679,6 +679,28 @@ def _std_bar(used_pct, theme):
     return f'{bar}  {fg(pc)}{pct_s}{R}'
 
 
+def _phosphor_rl(rl, theme):
+    """Rate limit formatting for phosphor CRT themes."""
+    colors = theme['colors']
+    xf = theme.get('text_xform')
+    label = rl['label']
+    pct = rl['pct']
+    if xf:
+        label = xf(label)
+    if pct is None:
+        return ''
+    if pct >= 80:   ic = colors['bar_bright']
+    elif pct >= 50: ic = colors['bar_normal']
+    elif pct >= 20: ic = colors['bar_dim']
+    else:           ic = colors['bar_faint']
+    ts = rl['reset_str']
+    if xf and ts:
+        ts = xf(ts)
+    if ts:
+        return f'{fg(colors["rl_label"])}{label} {fg(ic)}{pct}%{fg(colors["rl_reset"])}@{ts}{R}'
+    return f'{fg(colors["rl_label"])}{label} {fg(ic)}{pct}%{R}'
+
+
 def _phosphor_bar(used_pct, theme):
     """Phosphor CRT bar: 3-level intensity fill with position-based brightness.
 
@@ -711,28 +733,6 @@ def _phosphor_bar(used_pct, theme):
     return f'{bar}  {fg(pc)}{pct_s}{R}'
 
 
-def _phosphor_rl(rl, theme):
-    """Rate limit formatting for phosphor CRT themes."""
-    colors = theme['colors']
-    xf = theme.get('text_xform')
-    label = rl['label']
-    pct = rl['pct']
-    if xf:
-        label = xf(label)
-    if pct is None:
-        return f'{fg(colors["rl_null"])}{label} --{R}'
-    if pct >= 80:   ic = colors['bar_bright']
-    elif pct >= 50: ic = colors['bar_normal']
-    elif pct >= 20: ic = colors['bar_dim']
-    else:           ic = colors['bar_faint']
-    ts = rl['reset_str']
-    if xf and ts:
-        ts = xf(ts)
-    if ts:
-        return f'{fg(colors["rl_label"])}{label} {fg(ic)}{pct}%{fg(colors["rl_reset"])}@{ts}{R}'
-    return f'{fg(colors["rl_label"])}{label} {fg(ic)}{pct}%{R}'
-
-
 def _std_rl(rl, theme):
     """Default rate limit entry formatting."""
     colors = theme['colors']
@@ -743,7 +743,7 @@ def _std_rl(rl, theme):
     if xf:
         label = xf(label)
     if pct is None:
-        return f'{fg(colors["rl_null"])}{label} --{R}'
+        return ''
     rc = _std_grad_color(pct, rl_grad)
     ts = rl['reset_str']
     if xf and ts:
@@ -794,10 +794,12 @@ def render_standard(ctx, theme):
         bar_fn = theme.get('bar_fn', _std_bar)
         parts.append(bar_fn(used_pct, theme))
 
-    # Rate limits
+    # Rate limits — formatters return '' for windows with no data (e.g. Sonnet has no 5h window)
     rl_fn = theme.get('rl_fn', _std_rl)
     for rl in ctx['rate_limits']:
-        parts.append(rl_fn(rl, theme))
+        s = rl_fn(rl, theme)
+        if s:
+            parts.append(s)
 
     # Session duration
     dur = xf(ctx['session_dur']) if xf else ctx['session_dur']

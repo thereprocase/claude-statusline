@@ -160,7 +160,6 @@ def render(ctx):
         label = rl['label']
         pct = rl['pct']
         if pct is None:
-            parts.append(f'{DIM}{label} --{R}')
             continue
         rc = fg(GRADIENT[_gradient_color(pct)])
         ts = rl['reset_str']

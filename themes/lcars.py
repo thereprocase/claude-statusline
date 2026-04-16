@@ -98,7 +98,6 @@ def render(ctx):
         label = rl['label'].upper()
         pct = rl['pct']
         if pct is None:
-            parts.append(f'{fg(EGGPLANT)}{label} {DIM}--{R}')
             continue
         rc = _grad_color(pct, RL_GRADIENT)
         ts = rl['reset_str'].upper() if rl['reset_str'] else ''
