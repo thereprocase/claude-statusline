@@ -4,8 +4,8 @@
 import subprocess, json, os, time, tempfile, shutil
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-# Use forward slashes — bash can't handle Windows backslash paths
-SCRIPT = os.path.join(SCRIPT_DIR, 'statusline-command.sh').replace('\\', '/')
+
+THEMES_DIR = os.path.join(SCRIPT_DIR, 'themes')
 OUT_DIR = os.path.join(SCRIPT_DIR, 'images')
 
 SCENARIOS = [
@@ -37,15 +37,32 @@ def make_payload(pct):
 
 
 def get_ansi_output(pct, env_override=None):
-    env = {**os.environ, 'PYTHONIOENCODING': 'utf-8'}
+    env = {**os.environ, 'PYTHONIOENCODING': 'utf-8',
+           'HOME': os.path.expanduser('~')}  # ensure bash sees Windows home
     if env_override:
         env.update(env_override)
+    theme_name = env_override.get('STATUSLINE_THEME', '') if env_override else ''
+    if not theme_name:
+        theme_file = os.path.join(os.path.expanduser('~'), '.claude', 'statusline-theme')
+        try:
+            with open(theme_file) as f:
+                theme_name = f.read().strip() or 'buddy'
+        except FileNotFoundError:
+            theme_name = 'buddy'
     result = subprocess.run(
-        ['bash', SCRIPT],
+        ['python3', '-c',
+         'import sys,importlib;'
+         f'sys.path.insert(0,r"{THEMES_DIR}");'
+         'from core import build_context;'
+         f'mod=importlib.import_module("{theme_name}");'
+         'ctx=build_context();print(mod.render(ctx),end="")'],
         input=make_payload(pct).encode('utf-8'),
         capture_output=True,
         env=env,
     )
+    if result.returncode != 0:
+        import sys
+        print(f"  WARN: render failed for {theme_name}: {result.stderr.decode()[:200]}", file=sys.stderr)
     return result.stdout.decode('utf-8')
 
 
