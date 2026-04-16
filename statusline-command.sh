@@ -4,8 +4,8 @@
 
 CLAUDE_DIR="${HOME}/.claude"
 THEME_FILE="${CLAUDE_DIR}/statusline-theme"
-# Use bash builtin to avoid a cat fork; fall back to buddy (not rainbow)
-THEME=$(<"$THEME_FILE" 2>/dev/null) || THEME="buddy"
+# $(<file 2>/dev/null) silently returns empty on some bash builds (MINGW, older GNU)
+THEME=$(cat "$THEME_FILE" 2>/dev/null) || THEME="buddy"
 THEME="${THEME:-buddy}"
 
 # Pass all values via environment so no shell interpolation enters Python source.
