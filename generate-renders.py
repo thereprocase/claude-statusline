@@ -25,7 +25,7 @@ def make_payload(pct):
     return json.dumps({
         "model": {"display_name": "Claude Opus 4.6", "id": "claude-opus-4-6-20250414"},
         "context_window": {"used_percentage": pct, "context_window_size": 1000000},
-        "cwd": "D:/ClauDe/tools/claude-statusline",
+        "cwd": "/home/user/projects/claude-statusline",
         "session_id": SESSION_ID,
         "effort": "max",
         "rate_limits": {
