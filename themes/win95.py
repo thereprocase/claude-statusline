@@ -108,8 +108,16 @@ def render(ctx):
     if path:
         l2.append(f'{fg(SILVER)}{path}{R}')
 
-    # Address bar prefix
-    prefix = f'{fg(GRAY)}C:\\>{R} '
+    # Address bar prefix — derive drive letter from cwd when possible
+    _cwd = ctx.get('cwd', '')
+    if len(_cwd) >= 2 and _cwd[1] == ':':
+        _drive = _cwd[0].upper()
+    elif _cwd.startswith('/') and len(_cwd) >= 3 and _cwd[2] == '/':
+        # Git Bash /c/... style
+        _drive = _cwd[1].upper()
+    else:
+        _drive = 'C'
+    prefix = f'{fg(GRAY)}{_drive}:\\>{R} '
     line2 = prefix + ' '.join(l2) if l2 else ''
 
     return f'{line1}\n{line2}' if line2 else line1

@@ -237,6 +237,9 @@ def _collect_git(cwd):
                 git['remote_short'] = f'{hs}:{own}' if rbr == br else f'{hs}:{own}#{rbr}'
             else:
                 git['remote_short'] = rem if rbr == br else ups
+        else:
+            # No upstream configured — signal "local only" so themes can display it
+            git['remote_short'] = 'local'
 
         # Ahead/behind
         ab = _run(['git', 'rev-list', '--left-right', '--count', 'HEAD...@{upstream}'])
