@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+PYTHON=python3
+command -v python3 >/dev/null 2>&1 || PYTHON=python
+
 CLAUDE_DIR="${HOME}/.claude"
 SETTINGS="${CLAUDE_DIR}/settings.json"
 
@@ -14,7 +17,7 @@ echo "Removed statusline files."
 
 if [ -f "${SETTINGS}" ]; then
     # Atomic write via tempfile; path passed via env to avoid shell interpolation
-    SETTINGS_PATH="${SETTINGS}" python3 -c '
+    SETTINGS_PATH="${SETTINGS}" "$PYTHON" -c '
 import json, os, tempfile
 path = os.environ["SETTINGS_PATH"]
 with open(path) as f:
