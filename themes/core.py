@@ -574,7 +574,15 @@ def build_context(data=None):
     state_lost = len(state) == 0
     rebuilt = _rebuild_logged_windows(LOG_FILE, model_family) if state_lost else None
 
-    # Rate limits
+    # Rate limits — cache in state so models that don't report (Sonnet) still show the shared pools
+    rl_raw = data.get('rate_limits', {})
+    if rl_raw:
+        state['_cached_rate_limits'] = rl_raw
+        state_dirty = True
+    else:
+        rl_raw = state.get('_cached_rate_limits', {})
+        if rl_raw:
+            data = {**data, 'rate_limits': rl_raw}
     rate_limits, rl_dirty = _process_rate_limits(data, model_family, state, state_lost, rebuilt, config)
     state_dirty = state_dirty or rl_dirty
 
