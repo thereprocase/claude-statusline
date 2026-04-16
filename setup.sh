@@ -36,7 +36,7 @@ if [ -f "$CONFIG_FILE" ]; then
 fi
 
 # ── Sample data for previews ────────────────────────────────────────────────
-SAMPLE='{"model":{"display_name":"Claude Opus 4.6","id":"claude-opus-4-6-20250415"},"context_window":{"used_percentage":42.0,"context_window_size":1000000},"cwd":"/mnt/f/claude/products/fieldLog","rate_limits":{"five_hour":{"used_percentage":38},"seven_day":{"used_percentage":15}},"session_id":"setup-preview"}'
+SAMPLE='{"model":{"display_name":"Claude Opus 4.6","id":"claude-opus-4-6-20250415"},"context_window":{"used_percentage":42.0,"context_window_size":1000000},"cwd":"/home/user/projects/my-app","rate_limits":{"five_hour":{"used_percentage":38},"seven_day":{"used_percentage":15}},"session_id":"setup-preview"}'
 
 show_sample() {
     local theme="$1"
@@ -58,24 +58,56 @@ echo ""
 echo "Here are your theme options:"
 echo ""
 
+# Curated presentation order
+TOP5=(buddy monochrome amber dracula lcars)
+REST=(catppuccin rainbow outrun ibm3278 c64 win95 teletext matrix skittles)
+
 declare -A DESCRIPTIONS
-DESCRIPTIONS[rainbow]="The original. Smooth gradients, corruption glitch at high context."
-DESCRIPTIONS[lcars]="Star Trek TNG. Solid colored pill chips, panel bars, all uppercase."
+DESCRIPTIONS[buddy]="Claude's own colors. The /buddy sunset gradient. (default)"
 DESCRIPTIONS[monochrome]="Grayscale. Clean, no color, no nonsense."
-DESCRIPTIONS[skittles]="Every character a different candy color. Unhinged."
+DESCRIPTIONS[amber]="Amber phosphor CRT. That warm golden terminal glow."
+DESCRIPTIONS[dracula]="The beloved dark palette. Purple, pink, cyan, green."
+DESCRIPTIONS[lcars]="Star Trek TNG. Solid colored pill chips, panel bars."
+DESCRIPTIONS[catppuccin]="Catppuccin Mocha. Warm pastels, cozy vibes."
+DESCRIPTIONS[rainbow]="The original. Smooth gradients, corruption glitch at high context."
 DESCRIPTIONS[outrun]="Synthwave. Hot pink, electric cyan, chrome, neon purple."
 DESCRIPTIONS[ibm3278]="Green phosphor CRT. Four intensity levels. Mainframe vibes."
+DESCRIPTIONS[c64]="Commodore 64. Light blue on dark blue. READY."
+DESCRIPTIONS[win95]="Windows 95. Teal title bars, silver bevels, that gray."
+DESCRIPTIONS[teletext]="Ceefax/Oracle. Blocky colored headers. Page 100."
+DESCRIPTIONS[matrix]="Digital rain. Green katakana code. There is no spoon."
+DESCRIPTIONS[skittles]="Every character a different candy color. Unhinged."
 
-for theme in "${THEMES[@]}"; do
-    current_marker=""
-    [[ "$theme" == "$CURRENT_THEME" ]] && current_marker=" $(dim '(current)')"
-    echo "  $(bold "$theme")${current_marker}"
-    echo "  ${DESCRIPTIONS[$theme]:-No description.}"
+show_theme_list() {
+    local themes=("$@")
+    for theme in "${themes[@]}"; do
+        # Skip if theme file doesn't exist
+        [ ! -f "${SCRIPT_DIR}/themes/${theme}.py" ] && continue
+        current_marker=""
+        [[ "$theme" == "$CURRENT_THEME" ]] && current_marker=" $(dim '(current)')"
+        echo "  $(bold "$theme")${current_marker}"
+        echo "  ${DESCRIPTIONS[$theme]:-No description.}"
+        echo ""
+    done
+}
+
+show_theme_list "${TOP5[@]}"
+echo "  $(dim '... more themes available')"
+echo ""
+
+read -rp "Which theme, or 'more' to see all? [${CURRENT_THEME:-buddy}]: " THEME_CHOICE
+
+if [[ "$THEME_CHOICE" == "more" ]]; then
     echo ""
-done
+    show_theme_list "${TOP5[@]}"
+    echo "  $(bold '── more ──')"
+    echo ""
+    show_theme_list "${REST[@]}"
 
-read -rp "Which theme? [${CURRENT_THEME:-rainbow}]: " THEME_CHOICE
-THEME_CHOICE="${THEME_CHOICE:-${CURRENT_THEME:-rainbow}}"
+    read -rp "Which theme? [${CURRENT_THEME:-buddy}]: " THEME_CHOICE
+fi
+
+THEME_CHOICE="${THEME_CHOICE:-${CURRENT_THEME:-buddy}}"
 
 # Validate
 if [ ! -f "${SCRIPT_DIR}/themes/${THEME_CHOICE}.py" ]; then
@@ -85,12 +117,13 @@ fi
 echo "$THEME_CHOICE" > "$THEME_FILE"
 
 echo ""
-echo "Want to see all themes side by side before committing? (y/N): "
+echo "Want to see previews? (y/N): "
 read -rn1 PREVIEW
 echo ""
 if [[ "$PREVIEW" =~ [yY] ]]; then
     echo ""
-    for theme in "${THEMES[@]}"; do
+    for theme in "${TOP5[@]}" "${REST[@]}"; do
+        [ ! -f "${SCRIPT_DIR}/themes/${theme}.py" ] && continue
         marker=""
         [[ "$theme" == "$THEME_CHOICE" ]] && marker=" <--"
         echo "  [${theme}]${marker}"

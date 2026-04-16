@@ -6,16 +6,24 @@ A colorful, information-dense, themeable status line for [Claude Code](https://c
 
 ## Themes
 
-Six built-in themes. Switch anytime — no reinstall needed.
+14 built-in themes. Switch anytime — no reinstall needed.
 
 | Theme | Description |
 |-------|-------------|
-| `rainbow` | The original. Sherwin-Williams SHIFT palette, corruption glitch effects past 55% context. |
-| `lcars` | Star Trek TNG. Solid colored pill chips, eggplant panel bars, everything uppercase. |
-| `monochrome` | Grayscale only. Clean, professional, no color. |
-| `skittles` | Every character a different candy color. Stars for separators. Unhinged. |
-| `outrun` | Synthwave. Hot pink, electric cyan, chrome, neon purple, sunset gradients. |
-| `ibm3278` | Green phosphor CRT. Four intensity levels, `==>` prompt. Mainframe vibes. |
+| `buddy` | Claude's own colors. The /buddy sunset gradient. **(default)** |
+| `monochrome` | Grayscale. Clean, no color, no nonsense. |
+| `amber` | Amber phosphor CRT. That warm golden terminal glow. |
+| `dracula` | The beloved dark palette. Purple, pink, cyan, green. |
+| `lcars` | Star Trek TNG. Solid colored pill chips, panel bars. |
+| `catppuccin` | Catppuccin Mocha. Warm pastels, cozy vibes. |
+| `rainbow` | The original. Smooth gradients, corruption glitch at high context. |
+| `outrun` | Synthwave. Hot pink, electric cyan, chrome, neon purple. |
+| `ibm3278` | Green phosphor CRT. Four intensity levels. Mainframe vibes. |
+| `c64` | Commodore 64. Light blue on dark blue. READY. |
+| `win95` | Windows 95. Teal title bars, silver bevels, that gray. |
+| `teletext` | Ceefax/Oracle. Blocky colored headers. Page 100. |
+| `matrix` | Digital rain. Green katakana code. There is no spoon. |
+| `skittles` | Every character a different candy color. Unhinged. |
 
 ## Install
 
@@ -38,7 +46,7 @@ bash setup.sh
 ```
 
 This walks you through:
-- **Theme** — pick from all available themes, with optional side-by-side previews
+- **Theme** — pick from the top 5, or type `more` to see all 14 with previews
 - **Model format** — `short` (`Op46`), `long` (`Opus 4.6`), or `full` (`Claude Opus 4.6`)
 - **User initials** — on/off (2-char account prefix chip)
 - **Date format** — `short` (`3p`, `th`) or `long` (`3:00pm`, `thu`)
@@ -81,15 +89,15 @@ Updates keep your current theme and config. All theme files are refreshed.
 Two lines. Line 1 is the dashboard, line 2 is where you are.
 
 ```
-kn │ Op46 1M │ ██████──── 42% │ 5h 38% │ 7d 15% │ 12m
-main →gl:owner │ /path/to/project
+ab │ Op46 1M │ ██████──── 42% │ 5h 38% │ 7d 15% │ 12m
+main →gh:user │ /home/user/projects/my-app
 ```
 
 ### Line 1
 
 | Section | Description |
 |---------|-------------|
-| `kn` | First 2 chars of the active Claude account email — styled per theme |
+| `ab` | First 2 chars of the active Claude account email — styled per theme |
 | `Op46 1M` | Model abbreviation + context window size — tier colored |
 | `██████──── 42%` | Context window usage bar + percentage |
 | `5h 38%` | 5-hour rate limit % (+ reset time when usage is high) |
@@ -101,11 +109,11 @@ main →gl:owner │ /path/to/project
 | Section | Description |
 |---------|-------------|
 | `main` | Git branch (styled per theme; omitted if not a git repo) |
-| `→gl:owner` | Remote tracking (host:owner format) |
+| `→gh:user` | Remote tracking (host:owner format) |
 | `▲3 ▼2` | Commits ahead/behind upstream |
 | `Δ7` | Dirty file count |
 | `⚑2` | Stash entries |
-| `/path/to/project` | Working directory — always prominent, never dimmed |
+| `/home/user/projects/my-app` | Working directory — always prominent, never dimmed |
 
 All git info is optional and gracefully hidden when not in a repo.
 
@@ -114,7 +122,7 @@ All git info is optional and gracefully hidden when not in a repo.
 Paths under 75 characters are shown in full. Longer paths truncate to:
 
 ```
-F:/Cl.../products/fieldLog/src/components
+/home/us.../projects/my-app/src/components
 ```
 
 ### Reset time format
@@ -154,18 +162,14 @@ As the context window fills past 55%, the rainbow theme's status bar progressive
 ```
 ~/.claude/
   statusline-command.sh     # 13-line bash dispatcher
-  statusline-theme          # plain text: "rainbow", "lcars", etc.
+  statusline-theme          # plain text: "buddy", "lcars", etc.
   statusline-config.json    # user preferences (model format, dates, etc.)
   statusline-state.json     # rate limit state between invocations
   rate-limit-log.jsonl      # threshold crossing log (auto-rotated)
   statusline/
     core.py                 # shared: parsing, storage, git, rate limits
-    rainbow.py              # rainbow theme renderer
-    lcars.py                # LCARS theme renderer
-    monochrome.py           # monochrome theme renderer
-    skittles.py             # skittles theme renderer
-    outrun.py               # outrun theme renderer
-    ibm3278.py              # IBM 3278 theme renderer
+    buddy.py                # buddy theme (default)
+    rainbow.py              # + 13 more theme renderers
 ```
 
 The dispatcher reads `statusline-theme`, imports the matching Python module, calls `render(ctx)`. Themes are single files with one function. Adding a theme = adding one `.py` file.

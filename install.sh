@@ -33,8 +33,8 @@ elif $IS_UPDATE; then
     echo "Keeping current theme: $THEME"
 else
     echo "Available themes: ${THEMES[*]}"
-    read -rp "Choose theme [rainbow]: " THEME
-    THEME="${THEME:-rainbow}"
+    read -rp "Choose theme [buddy]: " THEME
+    THEME="${THEME:-buddy}"
 fi
 
 # Validate
