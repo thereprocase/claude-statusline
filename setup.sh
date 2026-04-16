@@ -13,6 +13,10 @@ CONFIG_FILE="${CLAUDE_DIR}/statusline-config.json"
 bold() { printf '\033[1m%s\033[0m' "$1"; }
 dim()  { printf '\033[2m%s\033[0m' "$1"; }
 
+# Resolve python: prefer python3, fall back to python
+PYTHON=python3
+command -v python3 >/dev/null 2>&1 || PYTHON=python
+
 THEMES=()
 for f in "${SCRIPT_DIR}/themes/"*.py; do
     name=$(basename "$f" .py)
@@ -29,20 +33,18 @@ SHOW_USER="true"
 DATE_FMT="short"
 AUTO_HIDE="true"
 if [ -f "$CONFIG_FILE" ]; then
-    # Single python3 call reads all values; config path passed via env to avoid interpolation
-    _cfg=$(CONFIG_PATH="$CONFIG_FILE" python3 -c '
+    # Single python call reads all values; config path passed via env to avoid interpolation
+    _cfg=$(CONFIG_PATH="$CONFIG_FILE" "$PYTHON" -c '
 import json, os
 p = os.environ["CONFIG_PATH"]
-c = json.load(open(p))
+with open(p) as f:
+    c = json.load(f)
 print(c.get("model_format", "short"))
 print(str(c.get("show_user", True)).lower())
 print(c.get("date_format", "short"))
 print(str(c.get("auto_hide_reset", True)).lower())
 ' 2>/dev/null) && {
-        MODEL_FMT=$(sed -n '1p' <<< "$_cfg")
-        SHOW_USER=$(sed -n '2p' <<< "$_cfg")
-        DATE_FMT=$(sed -n '3p' <<< "$_cfg")
-        AUTO_HIDE=$(sed -n '4p' <<< "$_cfg")
+        IFS=$'\n' read -rd '' MODEL_FMT SHOW_USER DATE_FMT AUTO_HIDE <<< "$_cfg" || true
     }
 fi
 
@@ -230,7 +232,7 @@ if [[ ! "$SAVE" =~ [nN] ]]; then
     CFG_SHOW_USER="$SHOW_USER" \
     CFG_DATE_FMT="$DATE_FMT" \
     CFG_AUTO_HIDE="$AUTO_HIDE" \
-    python3 -c '
+    "$PYTHON" -c '
 import json, os, tempfile
 path      = os.environ["CFG_PATH"]
 model_fmt = os.environ["CFG_MODEL_FMT"]

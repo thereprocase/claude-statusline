@@ -5,7 +5,15 @@
 # CLI arg: ./install.sh <theme> to set theme without prompts.
 set -e
 
-command -v python3 >/dev/null 2>&1 || { echo "Error: python3 is required but not found in PATH"; exit 1; }
+# Resolve python: prefer python3, fall back to python
+PYTHON=python3
+if ! command -v python3 >/dev/null 2>&1; then
+    if command -v python >/dev/null 2>&1; then
+        PYTHON=python
+    else
+        echo "Error: python3 (or python) is required but not found in PATH"; exit 1
+    fi
+fi
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CLAUDE_DIR="${HOME}/.claude"
@@ -61,7 +69,7 @@ echo "Theme: $THEME"
 
 # Update settings.json — atomic write via tempfile to avoid partial reads on crash
 if [ -f "${SETTINGS}" ]; then
-    if SETTINGS_PATH="${SETTINGS}" python3 -c '
+    if SETTINGS_PATH="${SETTINGS}" "$PYTHON" -c '
 import json, os, tempfile
 path = os.environ["SETTINGS_PATH"]
 with open(path) as f:

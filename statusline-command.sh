@@ -4,14 +4,20 @@
 
 CLAUDE_DIR="${HOME}/.claude"
 THEME_FILE="${CLAUDE_DIR}/statusline-theme"
-# $(<file 2>/dev/null) silently returns empty on some bash builds (MINGW, older GNU)
+
+# Read theme; strip \r in case file has CRLF line endings
 THEME=$(cat "$THEME_FILE" 2>/dev/null) || THEME="buddy"
+THEME="${THEME%$'\r'}"
 THEME="${THEME:-buddy}"
+
+# Resolve python: prefer python3, fall back to python
+PYTHON=python3
+command -v python3 >/dev/null 2>&1 || PYTHON=python
 
 # Pass all values via environment so no shell interpolation enters Python source.
 # exec replaces this process; Python inherits stdin directly from the caller.
 STATUSLINE_THEME="$THEME" CLAUDE_DIR_PATH="$CLAUDE_DIR" PYTHONIOENCODING=utf-8 \
-    exec python3 -c '
+    exec "$PYTHON" -c '
 import os, sys, importlib
 theme_name = os.environ["STATUSLINE_THEME"]
 claude_dir = os.environ["CLAUDE_DIR_PATH"]
