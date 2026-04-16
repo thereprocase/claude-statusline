@@ -616,3 +616,257 @@ def build_context(data=None):
         'git': git,
         'config': config,
     }
+
+
+# ── Standard render ────────────────────────────────────────────────────────
+#
+# Shared two-line statusline layout used by themes with the standard structure.
+# Themes supply a config dict describing colors, gradients, separators, and
+# optional hooks for the pieces that differ.
+#
+# Required theme config keys:
+#   sep          - separator string between line 1 parts
+#   colors       - dict mapping semantic names to xterm-256 color ints:
+#                    user, effort, duration, empty_bar, rl_label, rl_reset,
+#                    operation, worktree, branch, detached, remote_arrow,
+#                    remote, ahead, behind, dirty, stash, path
+#   grad         - list of 20 ints: context bar + rate limit gradient
+#   tier         - dict mapping model family -> color int  (opus/sonnet/haiku)
+#   tier_default - fallback tier color int
+#
+# Optional theme config keys:
+#   rl_grad      - separate 20-int gradient for rate limits (defaults to grad)
+#   bar_n        - bar cell count (default 10)
+#   text_xform   - callable(str) -> str applied to most display text
+#   user_chip    - callable(text, theme) -> str for user display
+#   model_chip   - callable(label, tier_color, theme) -> str for model
+#   bar_fn       - callable(used_pct, theme) -> str for the full bar + pct
+#   rl_fn        - callable(rl, theme) -> str for one rate limit entry
+#   line2_prefix - str prepended to line 2 (after a space)
+#   line2_join   - callable(parts, theme) -> str to join line 2 parts
+#                  (default: ' '.join)
+#   line2_path_sep - str separator between git info and path on line 2
+#                    (default: ' ', same as between git parts)
+
+def _std_grad_color(pct, grad):
+    """Look up a gradient color by percentage (0-100)."""
+    return grad[min(int(pct / 100 * 19), 19)]
+
+
+def _std_bar(used_pct, theme):
+    """Default context bar: 4-level Unicode block fill with gradient colors."""
+    N = theme.get('bar_n', 10)
+    grad = theme['grad']
+    xf = theme.get('text_xform')
+    empty_c = theme['colors']['empty_bar']
+    fill = used_pct / 100 * N
+    bar = ''
+    # Map bar cells to gradient: evenly space N cells across 20-entry gradient
+    step = max(1, (len(grad) - 1) // max(N - 1, 1))
+    for i in range(N):
+        c = grad[min(i * step, len(grad) - 1)]
+        cell = fill - i
+        if cell >= 1.0:    bar += f'{fg(c)}\u2588'
+        elif cell >= 0.75: bar += f'{fg(c)}\u2593'
+        elif cell >= 0.5:  bar += f'{fg(c)}\u2592'
+        elif cell >= 0.25: bar += f'{fg(c)}\u2591'
+        else:              bar += f'{fg(empty_c)}\u2500'
+    bar += R
+    pc = _std_grad_color(used_pct, grad)
+    pct_s = f'{int(round(used_pct))}%'
+    if xf:
+        pct_s = xf(pct_s)
+    return f'{bar}  {fg(pc)}{pct_s}{R}'
+
+
+def _phosphor_bar(used_pct, theme):
+    """Phosphor CRT bar: 3-level intensity fill with position-based brightness.
+
+    Requires theme colors: bar_bright, bar_normal, bar_dim, bar_faint, empty_bar.
+    """
+    N = theme.get('bar_n', 10)
+    colors = theme['colors']
+    xf = theme.get('text_xform')
+    fill = used_pct / 100 * N
+    bar = ''
+    for i in range(N):
+        cell = fill - i
+        if cell >= 1.0:
+            if i >= 8:    bar += f'{fg(colors["bar_bright"])}\u2588'
+            elif i >= 5:  bar += f'{fg(colors["bar_normal"])}\u2588'
+            else:         bar += f'{fg(colors["bar_dim"])}\u2588'
+        elif cell >= 0.5: bar += f'{fg(colors["bar_dim"])}\u2593'
+        elif cell >= 0.25:bar += f'{fg(colors["bar_faint"])}\u2591'
+        else:             bar += f'{fg(colors["empty_bar"])}\u2500'
+    bar += R
+    pct = int(round(used_pct))
+    # Phosphor intensity for percentage display
+    if pct >= 80:   pc = colors['bar_bright']
+    elif pct >= 50: pc = colors['bar_normal']
+    elif pct >= 20: pc = colors['bar_dim']
+    else:           pc = colors['bar_faint']
+    pct_s = f'{pct}%'
+    if xf:
+        pct_s = xf(pct_s)
+    return f'{bar}  {fg(pc)}{pct_s}{R}'
+
+
+def _phosphor_rl(rl, theme):
+    """Rate limit formatting for phosphor CRT themes."""
+    colors = theme['colors']
+    xf = theme.get('text_xform')
+    label = rl['label']
+    pct = rl['pct']
+    if xf:
+        label = xf(label)
+    if pct is None:
+        return f'{fg(colors["rl_null"])}{label} --{R}'
+    if pct >= 80:   ic = colors['bar_bright']
+    elif pct >= 50: ic = colors['bar_normal']
+    elif pct >= 20: ic = colors['bar_dim']
+    else:           ic = colors['bar_faint']
+    ts = rl['reset_str']
+    if xf and ts:
+        ts = xf(ts)
+    if ts:
+        return f'{fg(colors["rl_label"])}{label} {fg(ic)}{pct}%{fg(colors["rl_reset"])}@{ts}{R}'
+    return f'{fg(colors["rl_label"])}{label} {fg(ic)}{pct}%{R}'
+
+
+def _std_rl(rl, theme):
+    """Default rate limit entry formatting."""
+    colors = theme['colors']
+    rl_grad = theme.get('rl_grad', theme['grad'])
+    xf = theme.get('text_xform')
+    label = rl['label']
+    pct = rl['pct']
+    if xf:
+        label = xf(label)
+    if pct is None:
+        return f'{fg(colors["rl_null"])}{label} --{R}'
+    rc = _std_grad_color(pct, rl_grad)
+    ts = rl['reset_str']
+    if xf and ts:
+        ts = xf(ts)
+    if ts:
+        return f'{fg(colors["rl_label"])}{label} {fg(rc)}{pct}%{fg(colors["rl_reset"])}@{ts}{R}'
+    return f'{fg(colors["rl_label"])}{label} {fg(rc)}{pct}%{R}'
+
+
+def render_standard(ctx, theme):
+    """Render the standard two-line statusline using a theme config dict.
+
+    Returns the same format as any theme's render(): a one- or two-line string.
+    """
+    config = ctx['config']
+    used_pct = ctx['used_pct']
+    colors = theme['colors']
+    xf = theme.get('text_xform')
+    tier_color = theme['tier'].get(ctx['model_family'], theme['tier_default'])
+
+    parts = []
+
+    # User
+    if config.get('show_user', True) and ctx['user_short']:
+        user_chip_fn = theme.get('user_chip')
+        if user_chip_fn:
+            parts.append(user_chip_fn(ctx['user_short'], theme))
+        else:
+            text = xf(ctx['user_short']) if xf else ctx['user_short']
+            parts.append(f'{BOLD}{fg(colors["user"])}{text}{R}')
+
+    # Model + context window size
+    m = xf(ctx['model_name']) if xf else ctx['model_name']
+    sz = ctx['cw_str']
+    label = f'{m} {sz}' if sz else m
+    model_chip_fn = theme.get('model_chip')
+    if model_chip_fn:
+        parts.append(model_chip_fn(label, tier_color, theme))
+    else:
+        parts.append(f'{BOLD}{fg(tier_color)}{label}{R}')
+
+    # Effort
+    if ctx['effort']:
+        parts.append(f'{fg(colors["effort"])}{ctx["effort"]}{R}')
+
+    # Context bar
+    if used_pct is not None:
+        bar_fn = theme.get('bar_fn', _std_bar)
+        parts.append(bar_fn(used_pct, theme))
+
+    # Rate limits
+    rl_fn = theme.get('rl_fn', _std_rl)
+    for rl in ctx['rate_limits']:
+        parts.append(rl_fn(rl, theme))
+
+    # Session duration
+    dur = xf(ctx['session_dur']) if xf else ctx['session_dur']
+    parts.append(f'{fg(colors["duration"])}{dur}{R}')
+
+    line1 = theme['sep'].join(parts)
+
+    # ── Line 2 ──────────────────────────────────────────────────────────────
+    git = ctx['git']
+    l2 = []
+    if git['operation']:
+        op = git['operation']  # already uppercase from core
+        op_chip_fn = theme.get('op_chip')
+        if op_chip_fn:
+            l2.append(op_chip_fn(op, theme))
+        else:
+            l2.append(f'{BOLD}{fg(colors["operation"])}{op}{R}')
+    if git['worktree']:
+        wt = xf(git['worktree']) if xf else git['worktree']
+        l2.append(f'{fg(colors["worktree"])}[{wt}]{R}')
+    if git['branch']:
+        br = xf(git['branch']) if xf else git['branch']
+        det_suffix = theme.get('det_suffix', ' DET' if xf else ' det')
+        det_bold = BOLD if theme.get('detached_bold') else ''
+        br_bold = BOLD if theme.get('branch_bold') else ''
+        if git['detached']:
+            l2.append(f'{det_bold}{fg(colors["detached"])}{br}{det_suffix}{R}')
+        else:
+            l2.append(f'{br_bold}{fg(colors["branch"])}{br}{R}')
+        if git['remote_short']:
+            rem = xf(git['remote_short']) if xf else git['remote_short']
+            l2.append(f'{fg(colors["remote_arrow"])}\u2192{fg(colors["remote"])}{rem}{R}')
+        ahead_ch = theme.get('ahead_char', '\u2191')
+        behind_ch = theme.get('behind_char', '\u2193')
+        ab = ''
+        if git['ahead']:
+            ab += f'{fg(colors["ahead"])}{ahead_ch}{git["ahead"]}{R}'
+        if git['behind']:
+            ab += f'{fg(colors["behind"])}{behind_ch}{git["behind"]}{R}'
+        if ab:
+            l2.append(ab)
+    if git['dirty']:
+        l2.append(f'{fg(colors["dirty"])}+{git["dirty"]}{R}')
+    if git['stash']:
+        l2.append(f'{fg(colors["stash"])}\u2691{git["stash"]}{R}')
+
+    path = ctx['path_display']
+    if xf and path:
+        path = xf(path)
+    path_str = f'{fg(colors["path"])}{path}{R}' if path else ''
+
+    # Join git parts, then optionally separate path with a different separator
+    line2_join = theme.get('line2_join')
+    path_sep = theme.get('line2_path_sep')
+    if line2_join:
+        if path_str:
+            l2.append(path_str)
+        line2 = line2_join(l2, theme)
+    elif path_sep and path_str:
+        git_str = ' '.join(l2) if l2 else ''
+        line2_parts = [p for p in [git_str, path_str] if p]
+        line2 = path_sep.join(line2_parts)
+    else:
+        if path_str:
+            l2.append(path_str)
+        line2 = ' '.join(l2) if l2 else ''
+
+    prefix = theme.get('line2_prefix', '')
+    if prefix and line2:
+        line2 = prefix + line2
+
+    return f'{line1}\n{line2}' if line2 else line1
