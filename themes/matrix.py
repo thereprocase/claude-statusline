@@ -58,7 +58,7 @@ def _matrix_rl(rl, theme):
     """Matrix rate limit with phosphor intensity color."""
     pct = rl['pct']
     if pct is None:
-        return f'{fg(GHOST)}{rl["label"]} --{R}'
+        return ''
     ic = _intensity(pct)
     ts = rl['reset_str']
     if ts:

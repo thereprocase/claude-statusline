@@ -50,7 +50,7 @@ def _c64_rl(rl, theme):
     """C64 rate limit with threshold-based color."""
     pct = rl['pct']
     if pct is None:
-        return f'{fg(DK_GREY)}{rl["label"]} --{R}'
+        return ''
     rc = _c64_color(pct)
     ts = rl['reset_str']
     if ts:

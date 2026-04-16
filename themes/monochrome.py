@@ -54,7 +54,7 @@ def _mono_rl(rl, theme):
     """Monochrome rate limit with threshold-based brightness."""
     pct = rl['pct']
     if pct is None:
-        return f'{fg(DARKER)}{rl["label"]} --{R}'
+        return ''
     shade = _pct_shade(pct)
     ts = rl['reset_str']
     if ts:

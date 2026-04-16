@@ -60,7 +60,7 @@ def _tt_rl(rl, theme):
     """Teletext rate limit with threshold-based color."""
     pct = rl['pct']
     if pct is None:
-        return f'{fg(TT_BLUE)}{rl["label"]} --{R}'
+        return ''
     rc = _tt_color(pct)
     ts = rl['reset_str']
     if ts:

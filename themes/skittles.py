@@ -91,7 +91,6 @@ def render(ctx):
         candy = CANDY[i % len(CANDY)]
         pct = rl['pct']
         if pct is None:
-            parts.append(f'{fg(candy)}{rl["label"]}{R} {DIM}--{R}')
             continue
         rc = _grad_color(pct)
         ts = rl['reset_str']

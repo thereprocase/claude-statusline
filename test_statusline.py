@@ -1114,7 +1114,8 @@ class TestRenderStandard(unittest.TestCase):
             {'key': 'five_hour', 'label': '5h', 'pct': None, 'reset_str': '', 'resets_at': None},
         ]
         out = strip_ansi(core.render_standard(ctx, self._minimal_theme()))
-        self.assertIn('5h --', out)
+        # Sonnet sends empty rate_limits; null pct windows should be hidden, not show "--"
+        self.assertNotIn('5h', out)
 
     def test_line2_prefix_prepended(self):
         ctx = self._minimal_ctx()
