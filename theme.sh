@@ -31,6 +31,11 @@ if [ -z "$1" ]; then
     exit 0
 fi
 
+if [[ ! "$1" =~ ^[a-z0-9_-]+$ ]]; then
+    echo "Invalid theme name: '$1' (only lowercase letters, digits, hyphens, underscores allowed)"
+    exit 1
+fi
+
 if [ ! -f "${SCRIPT_DIR}/themes/$1.py" ]; then
     echo "Unknown theme: $1 (available: ${THEMES[*]})"
     exit 1

@@ -5,6 +5,8 @@
 # CLI arg: ./install.sh <theme> to set theme without prompts.
 set -e
 
+command -v python3 >/dev/null 2>&1 || { echo "Error: python3 is required but not found in PATH"; exit 1; }
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CLAUDE_DIR="${HOME}/.claude"
 SL_DIR="${CLAUDE_DIR}/statusline"
@@ -57,16 +59,24 @@ chmod +x "${CLAUDE_DIR}/statusline-command.sh"
 echo "$THEME" > "$THEME_FILE"
 echo "Theme: $THEME"
 
-# Update settings.json — use Python's expanduser to resolve path on all platforms
+# Update settings.json — atomic write via tempfile to avoid partial reads on crash
 if [ -f "${SETTINGS}" ]; then
-    if python3 -c "
-import json, os
-p = os.path.join(os.path.expanduser('~'), '.claude', 'settings.json')
-with open(p, encoding='utf-8') as f: s = json.load(f)
-s['statusLine'] = {'type': 'command', 'command': 'bash ~/.claude/statusline-command.sh'}
-with open(p, 'w', encoding='utf-8') as f: json.dump(s, f, indent=2)
-print(f'Updated {p}')
-" 2>/dev/null; then
+    if SETTINGS_PATH="${SETTINGS}" python3 -c '
+import json, os, tempfile
+path = os.environ["SETTINGS_PATH"]
+with open(path) as f:
+    s = json.load(f)
+s["statusLine"] = {"type": "command", "command": "bash ~/.claude/statusline-command.sh"}
+fd, tmp = tempfile.mkstemp(dir=os.path.dirname(path))
+try:
+    with os.fdopen(fd, "w") as t:
+        json.dump(s, t, indent=2)
+    os.replace(tmp, path)
+except Exception:
+    os.unlink(tmp)
+    raise
+print("Updated", path)
+' 2>/dev/null; then
         :
     else
         echo "Could not update ${SETTINGS} — add manually:"
@@ -87,7 +97,7 @@ else
     echo ""
     read -rp "Run interactive setup to configure all options? (Y/n): " DO_SETUP
     if [[ ! "$DO_SETUP" =~ [nN] ]]; then
-        bash "${SCRIPT_DIR}/setup.sh"
+        "${SCRIPT_DIR}/setup.sh"
     else
         echo ""
         echo "You can run 'bash setup.sh' anytime to configure."

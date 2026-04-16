@@ -180,22 +180,30 @@ def _abbreviate_model(model_id, display_name, fmt):
     return m
 
 # ── Account discovery ───────────────────────────────────────────────────────
+_cached_account = None  # account never changes within a process lifetime
+
 def _find_claude_account():
+    global _cached_account
+    if _cached_account is not None:
+        return _cached_account
     cfg_dir = os.environ.get('CLAUDE_CONFIG_DIR') or os.path.expanduser('~/.claude')
     candidates = [
         os.path.join(cfg_dir, '.claude.json'),
         os.path.join(os.path.dirname(cfg_dir.rstrip(os.sep).rstrip('/')), '.claude.json'),
     ]
+    result = ''
     for p in candidates:
         try:
             with open(p, 'r', encoding='utf-8') as f:
                 txt = f.read()
             mo = re.search(r'"emailAddress"\s*:\s*"([^"]+)"', txt)
             if mo:
-                return mo.group(1)
+                result = mo.group(1)
+                break
         except Exception:
             continue
-    return ''
+    _cached_account = result
+    return result
 
 # ── Git info ────────────────────────────────────────────────────────────────
 def _collect_git(cwd):
@@ -302,8 +310,17 @@ def _parse_remote(url):
     if u.endswith('.git'):
         u = u[:-4]
     host, path = '', ''
-    if u.startswith('git@') or (u.startswith('ssh://') and '@' in u):
-        s = u[6:] if u.startswith('ssh://') else u[4:]
+    if u.startswith('ssh://'):
+        # ssh://[user@]host[:port]/owner/repo — split on first '/' after stripping user@
+        s = u[6:]  # strip 'ssh://'
+        if '@' in s:
+            s = s.split('@', 1)[1]  # strip user@
+        if '/' in s:
+            host, path = s.split('/', 1)
+            host = host.split(':', 1)[0]  # strip optional :port
+    elif u.startswith('git@'):
+        # git@host:owner/repo (SCP syntax — no port)
+        s = u[4:]
         if '@' in s:
             s = s.split('@', 1)[1]
         if ':' in s:
@@ -316,7 +333,7 @@ def _parse_remote(url):
             s = s.split('@', 1)[1]
         if '/' in s:
             host, path = s.split('/', 1)
-    host = host.split(':', 1)[0]
+    host = host.split(':', 1)[0]  # defensive strip of any remaining :port
     hs = {'github.com': 'gh', 'gitlab.com': 'gl', 'bitbucket.org': 'bb'}.get(
         host, host.split('.', 1)[0] if host else '')
     owner = path.split('/', 1)[0] if path else ''
@@ -386,10 +403,10 @@ def _process_rate_limits(data, model_family, state, state_lost, rebuilt, config)
 
             if auto_hide:
                 if key == 'five_hour':
-                    if rl_i >= 50 or secs_left <= 1800:
+                    if rl_i >= 50 or secs_left <= 1800:  # 30 minutes
                         ts = formatter(resets_at)
                 else:
-                    if rl_i >= 80 or secs_left <= 43200:
+                    if rl_i >= 80 or secs_left <= 43200:  # 12 hours
                         ts = formatter(resets_at)
                     else:
                         ts = formatter(resets_at, day_only=True)
@@ -409,12 +426,12 @@ def _process_rate_limits(data, model_family, state, state_lost, rebuilt, config)
         rk_key = f'{model_family}_{key}_last_rk'
         logged = (rebuilt.get(key, {}) if rebuilt else state.get(lk, {}))
 
-        if not state_lost and rk != state.get(rk_key):
+        if state_lost or rk != state.get(rk_key):
+            # New reset window detected — re-arm all thresholds
             for th in THRESHOLDS:
                 state[f'{model_family}_{key}_armed_{th}'] = True
+            state[rk_key] = rk
             dirty = True
-        state[rk_key] = rk
-        dirty = True
 
         for th in THRESHOLDS:
             ak = f'{model_family}_{key}_armed_{th}'
@@ -431,14 +448,22 @@ def _process_rate_limits(data, model_family, state, state_lost, rebuilt, config)
                     safe_append_line(LOG_FILE, entry)
                     logged.setdefault(rk, []).append(th)
                 state[ak] = False
+                dirty = True
             elif rl < th and not armed:
                 state[ak] = True
+                dirty = True
 
         if len(logged) > 10:
             for k in sorted(logged.keys())[:-10]:
                 del logged[k]
-        state[lk] = logged
-        state[key] = rl
+        prev_logged = state.get(lk, {})
+        if logged != prev_logged:
+            state[lk] = logged
+            dirty = True
+        prev_rl = state.get(key)
+        if prev_rl != rl:
+            state[key] = rl
+            dirty = True
 
     return results, dirty
 
@@ -462,29 +487,63 @@ def _track_session(data, state):
     return dur, elapsed, dirty
 
 # ── Log rotation ────────────────────────────────────────────────────────────
-def _rotate_log():
+def _rotate_log(state):
+    """Trim old entries from the rate-limit log. Returns True if state was mutated.
+
+    Skips the full read-parse-rewrite cycle unless:
+      - File exceeds 4096 bytes, AND
+      - At least 300 seconds have passed since the last rotation.
+    """
     try:
-        if os.path.exists(LOG_FILE) and os.path.getsize(LOG_FILE) > 4096:
-            cutoff = (datetime.now() - timedelta(days=60)).isoformat()
-            with open(LOG_FILE, encoding='utf-8') as f:
-                lines = f.readlines()
-            kept = []
-            for ln in lines:
-                try:
-                    if json.loads(ln).get('ts', '') >= cutoff:
-                        kept.append(ln)
-                except Exception:
-                    pass
-            if len(kept) < len(lines):
-                with open(LOG_FILE, 'w', encoding='utf-8') as f:
-                    f.writelines(kept)
+        if not (os.path.exists(LOG_FILE) and os.path.getsize(LOG_FILE) > 4096):  # 4 KB threshold
+            return False
+        now_ts = datetime.now().timestamp()
+        last = state.get('last_rotation_ts', 0)
+        if now_ts - last < 300:  # 5-minute cooldown between rotations
+            return False
+        cutoff = (datetime.now() - timedelta(days=60)).isoformat()  # 60-day retention window
+        with open(LOG_FILE) as f:
+            lines = f.readlines()
+        kept = []
+        for ln in lines:
+            try:
+                if json.loads(ln).get('ts', '') >= cutoff:
+                    kept.append(ln)
+            except Exception:
+                pass
+        if len(kept) < len(lines):
+            with open(LOG_FILE, 'w') as f:
+                f.writelines(kept)
+        state['last_rotation_ts'] = now_ts
+        return True
     except Exception:
-        pass
+        return False
 
 # ── Main entry point ────────────────────────────────────────────────────────
-def build_context():
-    """Read stdin JSON, collect all state, return a context dict for themes."""
-    data = json.load(sys.stdin)
+def build_context(data=None):
+    """Read stdin JSON (or accept pre-parsed dict), collect all state, return a context dict for themes."""
+    if data is None:
+        try:
+            data = json.load(sys.stdin)
+        except Exception:
+            # Return a minimal safe fallback so themes can render a degraded statusline
+            return {
+                'error': True,
+                'model_name': '???', 'model_id': '', 'model_family': 'sonnet',
+                'model_display': 'Claude',
+                'cw_size': 0, 'cw_str': '', 'used_pct': None,
+                'cwd': '', 'path_display': '',
+                'email': '', 'user_short': '',
+                'effort': None,
+                'rate_limits': [],
+                'session_dur': '0s', 'session_elapsed': 0,
+                'git': {
+                    'branch': '', 'detached': False, 'dirty': 0,
+                    'ahead': 0, 'behind': 0, 'stash': 0,
+                    'remote_short': '', 'worktree': '', 'operation': '',
+                },
+                'config': dict(DEFAULT_CONFIG),
+            }
 
     model_display = data.get('model', {}).get('display_name', 'Claude')
     model_id = data.get('model', {}).get('id', '')
@@ -533,7 +592,8 @@ def build_context():
     effort = data.get('effort')
 
     # Persist
-    _rotate_log()
+    if _rotate_log(state):
+        state_dirty = True
     if state_dirty:
         safe_write_json(STATE_FILE, state)
 

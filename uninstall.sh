@@ -13,14 +13,23 @@ rm -rf "${CLAUDE_DIR}/statusline"
 echo "Removed statusline files."
 
 if [ -f "${SETTINGS}" ]; then
-    python3 -c "
-import json, os
-p = os.path.join(os.path.expanduser('~'), '.claude', 'settings.json')
-with open(p, encoding='utf-8') as f: s = json.load(f)
-s.pop('statusLine', None)
-with open(p, 'w', encoding='utf-8') as f: json.dump(s, f, indent=2)
-print(f'Removed statusLine from {p}')
-" 2>/dev/null || echo "Could not update ${SETTINGS} — remove statusLine key manually."
+    # Atomic write via tempfile; path passed via env to avoid shell interpolation
+    SETTINGS_PATH="${SETTINGS}" python3 -c '
+import json, os, tempfile
+path = os.environ["SETTINGS_PATH"]
+with open(path) as f:
+    s = json.load(f)
+s.pop("statusLine", None)
+fd, tmp = tempfile.mkstemp(dir=os.path.dirname(path))
+try:
+    with os.fdopen(fd, "w") as t:
+        json.dump(s, t, indent=2)
+    os.replace(tmp, path)
+except Exception:
+    os.unlink(tmp)
+    raise
+print("Removed statusLine from", path)
+' 2>/dev/null || echo "Could not update ${SETTINGS} — remove statusLine key manually."
 fi
 
 echo "Restart Claude Code to deactivate."
