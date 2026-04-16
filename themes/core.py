@@ -31,7 +31,7 @@ CONFIG_FILE = os.path.join(_claude_dir, 'statusline-config.json')
 
 def safe_read_json(path):
     try:
-        with open(path) as f:
+        with open(path, encoding='utf-8') as f:
             content = f.read().strip()
             return json.loads(content) if content else {}
     except Exception:
@@ -42,7 +42,7 @@ def safe_write_json(path, obj):
         fd, tmp = tempfile.mkstemp(dir=_claude_dir, suffix='.tmp', prefix='sl_')
         os.close(fd)
         try:
-            with open(tmp, 'w') as f:
+            with open(tmp, 'w', encoding='utf-8') as f:
                 json.dump(obj, f)
             os.replace(tmp, path)
         except Exception:
@@ -53,7 +53,7 @@ def safe_write_json(path, obj):
 
 def safe_append_line(path, line):
     try:
-        with open(path, 'a') as f:
+        with open(path, 'a', encoding='utf-8') as f:
             f.write(line + '\n')
     except Exception:
         pass
@@ -80,7 +80,7 @@ THRESHOLDS = [95]
 def _rebuild_logged_windows(log_path, family=None):
     result = {'five_hour': {}, 'seven_day': {}}
     try:
-        with open(log_path) as f:
+        with open(log_path, encoding='utf-8') as f:
             for raw in f:
                 raw = raw.strip()
                 if not raw:
@@ -211,7 +211,7 @@ def _collect_git(cwd):
         try:
             return subprocess.check_output(
                 args, cwd=cwd or None, stderr=subprocess.DEVNULL, timeout=2
-            ).decode().strip()
+            ).decode('utf-8', errors='replace').strip()
         except Exception:
             return ''
 
@@ -263,7 +263,7 @@ def _collect_git(cwd):
 
     # Worktree
     if gd and cgd and os.path.normpath(gd) != os.path.normpath(cgd):
-        git['worktree'] = os.path.basename(gd.rstrip('/'))
+        git['worktree'] = os.path.basename(os.path.normpath(gd))
 
     # Operation
     if gd:
@@ -281,7 +281,7 @@ def _collect_git(cwd):
         try:
             sl = os.path.join(cgd, 'logs', 'refs', 'stash')
             if os.path.exists(sl):
-                with open(sl) as f:
+                with open(sl, encoding='utf-8') as f:
                     git['stash'] = sum(1 for _ in f)
         except Exception:
             pass
@@ -461,7 +461,7 @@ def _rotate_log():
     try:
         if os.path.exists(LOG_FILE) and os.path.getsize(LOG_FILE) > 4096:
             cutoff = (datetime.now() - timedelta(days=60)).isoformat()
-            with open(LOG_FILE) as f:
+            with open(LOG_FILE, encoding='utf-8') as f:
                 lines = f.readlines()
             kept = []
             for ln in lines:
@@ -471,7 +471,7 @@ def _rotate_log():
                 except Exception:
                     pass
             if len(kept) < len(lines):
-                with open(LOG_FILE, 'w') as f:
+                with open(LOG_FILE, 'w', encoding='utf-8') as f:
                     f.writelines(kept)
     except Exception:
         pass
