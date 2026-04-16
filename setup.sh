@@ -29,11 +29,21 @@ SHOW_USER="true"
 DATE_FMT="short"
 AUTO_HIDE="true"
 if [ -f "$CONFIG_FILE" ]; then
-    _CFG_PY="import json, os; p=os.path.join(os.path.expanduser('~'),'.claude','statusline-config.json'); c=json.load(open(p,encoding='utf-8'))"
-    MODEL_FMT=$(python3 -c "${_CFG_PY}; print(c.get('model_format','short'))" 2>/dev/null || echo "short")
-    SHOW_USER=$(python3 -c "${_CFG_PY}; print(str(c.get('show_user',True)).lower())" 2>/dev/null || echo "true")
-    DATE_FMT=$(python3 -c "${_CFG_PY}; print(c.get('date_format','short'))" 2>/dev/null || echo "short")
-    AUTO_HIDE=$(python3 -c "${_CFG_PY}; print(str(c.get('auto_hide_reset',True)).lower())" 2>/dev/null || echo "true")
+    # Single python3 call reads all values; config path passed via env to avoid interpolation
+    _cfg=$(CONFIG_PATH="$CONFIG_FILE" python3 -c '
+import json, os
+p = os.environ["CONFIG_PATH"]
+c = json.load(open(p))
+print(c.get("model_format", "short"))
+print(str(c.get("show_user", True)).lower())
+print(c.get("date_format", "short"))
+print(str(c.get("auto_hide_reset", True)).lower())
+' 2>/dev/null) && {
+        MODEL_FMT=$(sed -n '1p' <<< "$_cfg")
+        SHOW_USER=$(sed -n '2p' <<< "$_cfg")
+        DATE_FMT=$(sed -n '3p' <<< "$_cfg")
+        AUTO_HIDE=$(sed -n '4p' <<< "$_cfg")
+    }
 fi
 
 # ── Sample data for previews ────────────────────────────────────────────────
@@ -48,7 +58,7 @@ show_sample() {
 # ── Ensure files are installed ──────────────────────────────────────────────
 if [ ! -d "$SL_DIR" ] || [ ! -f "${CLAUDE_DIR}/statusline-command.sh" ]; then
     echo "Installing status line files first..."
-    bash "${SCRIPT_DIR}/install.sh" "${CURRENT_THEME:-rainbow}"
+    "${SCRIPT_DIR}/install.sh" "${CURRENT_THEME:-buddy}"
     echo ""
 fi
 
@@ -117,12 +127,13 @@ if [ ! -f "${SCRIPT_DIR}/themes/${THEME_CHOICE}.py" ]; then
 fi
 echo "$THEME_CHOICE" > "$THEME_FILE"
 
-echo ""
-echo "Want to see previews? (y/N): "
-read -rn1 PREVIEW
+read -rp "Want to see previews? (y/N): " PREVIEW
 echo ""
 if [[ "$PREVIEW" =~ [yY] ]]; then
     echo ""
+    ORIG_THEME="$THEME_CHOICE"
+    # Restore original theme if user Ctrl+C's during preview
+    trap 'echo "$ORIG_THEME" > "$THEME_FILE"; echo; echo "Preview cancelled, restored $ORIG_THEME"; trap - INT; exit 0' INT
     for theme in "${TOP5[@]}" "${REST[@]}"; do
         [ ! -f "${SCRIPT_DIR}/themes/${theme}.py" ] && continue
         marker=""
@@ -131,6 +142,7 @@ if [[ "$PREVIEW" =~ [yY] ]]; then
         show_sample "$theme"
         echo ""
     done
+    trap - INT
     echo "$THEME_CHOICE" > "$THEME_FILE"
     read -rp "Stick with $(bold "$THEME_CHOICE"), or switch? [${THEME_CHOICE}]: " SWITCH
     SWITCH="${SWITCH:-$THEME_CHOICE}"
@@ -152,7 +164,11 @@ echo "  long   →  Opus 4.6"
 echo "  full   →  Claude Opus 4.6"
 echo ""
 read -rp "Which format? [${MODEL_FMT}]: " MF
-MODEL_FMT="${MF:-$MODEL_FMT}"
+MF="${MF:-$MODEL_FMT}"
+case "$MF" in
+    short|long|full) MODEL_FMT="$MF" ;;
+    *) echo "Invalid model format '$MF', keeping '${MODEL_FMT}'." ;;
+esac
 echo ""
 
 # ── User initials ───────────────────────────────────────────────────────────
@@ -175,7 +191,11 @@ echo "  short  →  3p, th"
 echo "  long   →  3:00pm, thu"
 echo ""
 read -rp "Short or long? [${DATE_FMT}]: " DF
-DATE_FMT="${DF:-$DATE_FMT}"
+DF="${DF:-$DATE_FMT}"
+case "$DF" in
+    short|long) DATE_FMT="$DF" ;;
+    *) echo "Invalid date format '$DF', keeping '${DATE_FMT}'." ;;
+esac
 echo ""
 
 # ── Auto-hide ───────────────────────────────────────────────────────────────
@@ -203,18 +223,35 @@ echo ""
 
 read -rp "Save as defaults? (Y/n): " SAVE
 if [[ ! "$SAVE" =~ [nN] ]]; then
-    python3 -c "
-import json, os
+    # Pass all values via env; no shell interpolation enters Python source.
+    # Atomic write (tempfile + os.replace) prevents partial settings on crash.
+    CFG_PATH="$CONFIG_FILE" \
+    CFG_MODEL_FMT="$MODEL_FMT" \
+    CFG_SHOW_USER="$SHOW_USER" \
+    CFG_DATE_FMT="$DATE_FMT" \
+    CFG_AUTO_HIDE="$AUTO_HIDE" \
+    python3 -c '
+import json, os, tempfile
+path      = os.environ["CFG_PATH"]
+model_fmt = os.environ["CFG_MODEL_FMT"]
+show_user = os.environ["CFG_SHOW_USER"] == "true"
+date_fmt  = os.environ["CFG_DATE_FMT"]
+auto_hide = os.environ["CFG_AUTO_HIDE"] == "true"
 cfg = {
-    'model_format': '${MODEL_FMT}',
-    'show_user': ${SHOW_USER},
-    'date_format': '${DATE_FMT}',
-    'auto_hide_reset': ${AUTO_HIDE}
+    "model_format":    model_fmt,
+    "show_user":       show_user,
+    "date_format":     date_fmt,
+    "auto_hide_reset": auto_hide,
 }
-p = os.path.join(os.path.expanduser('~'), '.claude', 'statusline-config.json')
-with open(p, 'w', encoding='utf-8') as f:
-    json.dump(cfg, f, indent=2)
-"
+fd, tmp = tempfile.mkstemp(dir=os.path.dirname(path))
+try:
+    with os.fdopen(fd, "w") as t:
+        json.dump(cfg, t, indent=2)
+    os.replace(tmp, path)
+except Exception:
+    os.unlink(tmp)
+    raise
+'
     echo "Saved to ${CONFIG_FILE}"
 fi
 
