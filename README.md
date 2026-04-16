@@ -1,93 +1,21 @@
-# Claude Code Rainbow Status Line
+# Claude Code Status Line
 
-A colorful, information-dense status line for [Claude Code](https://claude.ai/code).
+A colorful, information-dense, themeable status line for [Claude Code](https://claude.ai/code).
 
 ![Clean statusline at 30% context](images/statusline-clean.svg)
 
-## Layout
+## Themes
 
-Two lines. Line 1 is the dashboard, line 2 is where you are.
+Six built-in themes. Switch anytime — no reinstall needed.
 
-```
-Bob │ Op4.6 1M │ max │ 5h 7%@8p │ 7d 52%@fr11a │ ██████──── 58% │ 1h23m
-main +3 │ D:/ClauDe/orca/orca-dev
-```
-
-### Line 1
-
-| Section | Description |
-|---------|-------------|
-| `Bob` | First 3 chars of the active Claude account email — each char gets a unique color from a 43-color palette derived from the SHIFT + buddy palettes |
-| `Op4.6 1M` | Model abbreviation + context window size — bold tier color (Opus violet, Sonnet blue, Haiku lime; 1M brighter than 200k) |
-| `max` | Effort level (shown only if exposed in statusline data) |
-| `5h 7%@8p` | 5-hour rate limit % + reset time hint |
-| `7d 52%@fr11a` | 7-day rate limit % + reset time hint |
-| `██████──── 58%` | Context window usage bar + percentage — shaded fill, cyan-to-red gradient |
-| `1h23m` | Session duration — resets on `/clear` or new session |
-
-### Line 2
-
-| Section | Description |
-|---------|-------------|
-| `main +3` | Git branch + dirty file count in copper (count hidden when clean; omitted entirely if not a git repo) |
-| `F:/Claude/...` | Working directory — full path up to 75 chars, then truncated |
-
-The account prefix lets you tell at a glance which account a Claude Code session is signed into when you run multiple accounts side-by-side via `CLAUDE_CONFIG_DIR`. The script reads `emailAddress` from `.claude.json` (checking both inside `CLAUDE_CONFIG_DIR` and one level up) and falls back silently if no email is found.
-
-### Path truncation
-
-Paths under 75 characters are shown in full. Longer paths truncate to:
-
-```
-D:/Cl.../orca/orca-dev/src/libslic3r/Arrange
-```
-
-The format is `{drive}:/{first-2-chars}.../{trailing segments}`, filling from the right until the 75-character budget is spent.
-
-### Reset time format
-
-| Format | Meaning |
-|--------|---------|
-| `5p` | Resets at 5 PM today |
-| `mo9a` | Resets Monday at 9 AM |
-
-### Model abbreviations
-
-| Model | Abbreviation |
+| Theme | Description |
 |-------|-------------|
-| Claude Opus 4.6 | `Op4.6` |
-| Claude Opus 4.5 | `Op4.5` |
-| Claude Sonnet 4.6 | `So4.6` |
-| Claude Sonnet 4.5 | `So4.5` |
-| Claude Sonnet 4.0 | `So4` |
-| Claude Haiku 4.5 | `Ha4.5` |
-| Claude Haiku 3.5 | `Ha3.5` |
-
-## Context corruption
-
-As the context window fills past 55%, the status bar progressively self-destructs. The bar cells mutate into random block and line-drawing characters, colors wobble, glitch characters leak past the bar boundary and start consuming the model name and separators. Rate limit percentages are never touched — you can always read your actual usage.
-
-![Corruption progression from 30% to 100%](images/corruption-progression.svg)
-
-| Range | What happens |
-|-------|-------------|
-| 0–55% | Clean, normal rendering |
-| 55–60% | Bar cells start flickering to glitch characters |
-| 60–65% | Color wobble, overflow chars leak past bar |
-| 65–80% | Reverse video on bar cells, separators degrading, line 1 parts visibly corrupted |
-| 80–95% | Bar is mostly unrecognizable, glitch chars infest everything, separators mutate independently |
-| 95–100% | The statusline has been consumed. Only the rate limit percentages survive. |
-
-The corruption is seeded from the current timestamp, so the glitch pattern shifts on every render — it looks alive. Line 2 (branch + path) corrupts at a gentler level so you can still find your way home.
-
-## Requirements
-
-- Claude Code v2.1+
-- Python 3.6+ on PATH
-- Bash
-- Git (for branch display — gracefully omitted if unavailable)
-
-Works on Windows (Git Bash or WSL), macOS, and Linux.
+| `rainbow` | The original. Sherwin-Williams SHIFT palette, corruption glitch effects past 55% context. |
+| `lcars` | Star Trek TNG. Solid colored pill chips, eggplant panel bars, everything uppercase. |
+| `monochrome` | Grayscale only. Clean, professional, no color. |
+| `skittles` | Every character a different candy color. Stars for separators. Unhinged. |
+| `outrun` | Synthwave. Hot pink, electric cyan, chrome, neon purple, sunset gradients. |
+| `ibm3278` | Green phosphor CRT. Four intensity levels, `==>` prompt. Mainframe vibes. |
 
 ## Install
 
@@ -97,59 +25,177 @@ cd claude-statusline
 bash install.sh
 ```
 
-Then restart Claude Code.
+First install prompts for a theme, then offers the interactive setup walkthrough to configure model format, user initials, date style, and more.
+
+Restart Claude Code to activate.
+
+## Interactive Setup
+
+Run the full configurator anytime:
+
+```bash
+bash setup.sh
+```
+
+This walks you through:
+- **Theme** — pick from all available themes, with optional side-by-side previews
+- **Model format** — `short` (`Op46`), `long` (`Opus 4.6`), or `full` (`Claude Opus 4.6`)
+- **User initials** — on/off (2-char account prefix chip)
+- **Date format** — `short` (`3p`, `th`) or `long` (`3:00pm`, `thu`)
+- **Auto-hide reset** — only show reset times when usage is meaningful
+
+Settings are saved to `~/.claude/statusline-config.json` and persist across updates.
+
+## Quick Theme Switch
+
+```bash
+bash theme.sh lcars
+```
+
+Or without arguments to see what's available:
+
+```bash
+bash theme.sh
+```
+
+Or the manual way:
+
+```bash
+echo outrun > ~/.claude/statusline-theme
+```
+
+Takes effect on the next Claude Code tool call.
+
+## Update
+
+```bash
+cd claude-statusline
+git pull
+bash install.sh
+```
+
+Updates keep your current theme and config. All theme files are refreshed.
+
+## Layout
+
+Two lines. Line 1 is the dashboard, line 2 is where you are.
+
+```
+kn │ Op46 1M │ ██████──── 42% │ 5h 38% │ 7d 15% │ 12m
+main →gl:owner │ /path/to/project
+```
+
+### Line 1
+
+| Section | Description |
+|---------|-------------|
+| `kn` | First 2 chars of the active Claude account email — styled per theme |
+| `Op46 1M` | Model abbreviation + context window size — tier colored |
+| `██████──── 42%` | Context window usage bar + percentage |
+| `5h 38%` | 5-hour rate limit % (+ reset time when usage is high) |
+| `7d 15%` | 7-day rate limit % (+ reset time when usage is high) |
+| `12m` | Session duration — resets on new session |
+
+### Line 2
+
+| Section | Description |
+|---------|-------------|
+| `main` | Git branch (styled per theme; omitted if not a git repo) |
+| `→gl:owner` | Remote tracking (host:owner format) |
+| `▲3 ▼2` | Commits ahead/behind upstream |
+| `Δ7` | Dirty file count |
+| `⚑2` | Stash entries |
+| `/path/to/project` | Working directory — always prominent, never dimmed |
+
+All git info is optional and gracefully hidden when not in a repo.
+
+### Path truncation
+
+Paths under 75 characters are shown in full. Longer paths truncate to:
+
+```
+F:/Cl.../products/fieldLog/src/components
+```
+
+### Reset time format
+
+| Format | Meaning |
+|--------|---------|
+| `5p` | Resets at 5 PM today |
+| `mo9a` | Resets Monday at 9 AM |
+
+Reset times auto-hide when usage is low (configurable via setup).
+
+### Model abbreviations (short format)
+
+| Model | Short | Long |
+|-------|-------|------|
+| Claude Opus 4.6 | `Op46` | `Opus 4.6` |
+| Claude Opus 4.5 | `Op45` | `Opus 4.5` |
+| Claude Sonnet 4.6 | `Sn46` | `Sonnet 4.6` |
+| Claude Sonnet 4.5 | `Sn45` | `Sonnet 4.5` |
+| Claude Haiku 4.5 | `Hk45` | `Haiku 4.5` |
+
+## Context Corruption (rainbow theme)
+
+As the context window fills past 55%, the rainbow theme's status bar progressively self-destructs. Bar cells mutate into random block characters, colors wobble, glitch characters leak past the bar boundary. Rate limit percentages are never touched — you can always read your actual usage.
+
+![Corruption progression from 30% to 100%](images/corruption-progression.svg)
+
+| Range | What happens |
+|-------|-------------|
+| 0–55% | Clean, normal rendering |
+| 55–70% | Bar cells flicker, color wobble begins |
+| 70–85% | Reverse video, separators degrading, overflow leaks |
+| 85–100% | Consumed. Only rate limits survive. |
+
+## Architecture
+
+```
+~/.claude/
+  statusline-command.sh     # 13-line bash dispatcher
+  statusline-theme          # plain text: "rainbow", "lcars", etc.
+  statusline-config.json    # user preferences (model format, dates, etc.)
+  statusline-state.json     # rate limit state between invocations
+  rate-limit-log.jsonl      # threshold crossing log (auto-rotated)
+  statusline/
+    core.py                 # shared: parsing, storage, git, rate limits
+    rainbow.py              # rainbow theme renderer
+    lcars.py                # LCARS theme renderer
+    monochrome.py           # monochrome theme renderer
+    skittles.py             # skittles theme renderer
+    outrun.py               # outrun theme renderer
+    ibm3278.py              # IBM 3278 theme renderer
+```
+
+The dispatcher reads `statusline-theme`, imports the matching Python module, calls `render(ctx)`. Themes are single files with one function. Adding a theme = adding one `.py` file.
+
+## Requirements
+
+- Claude Code v2.1+
+- Python 3.6+ on PATH
+- Bash
+- Git (for branch/remote display — gracefully omitted if unavailable)
+
+Works on Windows (Git Bash or WSL), macOS, and Linux.
 
 ## Uninstall
 
 ```bash
-cd claude-statusline
 bash uninstall.sh
 ```
 
-## Manual install
+## Rate Limit Logging
 
-1. Copy `statusline-command.sh` to `~/.claude/statusline-command.sh`
-2. `chmod +x ~/.claude/statusline-command.sh`
-3. Add to `~/.claude/settings.json`:
+The status line logs a threshold crossing event to `~/.claude/rate-limit-log.jsonl` when either rate limit window reaches **≥95%**. Entries older than 60 days are automatically pruned. This log is consumed by [claude-usage](https://github.com/thereprocase/claude-usage) for heatmap markers.
 
-```json
-{
-  "statusLine": {
-    "type": "command",
-    "command": "bash ~/.claude/statusline-command.sh"
-  }
-}
-```
+## Known Limitations
 
-4. Restart Claude Code.
+**Bash required.** Uses `<<< here-string` syntax. Run via `bash`, not `sh`.
 
-## Files created
+**Git subprocess per refresh.** Branch display calls `git rev-parse` each render (~50ms, 2s timeout).
 
-| File | Purpose |
-|------|---------|
-| `~/.claude/statusline-command.sh` | The status line script |
-| `~/.claude/statusline-state.json` | Tracks rate limit state between invocations |
-| `~/.claude/rate-limit-log.jsonl` | Persistent log of rate limit threshold crossings (auto-rotated at 2 months) |
-
-## Rate limit logging
-
-The status line logs a threshold crossing event to `~/.claude/rate-limit-log.jsonl` when either the 5-hour or 7-day rate limit window reaches **≥95%**. Each entry includes the model family, window type (`five_hour` or `seven_day`), the percentage, and the reset timestamp. Entries older than 60 days are automatically pruned when the log exceeds 4 KB.
-
-This log file is consumed by [claude-usage](https://github.com/thereprocase/claude-usage) to render rate limit markers on its 90-day heatmap:
-- **▲** (red) on days with a 5-hour spike
-- **▼** (magenta) on weeks with a weekly limit breach
-
-If you don't use claude-usage, the log file is harmless — it grows slowly (one entry per threshold crossing) and can be safely deleted.
-
-## Known limitations
-
-**Bash required.** The script uses `<<< here-string` syntax, which is a bashism. It will fail under `/bin/sh` on strict systems. The shebang is `#!/usr/bin/env bash` — as long as bash is on PATH, it works. On Windows, run it via Git Bash or WSL; the Claude Code `settings.json` command should be `bash ~/.claude/statusline-command.sh`, not `sh`.
-
-**Git subprocess on every refresh.** The git branch display calls `git rev-parse` on each render. This is fast (<100ms) with a 2-second timeout safety net, but adds a subprocess spawn per refresh.
-
-**Regenerating renders.** Run `python generate-renders.py` to regenerate the SVG images in `images/`. Requires the statusline script and bash on PATH.
-
-**Unicode block characters.** The bar uses Unicode block elements (U+2588, U+258x series) and separator (U+2502). These render correctly in most modern terminals. If you see garbled characters, your terminal font doesn't cover the Block Elements or Box Drawing Unicode blocks — switch to a font like JetBrains Mono, Cascadia Code, or any Nerd Font.
+**Unicode block characters.** The bar uses Unicode block elements. If garbled, switch to JetBrains Mono, Cascadia Code, or any Nerd Font.
 
 ## License
 

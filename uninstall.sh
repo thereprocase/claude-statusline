@@ -2,16 +2,18 @@
 set -e
 
 CLAUDE_DIR="${HOME}/.claude"
-DEST="${CLAUDE_DIR}/statusline-command.sh"
-STATE="${CLAUDE_DIR}/statusline-state.json"
-LOG="${CLAUDE_DIR}/rate-limit-log.jsonl"
 SETTINGS="${CLAUDE_DIR}/settings.json"
 
-rm -f "${DEST}" "${STATE}" "${LOG}"
+rm -f "${CLAUDE_DIR}/statusline-command.sh"
+rm -f "${CLAUDE_DIR}/statusline-state.json"
+rm -f "${CLAUDE_DIR}/rate-limit-log.jsonl"
+rm -f "${CLAUDE_DIR}/statusline-theme"
+rm -f "${CLAUDE_DIR}/statusline-config.json"
+rm -rf "${CLAUDE_DIR}/statusline"
 echo "Removed statusline files."
 
 if [ -f "${SETTINGS}" ]; then
-    python -c "
+    python3 -c "
 import json
 with open('${SETTINGS}') as f: s = json.load(f)
 s.pop('statusLine', None)
