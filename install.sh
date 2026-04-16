@@ -57,14 +57,15 @@ chmod +x "${CLAUDE_DIR}/statusline-command.sh"
 echo "$THEME" > "$THEME_FILE"
 echo "Theme: $THEME"
 
-# Update settings.json
+# Update settings.json — use Python's expanduser to resolve path on all platforms
 if [ -f "${SETTINGS}" ]; then
     if python3 -c "
-import json, sys
-with open('${SETTINGS}') as f: s = json.load(f)
+import json, os
+p = os.path.join(os.path.expanduser('~'), '.claude', 'settings.json')
+with open(p, encoding='utf-8') as f: s = json.load(f)
 s['statusLine'] = {'type': 'command', 'command': 'bash ~/.claude/statusline-command.sh'}
-with open('${SETTINGS}', 'w') as f: json.dump(s, f, indent=2)
-print('Updated ${SETTINGS}')
+with open(p, 'w', encoding='utf-8') as f: json.dump(s, f, indent=2)
+print(f'Updated {p}')
 " 2>/dev/null; then
         :
     else

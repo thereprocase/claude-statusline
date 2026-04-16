@@ -29,10 +29,11 @@ SHOW_USER="true"
 DATE_FMT="short"
 AUTO_HIDE="true"
 if [ -f "$CONFIG_FILE" ]; then
-    MODEL_FMT=$(python3 -c "import json; print(json.load(open('$CONFIG_FILE')).get('model_format','short'))" 2>/dev/null || echo "short")
-    SHOW_USER=$(python3 -c "import json; print(str(json.load(open('$CONFIG_FILE')).get('show_user',True)).lower())" 2>/dev/null || echo "true")
-    DATE_FMT=$(python3 -c "import json; print(json.load(open('$CONFIG_FILE')).get('date_format','short'))" 2>/dev/null || echo "short")
-    AUTO_HIDE=$(python3 -c "import json; print(str(json.load(open('$CONFIG_FILE')).get('auto_hide_reset',True)).lower())" 2>/dev/null || echo "true")
+    _CFG_PY="import json, os; p=os.path.join(os.path.expanduser('~'),'.claude','statusline-config.json'); c=json.load(open(p,encoding='utf-8'))"
+    MODEL_FMT=$(python3 -c "${_CFG_PY}; print(c.get('model_format','short'))" 2>/dev/null || echo "short")
+    SHOW_USER=$(python3 -c "${_CFG_PY}; print(str(c.get('show_user',True)).lower())" 2>/dev/null || echo "true")
+    DATE_FMT=$(python3 -c "${_CFG_PY}; print(c.get('date_format','short'))" 2>/dev/null || echo "short")
+    AUTO_HIDE=$(python3 -c "${_CFG_PY}; print(str(c.get('auto_hide_reset',True)).lower())" 2>/dev/null || echo "true")
 fi
 
 # ── Sample data for previews ────────────────────────────────────────────────
@@ -203,14 +204,15 @@ echo ""
 read -rp "Save as defaults? (Y/n): " SAVE
 if [[ ! "$SAVE" =~ [nN] ]]; then
     python3 -c "
-import json
+import json, os
 cfg = {
     'model_format': '${MODEL_FMT}',
     'show_user': ${SHOW_USER},
     'date_format': '${DATE_FMT}',
     'auto_hide_reset': ${AUTO_HIDE}
 }
-with open('${CONFIG_FILE}', 'w') as f:
+p = os.path.join(os.path.expanduser('~'), '.claude', 'statusline-config.json')
+with open(p, 'w', encoding='utf-8') as f:
     json.dump(cfg, f, indent=2)
 "
     echo "Saved to ${CONFIG_FILE}"
