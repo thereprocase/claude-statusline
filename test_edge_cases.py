@@ -361,10 +361,15 @@ def test_11_corrupt_log_file():
 
 
 def test_12_missing_claude_dir_paths_exist():
-    """Verify the script has try/except paths for file I/O failures (code inspection).
-    We verify safe_read_json, safe_write_json, safe_append_line all have except clauses."""
-    # Read the script source and check for exception handling
-    with open(SCRIPT) as f:
+    """Verify core.py has try/except paths for file I/O failures (code inspection).
+    We verify safe_read_json, safe_write_json, safe_append_line all have except clauses.
+    These functions moved from the monolithic dispatcher to themes/core.py in the theme refactor."""
+    # Read core.py — the error handling lives here, not in the thin dispatcher
+    core_path = os.path.join(CLAUDE_DIR, "statusline", "core.py")
+    if not os.path.exists(core_path):
+        # Fall back to repo-local path for running tests before install
+        core_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "themes", "core.py")
+    with open(core_path, encoding='utf-8') as f:
         src = f.read()
     checks = [
         ("safe_read_json has except", "def safe_read_json" in src and src.count("except") >= 3),

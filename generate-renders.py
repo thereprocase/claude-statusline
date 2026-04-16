@@ -4,7 +4,8 @@
 import subprocess, json, os, time, tempfile, shutil
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-SCRIPT = os.path.join(SCRIPT_DIR, 'statusline-command.sh')
+# Use forward slashes — bash can't handle Windows backslash paths
+SCRIPT = os.path.join(SCRIPT_DIR, 'statusline-command.sh').replace('\\', '/')
 OUT_DIR = os.path.join(SCRIPT_DIR, 'images')
 
 SCENARIOS = [
