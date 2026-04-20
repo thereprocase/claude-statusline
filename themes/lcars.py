@@ -101,7 +101,7 @@ def render(ctx):
             continue
         rc = _grad_color(pct, RL_GRADIENT)
         ts = rl['reset_str'].upper() if rl['reset_str'] else ''
-        rl_str = f'{fg(EGGPLANT)}{label} {fg(rc)}{pct}%{R}'
+        rl_str = f'{fg(EGGPLANT)}{label}{fg(rc)}{pct}%{R}'
         if ts:
             rl_str += f'{fg(EGGPLANT)}@{fg(TANOI)}{ts}{R}'
         parts.append(rl_str)
