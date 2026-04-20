@@ -90,7 +90,7 @@ def render(ctx):
                 bar_str += f'{fg(EGGPLANT)}{HBAR}'
         bar_str += f'{fg(EGGPLANT)}{RBRAK}{R}'
         pct_color = _grad_color(used_pct, CTX_GRADIENT)
-        bar_str += f'  {fg(pct_color)}{int(round(used_pct))}%{R}'
+        bar_str += f' {fg(pct_color)}{int(round(used_pct))}%{R}'
         parts.append(bar_str)
 
     # ── Rate limits ─────────────────────────────────────────────────────────
