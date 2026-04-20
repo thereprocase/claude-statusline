@@ -67,12 +67,12 @@ def render(ctx):
     # Model chip
     m = ctx['model_name'].upper()
     sz = ctx['cw_str']
-    label = f'{m}  {sz}' if sz else m
+    label = f'{m} {sz}' if sz else m
     parts.append(_chip(label, tier_color))
 
     # Effort
     if ctx['effort']:
-        parts.append(f' {fg(GOLDEN)}{ctx["effort"].upper()}{R} ')
+        parts.append(f'{fg(EGGPLANT)}{LBRAK}{fg(GOLDEN)}{ctx["effort"].upper()}{fg(EGGPLANT)}{RBRAK}{R}')
 
     # ── Context bar (BEFORE rate limits) ────────────────────────────────────
     if used_pct is not None:
@@ -90,8 +90,8 @@ def render(ctx):
                 bar_str += f'{fg(EGGPLANT)}{HBAR}'
         bar_str += f'{fg(EGGPLANT)}{RBRAK}{R}'
         pct_color = _grad_color(used_pct, CTX_GRADIENT)
-        bar_str += f'{fg(pct_color)}{int(round(used_pct))}%{R} '
         parts.append(bar_str)
+        parts.append(f'{fg(EGGPLANT)}{LBRAK}{fg(pct_color)}{int(round(used_pct))}%{fg(EGGPLANT)}{RBRAK}{R}')
 
     # ── Rate limits ─────────────────────────────────────────────────────────
     for rl in ctx['rate_limits']:
@@ -101,14 +101,14 @@ def render(ctx):
             continue
         rc = _grad_color(pct, RL_GRADIENT)
         ts = rl['reset_str'].upper() if rl['reset_str'] else ''
-        rl_str = f' {fg(EGGPLANT)}{label}{fg(rc)}{pct}%{R}'
+        rl_str = f'{fg(EGGPLANT)}{LBRAK}{label}{fg(rc)}{pct}%{R}'
         if ts:
             rl_str += f'{fg(EGGPLANT)}@{fg(TANOI)}{ts}{R}'
-        rl_str += ' '
+        rl_str += f'{fg(EGGPLANT)}{RBRAK}{R}'
         parts.append(rl_str)
 
     # Session duration
-    parts.append(f' {fg(EGGPLANT)}{ctx["session_dur"].upper()}{R}')
+    parts.append(f'{fg(EGGPLANT)}{LBRAK}{ctx["session_dur"].upper()}{RBRAK}{R}')
 
     line1 = sep.join(parts)
 
