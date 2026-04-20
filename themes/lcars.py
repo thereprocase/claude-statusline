@@ -72,7 +72,7 @@ def render(ctx):
 
     # Effort
     if ctx['effort']:
-        parts.append(f' {fg(GOLDEN)}{ctx["effort"].upper()}{R}')
+        parts.append(f' {fg(GOLDEN)}{ctx["effort"].upper()}{R} ')
 
     # ── Context bar (BEFORE rate limits) ────────────────────────────────────
     if used_pct is not None:
@@ -90,7 +90,7 @@ def render(ctx):
                 bar_str += f'{fg(EGGPLANT)}{HBAR}'
         bar_str += f'{fg(EGGPLANT)}{RBRAK}{R}'
         pct_color = _grad_color(used_pct, CTX_GRADIENT)
-        bar_str += f'{fg(pct_color)}{int(round(used_pct))}%{R}'
+        bar_str += f'{fg(pct_color)}{int(round(used_pct))}%{R} '
         parts.append(bar_str)
 
     # ── Rate limits ─────────────────────────────────────────────────────────
@@ -104,6 +104,7 @@ def render(ctx):
         rl_str = f' {fg(EGGPLANT)}{label}{fg(rc)}{pct}%{R}'
         if ts:
             rl_str += f'{fg(EGGPLANT)}@{fg(TANOI)}{ts}{R}'
+        rl_str += ' '
         parts.append(rl_str)
 
     # Session duration
