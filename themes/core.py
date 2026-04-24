@@ -117,8 +117,11 @@ def fmt_reset(epoch, day_only=False, uppercase=False):
     else:
         days = ['mo', 'tu', 'we', 'th', 'fr', 'sa', 'su']
     h = t.hour % 12 or 12
+    mn = t.minute
     ap = ('A' if uppercase else 'a') if t.hour < 12 else ('P' if uppercase else 'p')
-    time_s = f'{h}{ap}'
+    # Anthropic 5h windows start from first request, so they end mid-hour.
+    # Always show minutes — dropping them silently rounds the real reset time.
+    time_s = f'{h}:{mn:02d}{ap}'
     if t.date() != now.date():
         if day_only:
             return days[t.weekday()]

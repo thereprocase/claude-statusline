@@ -380,25 +380,25 @@ class TestFmtReset(unittest.TestCase):
         # Reset is 4 hours from now, same calendar day
         now = datetime.now()
         target = now + timedelta(hours=4)
-        target = target.replace(minute=0, second=0, microsecond=0)
+        target = target.replace(minute=23, second=0, microsecond=0)
         # Only proceed if target is still today (avoid edge at midnight)
         if target.date() == now.date():
             epoch = target.timestamp()
             result = core.fmt_reset(epoch)
             h = target.hour % 12 or 12
             ap = 'a' if target.hour < 12 else 'p'
-            self.assertEqual(result, f'{h}{ap}')
+            self.assertEqual(result, f'{h}:23{ap}')
 
     def test_future_tomorrow_returns_day_and_time(self):
         now = datetime.now()
-        target = (now + timedelta(days=1)).replace(hour=15, minute=0, second=0, microsecond=0)
+        target = (now + timedelta(days=1)).replace(hour=15, minute=47, second=0, microsecond=0)
         epoch = target.timestamp()
         result = core.fmt_reset(epoch)
         days = ['mo', 'tu', 'we', 'th', 'fr', 'sa', 'su']
         expected_day = days[target.weekday()]
         h = target.hour % 12 or 12   # 15 % 12 = 3
         ap = 'a' if target.hour < 12 else 'p'  # 'p'
-        self.assertEqual(result, f'{expected_day}{h}{ap}')
+        self.assertEqual(result, f'{expected_day}{h}:47{ap}')
 
     def test_midnight_hour_formats_as_12(self):
         # hour=0 → 0%12=0 → `or 12` → 12a
@@ -407,8 +407,8 @@ class TestFmtReset(unittest.TestCase):
         if target.date() != now.date():
             epoch = target.timestamp()
             result = core.fmt_reset(epoch)
-            # hour 0 → 12; am/pm 'a'
-            self.assertIn('12a', result)
+            # hour 0 → 12; am/pm 'a'; minutes always shown
+            self.assertIn('12:00a', result)
 
     def test_noon_hour_formats_as_12p(self):
         now = datetime.now()
@@ -416,7 +416,18 @@ class TestFmtReset(unittest.TestCase):
         if target.date() != now.date():
             epoch = target.timestamp()
             result = core.fmt_reset(epoch)
-            self.assertIn('12p', result)
+            self.assertIn('12:00p', result)
+
+    def test_non_zero_minutes_included(self):
+        # 5h reset windows start from first request, so they end mid-hour.
+        # Minutes must always appear to avoid silently rounding the real reset.
+        now = datetime.now()
+        target = now + timedelta(hours=3)
+        target = target.replace(minute=47, second=0, microsecond=0)
+        if target.date() == now.date():
+            epoch = target.timestamp()
+            result = core.fmt_reset(epoch)
+            self.assertIn(':47', result)
 
     def test_day_only_true_same_day_returns_empty(self):
         now = datetime.now()
