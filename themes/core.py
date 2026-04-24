@@ -619,8 +619,10 @@ def build_context(data=None):
     # Path
     path_display = _truncate_path(cwd) if cwd else ''
 
-    # Effort
+    # Effort — Claude Code 2.1.119+ wraps it as {"level": "..."}; older versions sent a bare string
     effort = data.get('effort')
+    if isinstance(effort, dict):
+        effort = effort.get('level')
 
     # Persist
     if _rotate_log(state):
