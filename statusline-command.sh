@@ -10,9 +10,33 @@ THEME=$(cat "$THEME_FILE" 2>/dev/null) || THEME="buddy"
 THEME="${THEME%$'\r'}"
 THEME="${THEME:-buddy}"
 
-# Resolve python: prefer python3, fall back to python
-PYTHON=python3
-command -v python3 >/dev/null 2>&1 || PYTHON=python
+# Resolve python: prefer python3, then python, then Windows `py` launcher.
+# Final fallback scans common Windows install locations — Git Bash often has
+# python.exe absent from PATH even when the system has it.
+PYTHON=
+for cand in python3 python py; do
+    if command -v "$cand" >/dev/null 2>&1; then
+        PYTHON=$cand
+        break
+    fi
+done
+if [ -z "$PYTHON" ]; then
+    for p in \
+        "${HOME}/AppData/Local/Programs/Python/Launcher/py.exe" \
+        "${HOME}/AppData/Local/Programs/Python/Python313/python.exe" \
+        "${HOME}/AppData/Local/Programs/Python/Python312/python.exe" \
+        "${HOME}/AppData/Local/Programs/Python/Python311/python.exe" \
+        "/c/Windows/py.exe"; do
+        if [ -x "$p" ]; then
+            PYTHON=$p
+            break
+        fi
+    done
+fi
+if [ -z "$PYTHON" ]; then
+    echo "⚠ statusline: no python interpreter found"
+    exit 1
+fi
 
 # Pass all values via environment so no shell interpolation enters Python source.
 # exec replaces this process; Python inherits stdin directly from the caller.
