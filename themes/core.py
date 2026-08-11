@@ -29,6 +29,11 @@ STATE_FILE = os.path.join(_claude_dir, 'statusline-state.json')
 LOG_FILE   = os.path.join(_claude_dir, 'rate-limit-log.jsonl')
 CONFIG_FILE = os.path.join(_claude_dir, 'statusline-config.json')
 
+if sys.platform == 'win32':
+    _CTX_DIR = os.path.join(os.environ.get('LOCALAPPDATA', os.path.expanduser('~')), 'claude-context')
+else:
+    _CTX_DIR = os.path.join(os.environ.get('XDG_STATE_HOME', os.path.expanduser('~/.local/state')), 'claude-context')
+
 def safe_read_json(path):
     try:
         with open(path, encoding='utf-8') as f:
@@ -50,6 +55,37 @@ def safe_write_json(path, obj):
             except Exception: pass
     except Exception:
         pass
+
+def _publish_context(data, used_pct, cw_size, model_id, cwd):
+    """Atomically write context usage for external consumers (nth_web, monitors).
+    Best-effort, never blocks or fails the statusline render."""
+    sid = data.get('session_id', '')
+    if not sid or used_pct is None:
+        return
+    try:
+        os.makedirs(_CTX_DIR, exist_ok=True)
+        payload = {
+            'session_id': sid,
+            'session_name': data.get('session_name', ''),
+            'used_pct': round(used_pct, 1),
+            'cw_size': cw_size,
+            'model': model_id,
+            'cwd': cwd,
+            'ts': datetime.utcnow().isoformat() + 'Z',
+        }
+        path = os.path.join(_CTX_DIR, sid + '.json')
+        fd, tmp = tempfile.mkstemp(dir=_CTX_DIR, suffix='.tmp', prefix='ctx_')
+        os.close(fd)
+        try:
+            with open(tmp, 'w', encoding='utf-8') as f:
+                json.dump(payload, f)
+            os.replace(tmp, path)
+        except Exception:
+            try: os.unlink(tmp)
+            except Exception: pass
+    except Exception:
+        pass
+
 
 def safe_append_line(path, line):
     try:
@@ -632,6 +668,8 @@ def build_context(data=None):
         state_dirty = True
     if state_dirty:
         safe_write_json(STATE_FILE, state)
+
+    _publish_context(data, used_pct, cw_size, model_id, cwd)
 
     return {
         'model_name': model_name,
