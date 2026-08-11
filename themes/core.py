@@ -72,6 +72,10 @@ def _publish_context(data, used_pct, cw_size, model_id, cwd):
             'model': model_id,
             'cwd': cwd,
             'ts': datetime.utcnow().isoformat() + 'Z',
+            # Full harness payload: everything Claude Code hands the
+            # statusline (model, workspace, cost, context_window, ...).
+            # Local-trust data for drill-down views; grows the file to ~2KB.
+            'harness': data,
         }
         path = os.path.join(_CTX_DIR, sid + '.json')
         fd, tmp = tempfile.mkstemp(dir=_CTX_DIR, suffix='.tmp', prefix='ctx_')
