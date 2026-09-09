@@ -204,3 +204,14 @@ The status line logs a threshold crossing event to `~/.claude/rate-limit-log.jso
 ## License
 
 MIT
+
+## Project website
+
+[Open the Claude Statusline site](https://thereprocase.github.io/claude-statusline/) for previews, setup and project resources. [Browse all project groups](https://thereprocase.github.io/).
+
+The static site lives in `docs/` and uses the shared [Gridline design system](https://github.com/thereprocase/thereprocase.github.io/blob/main/GRIDLINE.md). Edit `docs/index.html` and `docs/site.js`; shared styles live in `docs/gridline/`. GitHub Pages serves `main:/docs`.
+
+The gallery uses actual theme renderers with synthetic session data at 42% and
+85% context. Run `python scripts/build-site-previews.py` to regenerate its 28
+SVGs and source-hash provenance record. This does not read an installed account,
+transcript or statusline state.

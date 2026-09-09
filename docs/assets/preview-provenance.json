@@ -1,0 +1,25 @@
+{
+  "purpose": "Actual theme output using synthetic session data; no user data.",
+  "percentages": [
+    42,
+    85
+  ],
+  "source_sha256": {
+    "themes/core.py": "c9ed4e0ff6b5b68109190635ba437713c7a0cc6b39ebe9c88fd96a206fb12e8c",
+    "generate-renders.py": "ad6b84cd953876a253cf3380e74e8a4ff4f33779b8def2157e65b20c5906616f",
+    "themes/buddy.py": "eecb7b15d480fc50ac406ab1c50409f8339c1d839b990f5f2fa9e48ed9911742",
+    "themes/monochrome.py": "73d5db54c8b594f11c389bfe21fd7a915e2f1a69ffa5020b85eac15ebeb38767",
+    "themes/amber.py": "ad4aaa9445bb960eea2f7c6b96fccd35e67307d0892084d608bed6be05b41e0a",
+    "themes/dracula.py": "e75322fbb6c9296443b47879777303b0e8d0b17b9b9ff135be080de3e08f78fb",
+    "themes/lcars.py": "f970cd36857c91669062789a8af40fa42ea80b366053b20f3eaba2d136457f90",
+    "themes/catppuccin.py": "1acec2f03b72a78bdb4d625d579ac7186a48f50675e106e5920182f0fd10024d",
+    "themes/rainbow.py": "ab73355e2930e62fb61bc4db3da60993dda6ed1e01191ec672d8012f88538ca6",
+    "themes/outrun.py": "4b699f9db64901e547c4ee77d1faa107dd5b7885d5abbc809b623481e48707e9",
+    "themes/ibm3278.py": "53a10b039c78f8fbb8be5de46f5dd8ae3bf291fcf0df8b686409a6e67b33600e",
+    "themes/c64.py": "4f1c498479023b4abd65e3f0849e6e7588421610a4621b2e93649addbf455b12",
+    "themes/win95.py": "b49b17da43b4218c356a2b0123241e18a1556bc2a374fed74a58ca1c99b67818",
+    "themes/teletext.py": "330b65787851ab4a3f0256af3f265210897a831cdf7fdbc579537db7492ca54b",
+    "themes/matrix.py": "10cc946900c08c3d877dc6a7cf3dba5219017b48fc261ab93d70387d6b38af0b",
+    "themes/skittles.py": "d8f96d675c79ee42dbb3b594a6188a02ea6beab192dfdc4a7eacdb6b34c7f360"
+  }
+}
