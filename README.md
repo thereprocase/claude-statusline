@@ -191,7 +191,7 @@ bash uninstall.sh
 
 ## Rate Limit Logging
 
-The status line logs a threshold crossing event to `~/.claude/rate-limit-log.jsonl` when either rate limit window reaches **≥95%**. Entries older than 60 days are automatically pruned. This log is consumed by [claude-usage](https://github.com/thereprocase/claude-usage) for heatmap markers.
+The status line logs a threshold crossing event to `~/.claude/rate-limit-log.jsonl` when either rate limit window reaches **≥95%**. Entries older than 60 days are automatically pruned.
 
 ## Known Limitations
 
